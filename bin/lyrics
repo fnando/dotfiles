@@ -1,0 +1,62 @@
+#!/usr/bin/env ruby
+require "nokogiri"
+require "cgi"
+require "open-uri"
+
+class Lyrics
+  def self.fetch(artist, song)
+    lyric = Lyrics.new(artist, song)
+    lyric.body
+  end
+
+  attr_accessor :artist, :song, :xml, :html
+
+  def initialize(artist, song)
+    @artist = artist
+    @song = song
+    @data = nil
+  end
+
+  def body
+    @fetch = begin
+      url = "http://lyrics.wikia.com/api.php?artist=#{CGI.escape(artist)}&song=#{CGI.escape(song)}&fmt=xml"
+      @xml = Nokogiri::XML(open(url).read)
+      url = xml.css("LyricsResult > url").inner_text
+      @html = Nokogiri::HTML(open(url).read)
+      div = html.css("div.lyricbox")
+      div.css("div.rtMatcher").remove
+      content = div.inner_html
+      content.gsub!(/<!--.*?-->/xim, "")
+      content.gsub!(/<\/?([a-z]+).*?>/xim, "\n")
+      content.gsub!(/\n{2,}/, "\n\n")
+      content.match(/we are not licensed to display the full lyrics/) ? nil : content
+    end
+  rescue Exception
+    nil
+  end
+end
+
+artist, song = ARGV
+
+if ARGV.size < 2
+  result = `osascript <<EOF
+  tell application "iTunes"
+  	set currentSong to (name of current track) as Unicode text
+  	set currentArtist to (artist of current track) as Unicode text
+  	set output to currentArtist & "_|_" & currentSong
+  end tell
+EOF`.chomp.split("_|_")
+
+  artist, song = result
+end
+
+# puts "Fetching #{song.inspect} by #{artist.inspect}"
+lyrics = Lyrics.fetch(artist, song)
+
+`osascript <<EOF
+tell application "iTunes" to set lyrics of current track to "
+#{lyrics.gsub(/"/, '\"')}
+"
+EOF` if lyrics
+
+puts lyrics ? lyrics : "No lyrics found"

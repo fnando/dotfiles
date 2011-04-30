@@ -1,0 +1,69 @@
+#!/usr/bin/env ruby
+# -*- encoding: utf-8 -*-
+require "pathname"
+require "ostruct"
+require "date"
+
+ID3 = {
+  "TIT2" => :title,
+  "TPE1" => :artist,
+  "TALB" => :album,
+  "TRCK" => :track,
+  "TYER" => :year,
+  "TCON" => :genre,
+  "COMM" => :comment
+}
+
+# The input file that will be converted
+input = File.expand_path(ARGV.first)
+
+# Retrieve bitrate
+bitrate = `file '#{input}'`.gsub(/^.*?, (\d+) kbps.*?$/, '\1')
+
+# Retrieve all tags from the converting file
+# raw_id3 = `id3v2 -l '#{input}'`
+# id3 = OpenStruct.new
+#
+# raw_id3.scan(/^([A-Z0-9]{4}).+:\s*(.*?)$/) do |matches|
+#   attr_name = ID3[$1]
+#   value = $2
+#
+#   # unknown tag. just skip it!
+#   next unless attr_name
+#
+#   # validate id3 tag
+#   case attr_name
+#   when :comment; next if matches[1].match(/iTunPGAP/)
+#   end
+#
+#   # remove white spaces
+#   value = value.gsub(/^[\t\s]*(.*?)[\t\s]*$/, '\1')
+#
+#   # normalize value based on id3 tag
+#   case attr_name
+#   when :genre; value.gsub!(/ \(.*?\)$/, "")
+#   end
+#
+#   # store normalized id3 tag
+#   id3.send("#{attr_name}=", value)
+# end
+
+# Set output directory
+root = Pathname.new(File.dirname(input))
+
+# Set basename, without extension
+basename = File.basename(input).gsub(/\..*?$/, "")
+
+# Set wave and ogg file destiny
+wav = root.join("#{basename}.wav")
+ogg = root.join("#{basename}.ogg")
+
+# Generate wave file
+`mpg123 -w '#{wav}' '#{input}'`
+
+# Generate ogg file
+# `oggenc2 '#{wav}' -o '#{ogg}' --date=#{Date.today.to_s} --bitrate="#{bitrate}" --tracknum="#{id3.track}" --genre="#{id3.genre}" --title="#{id3.title}" --album="#{id3.album}" --artist="#{id3.artist}" --genre="#{id3.genre}" --comment='#{id3.comment}'`
+`oggenc2 '#{wav}' -o '#{ogg}'`
+
+# Remove wav file
+`rm '#{wav}'`
