@@ -55,8 +55,8 @@ tunnel() {
 #   $ gzipped http://simplesideias.com.br
 #
 gzipped() {
-  local r=`curl --write-out "%{size_download}" --output /dev/null --silent $1`
-  local g=`curl -H "Accept-Encoding: gzip,deflate" --write-out "%{size_download}" --output /dev/null --silent $1`
+  local r=`curl -L --write-out "%{size_download}" --output /dev/null --silent $1`
+  local g=`curl -L -H "Accept-Encoding: gzip,deflate" --write-out "%{size_download}" --output /dev/null --silent $1`
   local message
 
   local rs=`expr ${r} / 1024`
