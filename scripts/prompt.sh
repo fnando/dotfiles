@@ -1,4 +1,8 @@
 custom_prompt () {
+  history -a
+  history -c
+  history -r
+
   local BRANCH=`git branch 2> /dev/null | grep \* | sed 's/* //'`
 
   if [[ "$BRANCH" = "" ]]; then
