@@ -102,7 +102,6 @@ class Noder
     puts "  noder uninstall [version]"
     puts "  noder list"
     puts "  noder activate [version]"
-    puts "  noder deactivate [version]"
   end
 
   def activate
