@@ -1,0 +1,133 @@
+#!/usr/bin/env ruby
+require "fileutils"
+require "pathname"
+require "open-uri"
+
+class Noder
+  attr_accessor :version
+
+  def initialize(version = nil)
+    @version = normalize_version(version)
+  end
+
+  def root
+    @root ||= Pathname.new(File.expand_path("~/.node"))
+  end
+
+  def target
+    root.join(version)
+  end
+
+  def current
+    root.join("current")
+  end
+
+  def src
+    root.join("src")
+  end
+
+  def url
+    "http://nodejs.org/dist/node-#{version}.tar.gz"
+  end
+
+  def deactivate
+    FileUtils.rm(current) rescue nil
+  end
+
+  def install
+    # Setup directories
+    FileUtils.mkdir_p root
+    FileUtils.mkdir_p src
+
+    dir = src.join("node-#{version}")
+    targz = src.join("#{version}.tar.gz")
+
+    # Download source if hadn't downloaded yet
+    contents = open(url).read rescue nil
+
+    # Halt if source wasn't downloaded
+    halt "Source for #{version} could not be downloaded." unless contents
+
+    # Save downloaded source to disk
+    File.open(targz, "wb+") {|file| file << contents} rescue nil
+
+    # Halt if couldn't save source to disk
+    halt "Source for #{version} could not be saved to #{targz}." unless targz.exist?
+
+    # Remove previous extracted directory
+    FileUtils.rm_rf(dir) if dir.exist?
+
+    # Extract source
+    Dir.chdir(src)
+    system "tar xvf #{version}.tar.gz"
+
+    # Configure, compile and install it!
+    Dir.chdir(dir)
+    system "./configure --prefix=#{target}"
+    system "make && make install"
+
+    # Activate this new version
+    activate
+  end
+
+  def uninstall
+    if target.exist?
+      deactivate if current.readlink.to_s == target
+      FileUtils.rm_rf(target)
+    else
+      halt "Version #{version} not installed."
+    end
+  end
+
+  def versions
+    Dir[root.join("v*")].collect do |dir|
+      {
+        :name => File.basename(dir),
+        :path => dir,
+        :current => current.exist? && dir == current.readlink.to_s
+      }
+    end
+  end
+
+  def list
+    versions.each do |info|
+      puts (info[:current] ? "=> " : "   ") << info[:name]
+    end
+  end
+
+  def help
+    puts "Usage:"
+    puts "  noder help"
+    puts "  noder install [version]"
+    puts "  noder uninstall [version]"
+    puts "  noder list"
+    puts "  noder activate [version]"
+    puts "  noder deactivate [version]"
+  end
+
+  def activate
+    if target.exist?
+      deactivate
+      FileUtils.ln_s target, current
+    else
+      halt "Version #{version} not installed."
+    end
+  end
+
+  def halt(message)
+    puts message
+    exit(1)
+  end
+
+  def execute(command)
+    __send__(command)
+  end
+
+  private
+  def normalize_version(version)
+    version =~ /v\d+\.\d+\.\d+/ ? version : "v#{version}"
+  end
+end
+
+command = %w[-h --help -v --version].include?(ARGV[0]) ? "help" : (ARGV[0] || "list")
+Noder.new(ARGV[1]).execute(command)

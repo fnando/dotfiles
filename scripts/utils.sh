@@ -13,9 +13,9 @@ reload() {
 cd() {
   builtin cd "${@:-$HOME}" && ls && pwd > $CDHISTORY;
 
-  if [ -f .rvmrc ]; then
-    __rvm_project_rvmrc
-  fi
+  # if [ -f .rvmrc ]; then
+  #   __rvm_project_rvmrc
+  # fi
 }
 
 if [ -f $CDHISTORY ]; then
@@ -70,4 +70,15 @@ gzipped() {
 
   echo -e $message
   return 0
+}
+
+# Schedule alarm. Will display growl
+# notification and beep.
+#
+#   $ alarm "now + 2 hours" "Your time has finished"
+#
+# Quotes required, sorry!
+#
+alarm() {
+  echo "afplay /System/Library/Sounds/Basso.aiff && /usr/local/bin/growlnotify -t Alarm -s -d alarm -a /Applications/iCal.app -m '$2'" | at $1
 }
