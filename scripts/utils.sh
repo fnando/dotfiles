@@ -18,6 +18,16 @@ cd() {
   # fi
 }
 
+# run rake without worring about
+# bundler wrapper.
+function rake {
+  if [ -e Gemfile ]; then
+    bundle exec rake $@
+  else
+    `which rake` $@
+  fi
+}
+
 if [ -f $CDHISTORY ]; then
   dir=$(cat $CDHISTORY)
 
