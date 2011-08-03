@@ -12,10 +12,6 @@ reload() {
 # and open it when a new tab is created.
 cd() {
   builtin cd "${@:-$HOME}" && ls && pwd > $CDHISTORY;
-
-  # if [ -f .rvmrc ]; then
-  #   __rvm_project_rvmrc
-  # fi
 }
 
 # run rake without worring about

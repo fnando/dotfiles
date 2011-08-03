@@ -1,0 +1,71 @@
+#!/usr/bin/env ruby
+require "yaml"
+
+# Save a config file at ~/.projects with something like
+#
+#   project_name:
+#     home: ~/Sites/some_project
+#     tabs:
+#       - rails server thin
+#       - rails console
+#       - redis-server
+#       - mongod --dbpath=tmp/mongodb
+#
+# To open all tabs for this project, just run
+#
+#   $ project project_name
+#
+class Project
+  APPLESCRIPT = <<-APPLESCRIPT
+osascript <<EOF
+  tell application "Terminal"
+    activate
+    %s
+  end tell
+EOF
+  APPLESCRIPT
+
+  class NoConfigFileError < StandardError; end
+  class NoProjectError < StandardError; end
+
+  def self.projects
+    filepath = File.expand_path("~/.projects")
+
+    raise NoConfigFileError unless File.exist?(filepath)
+
+    @projects ||= YAML.load_file File.expand_path(filepath)
+  end
+
+  attr_accessor :config
+
+  def self.run(project_name)
+    new(project_name).run
+  end
+
+  def initialize(name)
+    @config = self.class.projects[name]
+    raise NoProjectError unless @config
+  end
+
+  def run
+    commands = []
+
+    config["tabs"].each_with_index do |tab_command, i|
+      commands << %[do script "cd #{config["home"]} && #{tab_command}" in last tab of front window]
+      commands << 'tell application "System Events" to keystroke "t" using command down' if i < config["tabs"].size - 1
+    end
+
+    command = APPLESCRIPT % commands.join("\n")
+    system(command)
+  end
+end
+
+begin
+  Project.run(ARGV.first)
+rescue Project::NoConfigFileError
+  $stderr << "Make sure your ~/.projects exist\n"
+  exit 1
+rescue Project::NoProjectError
+  $stderr << "Can't find #{ARGV.first.inspect} project on ~/.projects\n"
+  exit 1
+end
