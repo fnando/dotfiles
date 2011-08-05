@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+osascript <<EOF
+tell application "Terminal"
+	activate
+	set bounds of the first window to {0, 0, 648, 486}
+end tell
+EOF
