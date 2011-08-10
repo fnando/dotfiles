@@ -16,10 +16,6 @@ custom_prompt () {
     local RAILS_VERSION=`cat Gemfile.lock | grep -E " +rails \([0-9]+" | sed 's/ *rails (\(.*\))/\1/'`
   fi
 
-  if [[ "$RAILS_VERSION" = "" ]]; then
-    local RAILS_VERSION=`rails -v 2> /dev/null | sed 's/Rails //'`
-  fi
-
   local RUBY_PROMPT=""
   local STATUS=`git status 2>/dev/null`
   local PROMPT_COLOR=$GREEN
