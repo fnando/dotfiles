@@ -12,6 +12,12 @@ custom_prompt () {
   local RUBY_VERSION=`ruby -e "puts RUBY_VERSION"`
   local GEMSET_NAME=`rvm gemset name`
 
+  if [[ "$GEMSET_NAME" != "base" ]]; then
+    GEMSET_NAME="${GEMSET_NAME}@"
+  else
+    GEMSET_NAME=""
+  fi
+
   if [ -f Gemfile.lock ]; then
     local RAILS_VERSION=`cat Gemfile.lock | grep -E " +rails \([0-9]+" | sed 's/ *rails (\(.*\))/\1/'`
   fi
@@ -30,15 +36,11 @@ custom_prompt () {
   local CHANGES_NOT_STAGED="# Changes not staged for commit"
   local LOG=`git log -1 2> /dev/null`
 
-  if [[ "$RAILS_VERSION" != "" ]]; then
-    RAILS_PROMPT="${RAILS_VERSION}@"
+  if [[ "$RAILS_VERSION" ]]; then
+    local RAILS_PROMPT="${RAILS_VERSION}#"
   fi
 
-  if [[ "$GEMSET_NAME" != "" ]]; then
-    RUBY_PROMPT="${GRAY}[${RAILS_PROMPT}${GEMSET_NAME}#${RUBY_VERSION}]${NO_COLOR} "
-  else
-    RUBY_PROMPT="${GRAY}[${RAILS_PROMPT}${RUBY_VERSION}]${NO_COLOR} "
-  fi
+  RUBY_PROMPT="${GRAY}[${RAILS_PROMPT}${GEMSET_NAME}${RUBY_VERSION}]${NO_COLOR} "
 
   if [ "$STATUS" != "" ]; then
     if [[ "$STATUS" =~ "$CHANGES_NOT_STAGED" ]]; then
