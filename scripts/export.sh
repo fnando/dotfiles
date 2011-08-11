@@ -4,8 +4,9 @@ export EVENT_NOKQUEUE=1
 export MANPATH=/usr/local/git/man:$MANPATH
 export EDITOR="/usr/bin/mate -w"
 export SVN_EDITOR="/usr/bin/mate -w"
-export HISTCONTROL=erasedups
+export HISTCONTROL=ignoreboth
 export HISTFILESIZE=100000
+export HISTIGNORE="&"
 export HISTSIZE=${HISTFILESIZE}
 export GREP_OPTIONS="--color=auto"
 export GREP_COLOR="4;33"
