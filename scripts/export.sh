@@ -1,4 +1,4 @@
-export PATH="$HOME/Sites/codeplane/script:$HOME/.node/current/bin:$HOME/bin:$HOME/.bash/bin:$HOME/local/bin:$HOME/local/flex4/bin:/usr/local/bin:/usr/local/sbin:$PATH"
+export PATH="./bin:$HOME/.rbenv/bin:$HOME/Sites/codeplane/script:$HOME/.node/current/bin:$HOME/bin:$HOME/.bash/bin:$HOME/local/bin:$HOME/local/flex4/bin:/usr/local/bin:/usr/local/sbin:$PATH"
 export CLASSPATH="/usr/local/rhino:$CLASSPATH"
 export EVENT_NOKQUEUE=1
 export MANPATH=/usr/local/git/man:$MANPATH
