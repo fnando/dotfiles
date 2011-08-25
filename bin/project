@@ -118,8 +118,8 @@ class Command
       optparse.parse!
     
       if options.empty?
-          options[:action] = :run
-          options[:project] = ARGV.first
+        options[:action] = :run
+        options[:project] = ARGV.first
       end
     end
     
