@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 require "yaml"
+require "optparse"
 
 # Save a config file at ~/.projects with something like
 #
@@ -41,6 +42,10 @@ EOF
   def self.run(project_name)
     new(project_name).run
   end
+  
+  def self.go(project_name)
+    new(project_name).go
+  end
 
   def initialize(name)
     @config = self.class.projects[name]
@@ -58,14 +63,87 @@ EOF
     command = APPLESCRIPT % commands.join("\n")
     system(command)
   end
+  
+  def go
+    command = APPLESCRIPT % %[do script "cd #{config["home"]}" in last tab of front window]
+    system(command)
+  end
+end
+
+# Take care about command line options
+#
+# Current options:
+#
+#   -r, --run [PROJECT] Run project prescriptions contained in ~/.project
+#   -g, --go  [PROJECT] Change to project home directory
+#   -h, --help          Show help
+#
+class Command
+  attr_reader :help, :options
+  
+  def initialize
+    @help, @options = parse_command_line
+  end
+  
+  private
+  
+  def parse_command_line
+    options = {}
+    
+    optparse = OptionParser.new do |opts|
+      opts.banner = "Usage: project [-r | -g] name"
+
+      opts.on("-r", "--run PROJECT", "Run project prescriptions") do |project|
+        options[:action] = :run
+        options[:project] = project
+      end
+
+      opts.on("-g", "--go PROJECT", "Change to project home directory") do |project|
+        options[:action] = :go
+        options[:project] = project
+      end
+
+      opts.on("-h", "--help", "Show help") do
+        options[:action] = :help
+        options[:project] = nil
+      end
+    end
+    
+    help = optparse.help
+
+    if ARGV.empty?
+      options[:action] = :help
+      options[:project] = nil
+    else
+      optparse.parse!
+    
+      if options.empty?
+          options[:action] = :run
+          options[:project] = ARGV.first
+      end
+    end
+    
+    [help, options]
+  end
 end
 
 begin
-  Project.run(ARGV.first)
+  command = Command.new
+  action  = command.options[:action]
+  project = command.options[:project]
+
+  case action
+  when :run
+    Project.run(project)
+  when :go
+    Project.go(project)
+  when :help
+    puts command.help
+  end
 rescue Project::NoConfigFileError
   $stderr << "Make sure your ~/.projects exist\n"
   exit 1
 rescue Project::NoProjectError
-  $stderr << "Can't find #{ARGV.first.inspect} project on ~/.projects\n"
+  $stderr << %[Can't find "#{project}" project on ~/.projects\n]
   exit 1
 end
