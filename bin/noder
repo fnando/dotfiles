@@ -6,6 +6,19 @@ require "open-uri"
 class Noder
   attr_accessor :version
 
+  def downloaded_source
+    [
+      "http://nodejs.org/dist/node-#{version}.tar.gz",
+      "http://nodejs.org/dist/#{version}/node-#{version}.tar.gz"
+    ].each do |url|
+      puts "Trying to download source from #{url}"
+      contents = open(url).read rescue nil
+      return contents if contents
+    end
+
+    nil
+  end
+
   def initialize(version = nil)
     @version = normalize_version(version)
   end
@@ -27,7 +40,7 @@ class Noder
   end
 
   def url
-    "http://nodejs.org/dist/node-#{version}.tar.gz"
+
   end
 
   def deactivate
@@ -43,7 +56,7 @@ class Noder
     targz = src.join("#{version}.tar.gz")
 
     # Download source if hadn't downloaded yet
-    contents = open(url).read rescue nil
+    contents = downloaded_source
 
     # Halt if source wasn't downloaded
     halt "Source for #{version} could not be downloaded." unless contents
