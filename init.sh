@@ -9,3 +9,4 @@ source $HOME/.bash/scripts/other.sh
 source $HOME/.bash/scripts/utils.sh
 
 source $HOME/.bash/scripts/prompt.sh
+
