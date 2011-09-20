@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+echo `git branch 2> /dev/null | grep \* | sed 's/* //'`
+
