@@ -10,13 +10,6 @@ custom_prompt () {
   fi
 
   local RUBY_VERSION=`ruby -e "puts RUBY_VERSION"`
-  local GEMSET_NAME=`rvm gemset name`
-
-  if [[ "$GEMSET_NAME" != "base" ]]; then
-    GEMSET_NAME="${GEMSET_NAME}@"
-  else
-    GEMSET_NAME=""
-  fi
 
   if [ -f Gemfile.lock ]; then
     local RAILS_VERSION=`cat Gemfile.lock | grep -E " +rails \([0-9]+" | sed 's/ *rails (\(.*\))/\1/'`
@@ -40,7 +33,7 @@ custom_prompt () {
     local RAILS_PROMPT="${RAILS_VERSION}#"
   fi
 
-  RUBY_PROMPT="${GRAY}[${RAILS_PROMPT}${GEMSET_NAME}${RUBY_VERSION}]${NO_COLOR} "
+  RUBY_PROMPT="${GRAY}[${RAILS_PROMPT}${RUBY_VERSION}]${NO_COLOR} "
 
   if [ "$STATUS" != "" ]; then
     if [[ "$STATUS" =~ "$CHANGES_NOT_STAGED" ]]; then
