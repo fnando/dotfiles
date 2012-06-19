@@ -3,7 +3,13 @@ export INSTALL_DIR="$HOME/local"
 export CLASSPATH="/usr/local/rhino:$CLASSPATH"
 export EVENT_NOKQUEUE=1
 export MANPATH=/usr/local/git/man:$MANPATH
-export EDITOR="$HOME/bin/mate -w"
+
+if [[ "$(uname)" != "Darwin" ]]; then
+  export EDITOR=vim
+else
+  export EDITOR="$HOME/bin/mate -w"
+fi
+
 export SVN_EDITOR="/usr/bin/mate -w"
 export HISTCONTROL=ignoreboth
 export HISTFILESIZE=1000000

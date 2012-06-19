@@ -19,11 +19,13 @@ function rake {
   fi
 }
 
-if [ -f $CDHISTORY ]; then
-  dir=$(cat $CDHISTORY)
+if [[ "$(uname)" != "Darwin" ]]; then
+  if [ -f "$CDHISTORY" ]; then
+    dir=$(cat $CDHISTORY)
 
-  if [ -d "$dir" ]; then
-    cd "$dir" && clear
+    if [ -d "$dir" ]; then
+      cd "$dir" && clear
+    fi
   fi
 fi
 
