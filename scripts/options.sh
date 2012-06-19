@@ -10,6 +10,8 @@ shopt -s autocd
 shopt -s dirspell
 
 set -o ignoreeof
+set bell-style none
+
 unset MAILCHECK                           # disable "you have mail" warning
 ulimit -S -c 0                            # disable core dump
 bind "set completion-ignore-case on"      # ignore case on bash completion
