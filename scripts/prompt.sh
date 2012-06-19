@@ -3,10 +3,15 @@ custom_prompt () {
   history -c
   history -r
 
+  local BASE_COLOR="\[\033[103m\]\[\033[33m\]"
   local BRANCH=`git branch 2> /dev/null | grep \* | sed 's/* //'`
 
   if [[ "$BRANCH" = "" ]]; then
     BRANCH=`git status 2> /dev/null | grep "On branch" | sed 's/# On branch //'`
+  fi
+
+  if [[ "$BRANCH" = "" ]]; then
+    BRANCH=" $BRANCH"
   fi
 
   local RUBY_VERSION=`ruby -e "puts RUBY_VERSION"`
@@ -17,7 +22,7 @@ custom_prompt () {
 
   local RUBY_PROMPT=""
   local STATUS=`git status 2>/dev/null`
-  local PROMPT_COLOR=$GREEN
+  local PROMPT_COLOR=""
   local STATE=" "
   local NOTHING_TO_COMMIT="# Initial commit"
   local BEHIND="# Your branch is behind"
@@ -37,28 +42,28 @@ custom_prompt () {
 
   if [ "$STATUS" != "" ]; then
     if [[ "$STATUS" =~ "$CHANGES_NOT_STAGED" ]]; then
-      PROMPT_COLOR=$RED
+      PROMPT_COLOR="${On_IRed}"
       STATE=""
     elif [[ "$STATUS" =~ "$NOTHING_TO_COMMIT" ]]; then
-      PROMPT_COLOR=$RED
+      PROMPT_COLOR="${On_IRed}"
       STATE=""
     elif [[ "$STATUS" =~ "$DIVERGED" ]]; then
-      PROMPT_COLOR=$RED
+      PROMPT_COLOR="${On_IRed}"
       STATE="${STATE}${RED}↕${NO_COLOR}"
     elif [[ "$STATUS" =~ "$BEHIND" ]]; then
-      PROMPT_COLOR=$RED
+      PROMPT_COLOR="${On_IRed}"
       STATE="${STATE}${RED}↓${NO_COLOR}"
     elif [[ "$STATUS" =~ "$AHEAD" ]]; then
-      PROMPT_COLOR=$RED
+      PROMPT_COLOR="${On_IRed}"
       STATE="${STATE}${RED}↑${NO_COLOR}"
     elif [[ "$STATUS" =~ "$CHANGED" ]]; then
-      PROMPT_COLOR=$RED
+      PROMPT_COLOR="${On_IRed}"
       STATE=""
     elif [[ "$STATUS" =~ "$TO_BE_COMMITED" ]]; then
-      PROMPT_COLOR=$RED
+      PROMPT_COLOR="${On_IRed}"
       STATE=""
     else
-      PROMPT_COLOR=$GREEN
+      PROMPT_COLOR="${On_IGreen}"
       STATE=""
     fi
 
@@ -66,9 +71,9 @@ custom_prompt () {
       STATE="${STATE}${YELLOW}*${NO_COLOR}"
     fi
 
-    PS1="\n${RUBY_PROMPT}${YELLOW}\w\a${NO_COLOR} (${PROMPT_COLOR}${BRANCH}${NO_COLOR}${STATE}${NO_COLOR})\n\$ "
+    PS1="\n${RUBY_PROMPT}${BASE_COLOR}\w\a${NO_COLOR} ${PROMPT_COLOR}${BRANCH}${NO_COLOR}${STATE}${NO_COLOR}\n\$ "
   else
-    PS1="\n${RUBY_PROMPT}${YELLOW}\w\a${NO_COLOR}\n\$ "
+    PS1="\n${RUBY_PROMPT}${BASE_COLOR}\w\a${NO_COLOR}\n\$ "
   fi
 }
 
