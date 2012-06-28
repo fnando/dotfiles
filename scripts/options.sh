@@ -5,9 +5,9 @@ shopt -s dotglob
 shopt -s extglob
 shopt -s progcomp
 shopt -s histappend
-shopt -s globstar
-shopt -s autocd
-shopt -s dirspell
+#shopt -s globstar
+#shopt -s autocd
+#shopt -s dirspell
 
 set -o ignoreeof
 set bell-style none
