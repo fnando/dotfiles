@@ -1,9 +1,20 @@
-custom_prompt () {
+__hellobits_prompt () {
   history -a
   history -c
   history -r
 
-  local BASE_COLOR="\[\033[103m\]\[\033[33m\]"
+  local BLUE="\[\033[0;34m\]"
+  local NO_COLOR="\[\e[0m\]"
+  local GRAY="\[\033[1;30m\]"
+  local GREEN="\[\033[0;32m\]"
+  local LIGHT_GRAY="\[\033[0;37m\]"
+  local LIGHT_GREEN="\[\033[1;32m\]"
+  local LIGHT_RED="\[\033[1;31m\]"
+  local RED="\[\033[0;31m\]"
+  local WHITE="\[\033[1;37m\]"
+  local YELLOW="\[\033[0;33m\]"
+
+  local BASE_COLOR="$NO_COLOR"
   local BRANCH=`git branch 2> /dev/null | grep \* | sed 's/* //'`
 
   if [[ "$BRANCH" = "" ]]; then
@@ -42,28 +53,28 @@ custom_prompt () {
 
   if [ "$STATUS" != "" ]; then
     if [[ "$STATUS" =~ "$CHANGES_NOT_STAGED" ]]; then
-      PROMPT_COLOR="${On_IRed}"
+      PROMPT_COLOR="${RED}"
       STATE=""
     elif [[ "$STATUS" =~ "$NOTHING_TO_COMMIT" ]]; then
-      PROMPT_COLOR="${On_IRed}"
+      PROMPT_COLOR="${RED}"
       STATE=""
     elif [[ "$STATUS" =~ "$DIVERGED" ]]; then
-      PROMPT_COLOR="${On_IRed}"
+      PROMPT_COLOR="${RED}"
       STATE="${STATE}${RED}↕${NO_COLOR}"
     elif [[ "$STATUS" =~ "$BEHIND" ]]; then
-      PROMPT_COLOR="${On_IRed}"
+      PROMPT_COLOR="${RED}"
       STATE="${STATE}${RED}↓${NO_COLOR}"
     elif [[ "$STATUS" =~ "$AHEAD" ]]; then
-      PROMPT_COLOR="${On_IRed}"
+      PROMPT_COLOR="${RED}"
       STATE="${STATE}${RED}↑${NO_COLOR}"
     elif [[ "$STATUS" =~ "$CHANGED" ]]; then
-      PROMPT_COLOR="${On_IRed}"
+      PROMPT_COLOR="${RED}"
       STATE=""
     elif [[ "$STATUS" =~ "$TO_BE_COMMITED" ]]; then
-      PROMPT_COLOR="${On_IRed}"
+      PROMPT_COLOR="${RED}"
       STATE=""
     else
-      PROMPT_COLOR="${On_IGreen}"
+      PROMPT_COLOR="${GREEN}"
       STATE=""
     fi
 
@@ -77,4 +88,4 @@ custom_prompt () {
   fi
 }
 
-PROMPT_COMMAND=custom_prompt
+PROMPT_COMMAND=__hellobits_prompt
