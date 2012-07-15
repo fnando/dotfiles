@@ -1,0 +1,30 @@
+[color]
+        diff = auto
+        status = auto
+        branch = auto
+        ui = true
+[color "diff"]
+        plain = black
+        meta = black
+        frag = cyan reverse
+        old = red
+        new = green
+        commit = yellow
+        whitespace = normal red
+[alias]
+        sh = !git-sh
+        ci = commit
+        co = checkout
+        b = branch
+        st = status
+        who = shortlog -s --
+        fl = log -p
+        lg = log --oneline --decorate
+        sb = status -sb
+        dw = diff --word-diff
+[help]
+        autocorrect = 1
+[branch]
+        autosetuprebase = always
+[push]
+        default = current
