@@ -1,0 +1,26 @@
+set visible-stats on
+set show-all-if-ambiguous on
+set completion-ignore-case on
+set expand-tilde on
+set mark-symlinked-directories on
+
+# UTF-8 stuff
+set meta-flag on
+set input-meta on
+set output-meta on
+set convert-meta off
+
+# Enable autocomplete navigation through
+# tab and shift-tab
+# TAB: menu-complete
+# "\e[Z": "\e-1\C-i"
+
+# Enable seaching with up and down arrows
+"\e[B": history-search-forward
+"\e[A": history-search-backward
+
+# Expand matches using *
+"\C-x*": glob-expand-word
+
+# Press ctrl+x, ctrl+r to reload the inputrc file.
+"\C-x\C-r": re-read-init-file
