@@ -6,6 +6,8 @@ export PS1="\n[vagrant] \w\n$ "
 export GREP_OPTIONS="--color=auto"
 export GREP_COLOR="4;33"
 export CDPATH=.:/vagrant
+export HISTFILE="$HOME/.bash_history"
+export HISTSIZE=1000000
 
 shopt -s cdspell
 shopt -s nocaseglob
