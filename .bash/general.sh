@@ -26,4 +26,7 @@ set bell-style none
 unset MAILCHECK                           # disable "you have mail" warning
 ulimit -S -c 0                            # disable core dump
 
-cd /vagrant
+if [ -d /vagrant ]; then
+  cd /vagrant
+fi
+
