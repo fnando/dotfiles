@@ -8,6 +8,8 @@ export GREP_COLOR="4;33"
 export CDPATH=.:/vagrant
 export HISTFILE="$HOME/.bash_history"
 export HISTSIZE=1000000
+export HISTCONTROL=ignoreboth:erasedups
+export HISTIGNORE="&:ls:cd ~:cd .."
 
 shopt -s cdspell
 shopt -s nocaseglob
