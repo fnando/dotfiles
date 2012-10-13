@@ -1,0 +1,4 @@
+gemhome: "/home/vagrant/local/ruby/gems"
+gempath:
+- /home/vagrant/local/ruby/gems
+gem: "--no-rdoc --no-ri"
