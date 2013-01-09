@@ -10,6 +10,7 @@ export HISTFILE="$HOME/.bash_history"
 export HISTSIZE=1000000
 export HISTCONTROL=ignoreboth:erasedups
 export HISTIGNORE="&:ls:cd ~:cd .."
+export CDHISTORY="/tmp/cd-$USER"
 
 shopt -s cdspell
 shopt -s nocaseglob
