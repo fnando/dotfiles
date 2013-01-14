@@ -5,7 +5,7 @@ export PATH="./bin:$INSTALL_DIR/bin:$INSTALL_DIR/ruby/gems/bin:/usr/local/sbin:/
 export PS1="\n[vagrant] \w\n$ "
 export GREP_OPTIONS="--color=auto"
 export GREP_COLOR="4;33"
-export CDPATH=.:/vagrant:/Projects:$HOME:$HOME/Projects
+export CDPATH=.:/vagrant:/Projects:$HOME:$HOME/Projects:/Users/fnando/Projects
 export HISTFILE="$HOME/.bash_history"
 export HISTSIZE=1000000
 export HISTCONTROL=erasedups
