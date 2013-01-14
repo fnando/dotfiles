@@ -1,0 +1,29 @@
+#!/Users/fnando/local/bin/ruby
+gem "rack"
+require "rack"
+require "yaml"
+
+class PostLogger
+  def initialize(app)
+    @app = app
+  end
+
+  def call(env)
+    puts "= PARAMS"
+    puts
+    puts Rack::Request.new(env).params.to_yaml
+    puts
+    puts
+    @app.call(env)
+  end
+end
+
+app = Rack::Builder.app do
+  use Rack::ContentLength
+  use Rack::CommonLogger
+  use PostLogger
+  use Rack::Static, urls: {"/" => "index.html"}, :root => Dir.pwd if ENV["INDEX"]
+  run Rack::Directory.new(Dir.pwd)
+end
+
+Rack::Handler::Thin.run app, :Port => ENV.fetch("PORT", 1234)

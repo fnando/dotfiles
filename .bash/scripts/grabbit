@@ -1,0 +1,28 @@
+#!/usr/bin/env ruby
+
+require "time"
+require "digest/sha1"
+
+url = ARGV[0]
+
+unless url
+  puts "Usage: grabbit http://example.com"
+  exit 1
+end
+
+begin
+  name = Digest::SHA1.hexdigest("#{rand}#{Time.now}#{rand}")[0,8]
+end while File.file?("/tmp/#{hash}")
+
+filename = url.gsub(%r[https?://]i, "")
+filename.gsub!(/[^a-z0-9_-]/i, "-")
+filename.gsub!(/-+/, "-")
+filename.gsub!(/^-/, "")
+filename.gsub!(/-$/, "")
+filename << "-#{name}"
+
+puts `webkit2png --delay=5 --clipwidth=300 --clipheight=300 -o screenshot -W 1280 -D /tmp/ -o #{name} #{url}`
+`scp /tmp/#{name}-full.png simplesideias:f.simplesideias.com.br/ui/#{filename}.png`
+`scp /tmp/#{name}-clipped.png simplesideias:f.simplesideias.com.br/ui/thumbs/#{filename}.png`
+`rm /tmp/#{name}-*.png`
+`growlnotify --message Done! --title Finished uploading file!`

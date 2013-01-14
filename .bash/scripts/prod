@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+domain=$1
+filename="/tmp/$(echo -n "$domain" | md5)"
+
+read -r -d '' screenrc <<SCREENRC
+startup_message off
+shell /usr/local/bin/bash
+autodetach on
+defscrollback 10000
+defflow off
+
+hardstatus alwayslastline "%{= yd}%{+b }%t"
+
+escape ^Gg
+encoding UTF-8
+
+screen -t "prod:$domain"
+stuff "ssh $domain\015"
+SCREENRC
+
+echo "$screenrc" | tee $filename
+screen -c $filename
