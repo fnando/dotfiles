@@ -1,4 +1,4 @@
-Pry.config.editor = "mate -w"
+Pry.config.editor = ENV.fetch("EDITOR", "subl -w")
 
 Pry.config.prompt = proc do |obj, level, _|
   prompt = ""
@@ -20,8 +20,30 @@ end
 
 begin
   require "awesome_print"
-  Pry.config.print = proc {|output, value| Pry::Helpers::BaseHelpers.stagger_output("=> #{value.ai}", output)}
-rescue LoadError => err
-   warn "=> Unable to load awesome_print"
+
+  Pry.config.print = proc do |output, value|
+    Pry::Helpers::BaseHelpers
+      .stagger_output("=> #{value.ai}", output)
+  end
+rescue LoadError => error
+  warn "=> Unable to load awesome_print"
 end
 
+begin
+  require "pry-nav"
+
+  Pry.commands.alias_command "c", "continue"
+  Pry.commands.alias_command "s", "step"
+  Pry.commands.alias_command "n", "next"
+rescue LoadError => error
+  warn "=> Unable to load pry-nav"
+end
+
+begin
+  require "pry-stack_explorer"
+
+  Pry.commands.alias_command "u", "up"
+  Pry.commands.alias_command "d", "down"
+rescue LoadError => error
+  warn "=> Unable to load pry-stack_explorer"
+end
