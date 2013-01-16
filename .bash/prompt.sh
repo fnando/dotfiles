@@ -45,11 +45,15 @@ __hellobits_prompt () {
   local CHANGES_NOT_STAGED="# Changes not staged for commit"
   local LOG=`git log -1 2> /dev/null`
 
+  if [[ "$USER" = "vagrant" ]]; then
+    local VAGRANT_PROMPT="vagrant|"
+  fi
+
   if [[ "$RAILS_VERSION" ]]; then
     local RAILS_PROMPT="${RAILS_VERSION}#"
   fi
 
-  RUBY_PROMPT="${GRAY}[${RAILS_PROMPT}${RUBY_VERSION}]${NO_COLOR} "
+  RUBY_PROMPT="${GRAY}[${VAGRANT_PROMPT}${RAILS_PROMPT}${RUBY_VERSION}]${NO_COLOR} "
 
   if [ "$STATUS" != "" ]; then
     if [[ "$STATUS" =~ "$CHANGES_NOT_STAGED" ]]; then

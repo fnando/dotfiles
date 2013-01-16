@@ -1,8 +1,7 @@
 alias ll="ls -Glahs"
 alias psgrep="ps aux | grep -v grep | grep"
 
-export PATH="./bin:$INSTALL_DIR/bin:$INSTALL_DIR/ruby/gems/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
-export PS1="\n[vagrant] \w\n$ "
+export PATH="/usr/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:./bin:$INSTALL_DIR/bin:$INSTALL_DIR/ruby/gems/bin"
 export GREP_OPTIONS="--color=auto"
 export GREP_COLOR="4;33"
 export CDPATH=.:/vagrant:/Projects:$HOME:$HOME/Projects:/Users/fnando/Projects
