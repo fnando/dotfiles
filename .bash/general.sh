@@ -2,6 +2,7 @@ alias ll="ls -Glahs"
 alias psgrep="ps aux | grep -v grep | grep"
 
 export EDITOR=vim
+export VISUAL=vim
 export PATH="/usr/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:./bin:$INSTALL_DIR/bin:$INSTALL_DIR/ruby/gems/bin"
 export GREP_OPTIONS="--color=auto"
 export GREP_COLOR="4;33"
