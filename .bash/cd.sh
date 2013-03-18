@@ -6,6 +6,6 @@ if [ -f $CDHISTORY ]; then
    dir=$(cat $CDHISTORY)
 
    if [ -d "$dir" ]; then
-    cd "$dir" && clear
+    cd "$dir"
    fi
 fi

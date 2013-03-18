@@ -1,4 +1,4 @@
-alias ll="ls -Glahs"
+alias ll="ls -Glahs --color"
 alias psgrep="ps aux | grep -v grep | grep"
 
 export EDITOR=vim
