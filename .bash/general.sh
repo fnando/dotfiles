@@ -1,5 +1,6 @@
 alias ll="ls -Glahs --color"
 alias psgrep="ps aux | grep -v grep | grep"
+alias ri="ri -f ansi"
 
 export EDITOR=vim
 export VISUAL=vim
@@ -13,6 +14,7 @@ export HISTCONTROL=ignoreboth:erasedups
 export GEM_HOME=$INSTALL_DIR/ruby/gems
 export GEM_PATH=$INSTALL_DIR/ruby/gems
 export CDHISTORY="/tmp/cd-$USER"
+export LESS="-REX"
 
 shopt -s cdspell
 shopt -s nocaseglob
