@@ -4,7 +4,7 @@ alias ri="ri -f ansi"
 
 export EDITOR=vim
 export VISUAL=vim
-export PATH="/usr/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:./bin:$INSTALL_DIR/bin:$INSTALL_DIR/ruby/gems/bin"
+export PATH="/usr/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$INSTALL_DIR/bin:$INSTALL_DIR/ruby/gems/bin:$INSTALL_DIR/node/npm/bin"
 export GREP_OPTIONS="--color=auto"
 export GREP_COLOR="4;33"
 export CDPATH=.:/vagrant:/Projects:$HOME:$HOME/Projects:/Users/fnando/Projects
