@@ -1,6 +1,7 @@
 alias ll="ls -Glahs --color"
 alias psgrep="ps aux | grep -v grep | grep"
 alias ri="ri -f ansi"
+alias reload="source ~/.bash_profile"
 
 export EDITOR=vim
 export VISUAL=vim
