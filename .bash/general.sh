@@ -42,10 +42,5 @@ if [ ! -f $CDHISTORY ]; then              # Only autocd when the $CDHISTORY file
   fi
 fi
 
-if [ -f /etc/bash_completion ]; then
-  source /etc/bash_completion
-fi
+source $HOME/.bash/bash_completion.sh
 
-if [ -f /usr/local/etc/bash_completion ]; then
-  source /usr/local/etc/bash_completion
-fi
