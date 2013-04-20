@@ -149,10 +149,8 @@ class WebkitLoad (Foundation.NSObject, WebKit.protocols.WebFrameLoadDelegate):
         view.setFrame_(view.bounds())
 
     def captureView(self,view):
-        view.lockFocus()
-        bitmapdata = AppKit.NSBitmapImageRep.alloc()
-        bitmapdata.initWithFocusedViewRect_(view.bounds())
-        view.unlockFocus()
+        bitmapdata = view.bitmapImageRepForCachingDisplayInRect_(view.bounds())
+        view.cacheDisplayInRect_toBitmapImageRep_(view.bounds(), bitmapdata)
         return bitmapdata
 
     # what happens when the page has finished loading
