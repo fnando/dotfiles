@@ -1,4 +1,4 @@
-alias ll="ls -Glahs --color"
+alias ll="ls -Glahs"
 alias psgrep="ps aux | grep -v grep | grep"
 alias ri="ri -f ansi"
 alias reload="source ~/.bash_profile"
