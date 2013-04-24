@@ -1,0 +1,14 @@
+Autotest.add_hook :initialize do |at|
+  %w[
+    .git
+    vendor
+    db
+    log
+    tmp
+    .DS_store
+    Gemfile.lock
+    coverage
+  ].each do |exception|
+    at.add_exception(exception)
+  end
+end
