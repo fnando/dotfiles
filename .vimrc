@@ -24,3 +24,7 @@ set novisualbell
 set noerrorbells
 set showmatch
 set ch=1
+
+nnoremap <F2> :set invpaste paste?<CR>
+set pastetoggle=<F2>
+set showmode
