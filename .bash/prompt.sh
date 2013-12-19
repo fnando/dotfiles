@@ -32,28 +32,24 @@ __hellobits_prompt () {
   fi
 
   local RUBY_PROMPT=""
-  local STATUS=`git status 2>/dev/null`
+  local STATUS=`git status 2> /dev/null | tr "\\n" " "`
   local PROMPT_COLOR=""
   local STATE=" "
   local NOTHING_TO_COMMIT="# Initial commit"
-  local BEHIND="# Your branch is behind"
-  local AHEAD="# Your branch is ahead"
-  local UNTRACKED="# Untracked files"
+  local BEHIND="Your branch is behind"
+  local AHEAD="Your branch is ahead"
+  local UNTRACKED="Untracked files"
   local DIVERGED="have diverged"
-  local CHANGED="# Changed but not updated"
-  local TO_BE_COMMITED="# Changes to be committed"
-  local CHANGES_NOT_STAGED="# Changes not staged for commit"
+  local CHANGED="Changed but not updated"
+  local TO_BE_COMMITED="Changes to be committed"
+  local CHANGES_NOT_STAGED="Changes not staged for commit"
   local LOG=`git log -1 2> /dev/null`
-
-  if [[ "$USER" = "vagrant" ]]; then
-    local VAGRANT_PROMPT="vagrant|"
-  fi
 
   if [[ "$RAILS_VERSION" ]]; then
     local RAILS_PROMPT="${RAILS_VERSION}#"
   fi
 
-  RUBY_PROMPT="${GRAY}[${VAGRANT_PROMPT}${RAILS_PROMPT}${RUBY_VERSION}]${NO_COLOR} "
+  RUBY_PROMPT="${GRAY}[${RAILS_PROMPT}${RUBY_VERSION}]${NO_COLOR} "
 
   if [ "$STATUS" != "" ]; then
     if [[ "$STATUS" =~ "$CHANGES_NOT_STAGED" ]]; then
