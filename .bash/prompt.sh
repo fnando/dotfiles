@@ -18,7 +18,7 @@ __hellobits_prompt () {
   local BRANCH=`git branch 2> /dev/null | grep \* | sed 's/* //'`
 
   if [[ "$BRANCH" = "" ]]; then
-    BRANCH=`git status 2> /dev/null | grep "On branch" | sed 's/# On branch //'`
+    BRANCH=`git status 2> /dev/null | grep "On branch" | sed -E 's/^.*On branch //'`
   fi
 
   if [[ "$BRANCH" = "" ]]; then
