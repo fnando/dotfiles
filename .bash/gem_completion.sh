@@ -11,6 +11,7 @@
 #
 # Changelog:
 # Jul 14 10 - Added gem list to several commands.
+# Feb 16 14 - Added additional push command options.
 #
 
 _gem ()
@@ -128,7 +129,7 @@ _gem ()
 
     PUSH_OPTIONS="
         $COMMON_OPTIONS
-        --http-proxy --no-http-proxy
+        --http-proxy --no-http-proxy --key --host
     "
 
     QUERY_OPTIONS="
@@ -204,12 +205,12 @@ _gem ()
         --version --undo
     "
 
-	case "$subcmd" in
-		cleanup|contents|dependency|install|list|lock|pristine|search|uninstall|unpack)
-			local gems=$(gem list | sed 's/(.*)//') ;;
-		lock|open)
-			local gems_with_version=$(ruby -rubygems -e 'puts Dir["{#{Gem::Specification.dirs.join(",")}}/*.gemspec"].collect {|s| File.basename(s).gsub(/\.gemspec$/, "")}') ;;
-	esac
+    case "$subcmd" in
+      cleanup|contents|dependency|install|list|lock|pristine|search|uninstall|unpack)
+        local gems=$(gem list | sed 's/(.*)//') ;;
+      lock|open)
+        local gems_with_version=$(ruby -rubygems -e 'puts Dir["{#{Gem::Specification.dirs.join(",")}}/*.gemspec"].collect {|s| File.basename(s).gsub(/\.gemspec$/, "")}') ;;
+    esac
 
     case "$subcmd" in
         build)
@@ -261,8 +262,6 @@ _gem ()
             words=$SERVER_OPTIONS ;;
         sources)
             words=$SOURCES_OPTIONS ;;
-        space)
-            words="$(gem space | sed 's/  //' | sed 's/* //')" ;;
         specification)
             words=$SPECIFICATION_OPTIONS ;;
         stale)
