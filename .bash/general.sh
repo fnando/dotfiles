@@ -9,7 +9,6 @@ export LC_ALL="en_US.UTF-8"
 export LANG="en_US"
 export EDITOR=vim
 export VISUAL=vim
-export PATH="/usr/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$INSTALL_DIR/bin:$INSTALL_DIR/ruby/gems/bin:$INSTALL_DIR/node/npm/bin"
 export GREP_OPTIONS="--color=auto"
 export GREP_COLOR="4;33"
 export CDPATH=.:/vagrant:/Projects:$HOME:$HOME/Projects
@@ -18,6 +17,7 @@ export HISTSIZE=1000000
 export HISTCONTROL=ignoreboth:erasedups
 export GEM_HOME=$INSTALL_DIR/ruby/gems
 export GEM_PATH=$INSTALL_DIR/ruby/gems
+export PATH="/usr/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$HOME/.bash/bin:./bin"
 export CDHISTORY="/tmp/cd-$USER"
 export LESS="-REX"
 export LESS_TERMCAP_mb=$'\E[04;33m'
