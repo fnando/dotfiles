@@ -1,16 +1,16 @@
-set visible-stats on
-set show-all-if-ambiguous on
 set completion-ignore-case on
-set expand-tilde on
-set mark-symlinked-directories on
-set ignoreeof on
-set skip-completed-text on
-
-# UTF-8 stuff
-set meta-flag on
-set input-meta on
-set output-meta on
+set completion-map-case on
 set convert-meta off
+set expand-tilde on
+set ignoreeof on
+set input-meta on
+set mark-symlinked-directories on
+set meta-flag on
+set output-meta on
+set page-completions off
+set show-all-if-ambiguous on
+set skip-completed-text on
+set visible-stats on
 
 # Enable autocomplete navigation through
 # tab and shift-tab

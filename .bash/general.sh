@@ -3,6 +3,7 @@ alias psgrep="ps aux | grep -v grep | grep"
 alias ri="ri -f ansi"
 alias reload="source ~/.bash_profile"
 alias pcat="pygmentize -f terminal256 -O style=tango -g"
+alias hex="openssl rand -hex"
 
 export INSTALL_DIR=$HOME/local
 export LC_ALL="en_US.UTF-8"
@@ -20,6 +21,7 @@ export GEM_PATH=$INSTALL_DIR/ruby/gems
 export NPM_HOME=$INSTALL_DIR/node/npm
 export PATH="/usr/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$GEM_HOME/bin:$NPM_HOME/bin:$HOME/.bash/bin:./node_modules/.bin/:./bin"
 export CDHISTORY="/tmp/cd-$USER"
+export PAGER="less"
 export LESS="-REX"
 export LESS_TERMCAP_mb=$'\E[04;33m'
 export LESS_TERMCAP_md=$'\E[04;33m'
