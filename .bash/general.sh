@@ -5,6 +5,8 @@ alias reload="source ~/.bash_profile"
 alias pcat="pygmentize -f terminal256 -O style=tango -g"
 
 export INSTALL_DIR=$HOME/local
+export LC_ALL="en_US.UTF-8"
+export LANG="en_US"
 export EDITOR=vim
 export VISUAL=vim
 export PATH="/usr/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$INSTALL_DIR/bin:$INSTALL_DIR/ruby/gems/bin:$INSTALL_DIR/node/npm/bin"
