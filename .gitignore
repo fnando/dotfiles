@@ -7,3 +7,4 @@
 /.tags*
 Thumbs.db
 .vagrant
+.bash/user.sh
