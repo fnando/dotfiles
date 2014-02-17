@@ -54,10 +54,8 @@ fi
 
 # Try to load homebrew's config.
 # If it doesn't exist, load the vendored script.
-bash_completion_file="/usr/local/etc/bash_completion"
-
-if [[ -f $bash_completion_file ]]; then
-  source $bash_completion_file
+if [[ -f "/usr/local/etc/bash_completion" ]]; then
+  source /usr/local/etc/bash_completion
 else
   source $HOME/.bash/bash_completion.sh
 fi
