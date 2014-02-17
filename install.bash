@@ -51,4 +51,7 @@ if [[ -f $user_file ]]; then
   echo "#=> Restoring ${HOME}/.bash/user.sh"
 fi
 
+# Source the initalization file.
+. $HOME/.bash/init.sh
+
 echo "#=> Done!"

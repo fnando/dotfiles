@@ -53,9 +53,13 @@ if [ ! -f $CDHISTORY ]; then              # Only autocd when the $CDHISTORY file
 fi
 
 # Try to load homebrew's config.
-# If it doesn't exist, load the vendored script.
-if [[ -f "/usr/local/etc/bash_completion" ]]; then
-  source /usr/local/etc/bash_completion
+# Then try to load Linux config.
+# Load the vendored script otherwise.
+if [ -f /usr/local/etc/bash_completion ]; then
+  . /usr/local/etc/bash_completion
+elif [ -f /etc/bash_completion ]; then
+  . /etc/bash_completion
 else
-  source $HOME/.bash/bash_completion.sh
+  . "${HOME}/.bash/bash_completion.sh"
 fi
+
