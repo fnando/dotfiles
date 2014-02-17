@@ -1,4 +1,4 @@
-if [[ "$GIT_AUTHOR_NAME" -eq "" ]]; then
+if [[ "$GIT_AUTHOR_NAME" = "" ]]; then
   (cat <<MESSAGE
 Please configure $HOME/.bash/user.sh with your git info.
 
