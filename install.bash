@@ -53,7 +53,8 @@ fi
 
 # Clone vundle.
 if [[ ! -d "$HOME/.vim/bundle/vundle" ]]; then
-  git clone https://github.com/gmarik/vundle.git $HOME/.vim/bundle/vundle
+  echo "#=> Cloning vim's vundle plugin"
+  git clone https://github.com/gmarik/vundle.git $HOME/.vim/bundle/vundle &> /dev/null
 fi
 
 # Source the initalization file.
