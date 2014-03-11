@@ -51,6 +51,11 @@ if [[ -f $user_file ]]; then
   echo "#=> Restoring ${HOME}/.bash/user.sh"
 fi
 
+# Clone vundle.
+if [[ ! -d "$HOME/.vim/bundle/vundle" ]]; then
+  git clone https://github.com/gmarik/vundle.git $HOME/.vim/bundle/vundle
+fi
+
 # Source the initalization file.
 . $HOME/.bash/init.sh
 
