@@ -11,12 +11,14 @@ syntax on
 
 autocmd FileType vim          set et sw=2 ts=2 sts=2
 autocmd FileType css          set et sw=2 ts=2 sts=2
+autocmd FileType scss         set et sw=2 ts=2 sts=2
 autocmd FileType html         set et sw=2 ts=2 sts=2
 autocmd FileType eruby        set et sw=2 ts=2 sts=2
 autocmd FileType javascript   set et sw=2 ts=2 sts=2
 autocmd FileType python       set et sw=4 ts=4 sts=4
 autocmd FileType ruby         set et sw=2 ts=2 sts=2
 autocmd FileType yaml         set et sw=2 ts=2 sts=2
+autocmd FileType markdown     set et sw=2 ts=2 sts=2
 autocmd Filetype Gemfile      set ft=ruby
 autocmd Filetype Capfile      set ft=ruby
 autocmd Filetype gitcommit    setlocal spell textwidth=72
