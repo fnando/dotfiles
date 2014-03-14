@@ -10,6 +10,7 @@ endif
 syntax on
 
 autocmd FileType vim          set et sw=2 ts=2 sts=2
+autocmd FileType sh           set et sw=2 ts=2 sts=2
 autocmd FileType css          set et sw=2 ts=2 sts=2
 autocmd FileType scss         set et sw=2 ts=2 sts=2
 autocmd FileType html         set et sw=2 ts=2 sts=2
