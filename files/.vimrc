@@ -111,8 +111,11 @@ set showmatch
 set noshowmode
 set sidescroll=1
 set sidescrolloff=15
+set softtabstop=2
+set shiftwidth=2
 set smartcase
 set smartindent
+set tabstop=2
 set wildmenu
 set wildmode=list:longest
 set wildignore+=*.png,*.jpg,*.gif,*.o,.git,tmp/**,coverage/**,node_modules/**,.DS_Store
