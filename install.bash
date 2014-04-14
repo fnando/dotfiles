@@ -57,6 +57,10 @@ if [[ ! -d "$HOME/.vim/bundle/vundle" ]]; then
   git clone https://github.com/gmarik/vundle.git $HOME/.vim/bundle/vundle &> /dev/null
 fi
 
+# Set up local directory
+mkdir -p $HOME/local/bin
+chflags hidden $HOME/local &> /dev/null
+
 # Source the initalization file.
 . $HOME/.bash/init.sh
 
