@@ -48,6 +48,7 @@ find ${dotfiles_dir}/files -maxdepth 1 -mindepth 1 -exec cp -R "{}" $HOME/ \;
 # Restore .bash/user.sh backup copy
 if [[ -f $user_file ]]; then
   cp $user_file $HOME/.bash/user.sh
+  chmod 600 $HOME/.bash/user.sh
   echo "#=> Restoring ${HOME}/.bash/user.sh"
 fi
 
