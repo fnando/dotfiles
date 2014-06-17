@@ -3,7 +3,6 @@ source $HOME/.zsh/general.sh
 source $HOME/.zsh/keybindings.sh
 source $HOME/.zsh/options.sh
 source $HOME/.zsh/prompt.sh
-source $HOME/.zsh/gem_completion.sh
 source $HOME/.zsh/cd.sh
 source $HOME/.zsh/md.sh
 source $HOME/.zsh/rscp.sh
