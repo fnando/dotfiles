@@ -44,8 +44,8 @@ fi
 
 # Copy files
 find ${dotfiles_dir}/files/home -maxdepth 1 -mindepth 1 -exec cp -R "{}" $HOME/ \;
-find ${dotfiles_dir}/files/.bash -maxdepth 1 -mindepth 1 -exec cp -R "{}" $HOME/ \;
-find ${dotfiles_dir}/files/common -maxdepth 1 -mindepth 1 -exec cp -R "{}" $HOME/.bash \;
+cp -R ${dotfiles_dir}/files/.zsh $HOME/
+find ${dotfiles_dir}/files/common -maxdepth 1 -mindepth 1 -exec cp -R "{}" $HOME/.zsh \;
 
 # Restore .zsh/user.sh backup copy
 if [[ -f $user_file ]]; then
