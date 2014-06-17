@@ -43,7 +43,9 @@ if [[ -f "${HOME}/.bash/user.sh" ]]; then
 fi
 
 # Copy files
-find ${dotfiles_dir}/files -maxdepth 1 -mindepth 1 -exec cp -R "{}" $HOME/ \;
+find ${dotfiles_dir}/files/home -maxdepth 1 -mindepth 1 -exec cp -R "{}" $HOME/ \;
+find ${dotfiles_dir}/files/.bash -maxdepth 1 -mindepth 1 -exec cp -R "{}" $HOME/ \;
+find ${dotfiles_dir}/files/common -maxdepth 1 -mindepth 1 -exec cp -R "{}" $HOME/.bash \;
 
 # Restore .bash/user.sh backup copy
 if [[ -f $user_file ]]; then

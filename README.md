@@ -5,11 +5,21 @@ Welcome to my dotfiles!
 To install it, just execute the following command:
 
 ```bash
-# If you have curl installed
-curl -Ls https://raw.github.com/fnando/dotfiles/master/install.bash | bash
+# If you have curl installed ########################################
 
-# If you have wget installed
-wget -q -O - https://raw.github.com/fnando/dotfiles/master/install.bash | bash
+# bash settings
+curl -Ls https://raw.github.com/fnando/dotfiles/master/bash | bash
+
+# zsh settings
+curl -Ls https://raw.github.com/fnando/dotfiles/master/zsh | bash
+
+# If you have wget installed ########################################
+
+# bash settings
+wget -q -O - https://raw.github.com/fnando/dotfiles/master/bash | bash
+
+# zsh settings
+wget -q -O - https://raw.github.com/fnando/dotfiles/master/zsh | bash
 ```
 
 ## License
