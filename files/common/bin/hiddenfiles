@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+enabled=`defaults read com.apple.finder AppleShowAllFiles`
+
+if [[ "$enabled" == "TRUE" ]]; then
+  state="FALSE"
+else
+  state="TRUE"
+fi
+
+defaults write com.apple.finder AppleShowAllFiles $state
