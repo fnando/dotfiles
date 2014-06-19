@@ -1,3 +1,5 @@
+export BUNDLE_JOBS=3
+
 alias be="bundle exec"
 alias bu="bundle update"
 alias bi="bundle install"
