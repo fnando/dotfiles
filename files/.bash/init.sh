@@ -1,3 +1,5 @@
+export SHELL_NAME="bash"
+
 source $HOME/.bash/user.sh
 source $HOME/.bash/exports.sh
 source $HOME/.bash/aliases.sh

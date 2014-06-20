@@ -1,30 +1,39 @@
 [color]
-        diff = auto
-        status = auto
-        branch = auto
-        ui = true
+  branch = auto
+  diff = auto
+  status = auto
+  ui = true
 [color "diff"]
-        plain = black
-        meta = black
-        frag = cyan reverse
-        old = red
-        new = green
-        commit = yellow
-        whitespace = normal red
+  commit = yellow
+  frag = cyan reverse
+  meta = black
+  new = green
+  old = red
+  plain = black
+  whitespace = normal red
 [alias]
-        sh = !git-sh
-        ci = commit
-        co = checkout
-        b = branch
-        st = status
-        who = shortlog -s --
-        fl = log -p
-        lg = log --oneline --decorate
-        sb = status -sb
-        dw = diff --word-diff
+  b = branch
+  ca = commit --amend
+  ci = commit
+  co = checkout
+  dw = diff --word-diff
+  fl = log -p
+  lg = log --oneline --decorate
+  sb = status -sb
+  sh = !git-sh
+  st = status
+  who = shortlog -s --
 [help]
-        autocorrect = 1
+  autocorrect = 1
 [branch]
-        autosetuprebase = always
+  autosetuprebase = always
 [push]
-        default = current
+  default = current
+[commit]
+  template = ~/.gitmessage
+[core]
+  excludesfile = ~/.gitignore
+[merge]
+  ff = only
+[fetch]
+  prune = true

@@ -1,3 +1,5 @@
+export SHELL_NAME="zsh"
+
 source $HOME/.zsh/user.sh
 source $HOME/.zsh/exports.sh
 source $HOME/.zsh/aliases.sh
