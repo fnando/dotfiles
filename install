@@ -1,9 +1,13 @@
 #!/usr/bin/env bash
 
+set -e
+
 function exit_with_message() {
   echo $1
   exit 1
 }
+
+shell_name=$(basename $SHELL)
 
 # First, retrieve the zip file from Github.
 # It will use wget or curl (whichever is defined.)
@@ -36,22 +40,22 @@ fi
 rm -rf $dotfiles_dir
 unzip -q $dotfiles_zip -d /tmp
 
-# Make a backup copy of an existing .bash/user.sh
-if [[ -f "${HOME}/.bash/user.sh" ]]; then
-  echo "#=> Backing up ${HOME}/.bash/user.sh"
-  cp "${HOME}/.bash/user.sh" $user_file
+# Make a backup copy of an existing .${shell_name}/user.sh
+if [[ -f "${HOME}/.${shell_name}/user.sh" ]]; then
+  echo "#=> Backing up ${HOME}/.${shell_name}/user.sh"
+  cp "${HOME}/.${shell_name}/user.sh" $user_file
 fi
 
 # Copy files
 find ${dotfiles_dir}/files/home -maxdepth 1 -mindepth 1 -exec cp -R "{}" $HOME/ \;
-cp -R ${dotfiles_dir}/files/.bash $HOME/
-find ${dotfiles_dir}/files/common -maxdepth 1 -mindepth 1 -exec cp -R "{}" $HOME/.bash \;
+cp -R ${dotfiles_dir}/files/.${shell_name} $HOME/
+find ${dotfiles_dir}/files/common -maxdepth 1 -mindepth 1 -exec cp -R "{}" $HOME/.${shell_name} \;
 
-# Restore .bash/user.sh backup copy
+# Restore .${shell_name}/user.sh backup copy
 if [[ -f $user_file ]]; then
-  cp $user_file $HOME/.bash/user.sh
-  chmod 600 $HOME/.bash/user.sh
-  echo "#=> Restoring ${HOME}/.bash/user.sh"
+  cp $user_file $HOME/.${shell_name}/user.sh
+  chmod 600 $HOME/.${shell_name}/user.sh
+  echo "#=> Restoring ${HOME}/.${shell_name}/user.sh"
 fi
 
 # Clone vundle.
@@ -64,7 +68,4 @@ fi
 mkdir -p $HOME/local/bin
 chflags hidden $HOME/local &> /dev/null
 
-# Source the initalization file.
-. $HOME/.bash/init.sh
-
-echo "#=> Done!"
+echo '#=> Done! Run `reload` to reload all settings.'
