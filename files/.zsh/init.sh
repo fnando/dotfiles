@@ -1,4 +1,5 @@
 source $HOME/.zsh/user.sh
+source $HOME/.zsh/exports.sh
 source $HOME/.zsh/aliases.sh
 source $HOME/.zsh/specific.sh
 source $HOME/.zsh/other.sh

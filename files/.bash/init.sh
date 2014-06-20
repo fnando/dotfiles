@@ -1,4 +1,5 @@
 source $HOME/.bash/user.sh
+source $HOME/.bash/exports.sh
 source $HOME/.bash/aliases.sh
 source $HOME/.bash/specific.sh
 source $HOME/.bash/other.sh
