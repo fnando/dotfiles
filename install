@@ -7,8 +7,6 @@ function exit_with_message() {
   exit 1
 }
 
-shell_name=$(basename $SHELL)
-
 # First, retrieve the zip file from Github.
 # It will use wget or curl (whichever is defined.)
 curl_available=$(command -v curl)
@@ -18,7 +16,7 @@ unzip_available=$(command -v unzip)
 dotfiles_zip=/tmp/dotfiles-master.zip
 dotfiles_dir=/tmp/dotfiles-master
 dotfiles_url=https://github.com/fnando/dotfiles/archive/master.zip
-user_file="/tmp/user_${RANDOM}.sh"
+user_file_backup="/tmp/user_${RANDOM}.sh"
 
 if [[ "$unzip_available" = "" ]]; then
   exit_with_message "#=> Make sure you have the unzip command available"
@@ -40,23 +38,32 @@ fi
 rm -rf $dotfiles_dir
 unzip -q $dotfiles_zip -d /tmp
 
-# Make a backup copy of an existing .${shell_name}/user.sh
-if [[ -f "${HOME}/.${shell_name}/user.sh" ]]; then
-  echo "#=> Backing up ${HOME}/.${shell_name}/user.sh"
-  cp "${HOME}/.${shell_name}/user.sh" $user_file
-fi
+for shell_name in zsh bash; do
+  which $shell_name &> /dev/null || continue
 
-# Copy files
-find ${dotfiles_dir}/files/home -maxdepth 1 -mindepth 1 -exec cp -R "{}" $HOME/ \;
-cp -R ${dotfiles_dir}/files/.${shell_name} $HOME/
-find ${dotfiles_dir}/files/common -maxdepth 1 -mindepth 1 -exec cp -R "{}" $HOME/.${shell_name} \;
+  echo "#=> Installing settings for $shell_name"
 
-# Restore .${shell_name}/user.sh backup copy
-if [[ -f $user_file ]]; then
-  cp $user_file $HOME/.${shell_name}/user.sh
-  chmod 600 $HOME/.${shell_name}/user.sh
-  echo "#=> Restoring ${HOME}/.${shell_name}/user.sh"
-fi
+  user_file=$HOME/.${shell_name}/user.sh
+
+  # Make a backup copy of an existing .${shell_name}/user.sh
+  if [[ -f "${HOME}/.${shell_name}/user.sh" ]]; then
+    echo "#=> Backing up ${HOME}/.${shell_name}/user.sh"
+    cp "${HOME}/.${shell_name}/user.sh" $user_file_backup
+  fi
+
+  # Copy files
+  find ${dotfiles_dir}/files/home -maxdepth 1 -mindepth 1 -exec cp -R "{}" $HOME/ \;
+  cp -R ${dotfiles_dir}/files/.${shell_name} $HOME/
+  find ${dotfiles_dir}/files/common -maxdepth 1 -mindepth 1 -exec cp -R "{}" $HOME/.${shell_name} \;
+
+  # Restore .${shell_name}/user.sh backup copy
+  if [[ -f $user_file_backup ]]; then
+    cp $user_file_backup $user_file
+    echo "#=> Setting $user_file permission to 0600"
+    chmod 0600 $user_file
+    echo "#=> Restoring ${HOME}/.${shell_name}/user.sh"
+  fi
+done
 
 # Clone vundle.
 if [[ ! -d "$HOME/.vim/bundle/vundle" ]]; then
