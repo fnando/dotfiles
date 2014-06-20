@@ -13,3 +13,4 @@ source $HOME/.zsh/md.sh
 source $HOME/.zsh/rscp.sh
 source $HOME/.zsh/bundler.sh
 source $HOME/.zsh/git.sh
+source $HOME/.zsh/psgrep.sh

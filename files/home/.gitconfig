@@ -33,6 +33,7 @@
   template = ~/.gitmessage
 [core]
   excludesfile = ~/.gitignore
+  attributesfile = ~/.gitattributes
 [merge]
   ff = only
 [fetch]
