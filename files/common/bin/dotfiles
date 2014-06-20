@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+wget -q -O - https://raw.github.com/fnando/dotfiles/master/`basename $(echo $SHELL)` | bash
