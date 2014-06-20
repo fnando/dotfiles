@@ -29,3 +29,6 @@ set visible-stats on
 
 # Kill words with ctrl+w
 "\C-w": backward-kill-word
+
+# Use Alt/Meta + Delete to delete the preceding word
+"\e[3;3~": kill-word"]"
