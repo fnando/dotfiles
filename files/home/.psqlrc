@@ -1,3 +1,12 @@
+\set QUIET 1
+\pset null '[NULL]'
+
+\set PROMPT2 '> '
+
 \encoding unicode
-\timing
-\x
+\x auto
+\set VERBOSITY verbose
+\set HISTFILE ~/.psql_history- :DBNAME
+\set HISTCONTROL ignoredups
+\set COMP_KEYWORD_CASE upper
+\unset quiet
