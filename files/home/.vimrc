@@ -32,6 +32,7 @@ autocmd FileType vim,ruby,javascript,css,python,php autocmd BufWritePre <buffer>
 set t_Co=256
 
 silent! colorscheme soda
+highlight Normal ctermbg=None
 
 let mapleader = ","
 
