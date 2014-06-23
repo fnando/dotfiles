@@ -1,4 +1,4 @@
-alias ll="ls -Glahs"
+alias ll="ls -FGlahs"
 alias ri="ri -f ansi"
 alias pcat="pygmentize -f terminal256 -O style=tango -g"
 alias hex="openssl rand -hex"
