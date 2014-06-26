@@ -11,5 +11,6 @@ source $HOME/.bash/cd.sh
 source $HOME/.bash/md.sh
 source $HOME/.bash/rscp.sh
 source $HOME/.bash/bundler.sh
+source $HOME/.bash/foreman.sh
 source $HOME/.bash/git.sh
 source $HOME/.bash/psgrep.sh
