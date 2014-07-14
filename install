@@ -65,14 +65,17 @@ for shell_name in zsh bash; do
   fi
 done
 
+# Set up local directory
+mkdir -p $HOME/local
+chflags hidden $HOME/local &> /dev/null
+
+# Copy binaries to ~/local/bin
+cp -R $dotfiles_dir/files/bin $HOME/local
+
 # Clone vundle.
 if [[ ! -d "$HOME/.vim/bundle/vundle" ]]; then
   echo "#=> Cloning vim's vundle plugin"
   git clone https://github.com/gmarik/vundle.git $HOME/.vim/bundle/vundle &> /dev/null
 fi
-
-# Set up local directory
-mkdir -p $HOME/local/bin
-chflags hidden $HOME/local &> /dev/null
 
 echo '#=> Done! Run `reload` to reload all settings.'

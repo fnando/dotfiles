@@ -1,0 +1,25 @@
+#!/usr/bin/env node
+var fs = require('fs');
+var sourceFile = fs.realpathSync(process.argv[2]);
+var jstransform = require('jstransform');
+var visitors = [
+  'es6-arrow-function-visitors',
+  'es6-class-visitors',
+  'es6-destructuring-visitors',
+  'es6-object-concise-method-visitors',
+  'es6-object-short-notation-visitors',
+  'es6-rest-param-visitors',
+  'es6-template-visitors',
+  'es7-spread-property-visitors',
+].map(function(name){
+  return require('jstransform/visitors/' + name).visitorList;
+});
+
+var transformedFileData = jstransform.transform(
+  visitors.reduce(function(visitor, buffer){
+    return buffer.concat(visitor);
+  }, []),
+  fs.readFileSync(sourceFile).toString('utf-8')
+);
+
+console.log(transformedFileData.code);
