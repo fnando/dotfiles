@@ -1,0 +1,295 @@
+#!/usr/bin/env ruby
+require 'optparse'
+require 'ostruct'
+require 'fileutils'
+
+class CLI
+  attr_reader :argv, :stdout, :stderr, :install_dir
+
+  def initialize(argv, stdout, stderr, install_dir)
+    @argv = argv
+    @stdout = stdout
+    @stderr = stderr
+    @install_dir = install_dir
+  end
+
+  def opt_parser
+    @opt_parser ||= OptionParser.new do |opts|
+      opts.on_tail('-h', '--help', 'Show this message') do
+        show_help(stdout, 0) unless argv.first {|arg| arg[0] != '-' }
+      end
+    end
+  end
+
+  def command
+    argv.first
+  end
+
+  def show_help(output = stderr, exit_code = 1)
+    output << HelpCommand.new(argv, stdout, stderr, install_dir).banner
+    exit exit_code
+  end
+
+  def execute
+    command_name = opt_parser.parse(argv).first
+    show_help unless command_name
+
+    command_class = self.class.const_get(
+      command_name[0].upcase + command_name[1..-1] + 'Command'
+    )
+
+    command_class.new(argv[1..-1], stdout, stderr, install_dir).run
+  rescue NameError
+    show_help
+  end
+
+  class Command
+    attr_reader :argv, :stdout, :stderr, :install_dir
+
+    def initialize(argv, stdout, stderr, install_dir)
+      @argv = argv
+      @stdout = stdout
+      @stderr = stderr
+      @install_dir = install_dir
+    end
+
+    def opt_parser
+      @opt_parser ||= OptionParser.new
+    end
+
+    def program_name
+      $PROGRAM_NAME
+    end
+
+    def options
+      @options ||= {}
+    end
+
+    def run
+      opt_parser.banner = banner
+      parse_options
+      execute
+    end
+
+    def parse_options
+      command_options
+      @argv = opt_parser.parse!(argv)
+    end
+
+    def command_options
+    end
+
+    def fail(message, show_help = true)
+      stderr << "Error: #{message}\n\n"
+      stderr << opt_parser.help if show_help
+      exit 1
+    end
+
+    def src_dir
+      File.join(install_dir, 'src')
+    end
+  end
+
+  class HelpCommand < Command
+    def banner
+      [
+        "Usage: #{program_name} <command> [<args>]",
+        '',
+        'Common commands:',
+        '   install       install a Ruby version',
+        '   activate      activate a Ruby version',
+        '   list          list installed Ruby versions',
+        '   init          display .bashrc configuration',
+        '',
+        "For help on any individual command run `#{program_name} COMMAND -h`",
+        ''
+      ].join("\n")
+    end
+
+    def execute
+    end
+  end
+
+  class ListCommand < Command
+    def banner
+      "Usage: #{program_name} list"
+    end
+
+    def execute
+      stdout << Dir[File.join(install_dir, 'ruby', 'ruby-*')]
+          .map {|dir| File.basename(dir).gsub(/ruby-/, '') }
+          .join("\n")
+      stdout << "\n"
+    end
+  end
+
+  class InitCommand < Command
+    def banner
+      "Usage: #{program_name} init"
+    end
+
+    def execute
+      stdout << %{[ -x "#{program_name}" ] && eval "$(#{program_name} config)"} << "\n"
+    end
+  end
+
+  class ConfigCommand < Command
+    def banner
+      "Usage: #{program_name} config"
+    end
+
+    def ruby_version
+      `#{install_dir}/ruby/current/bin/ruby -e "puts RUBY_VERSION[0..2]"`.chomp
+    end
+
+    def execute
+      stdout << [
+        'export INSTALL_DIR=${INSTALL_DIR:-$HOME/local}',
+        'ruby_bin=$INSTALL_DIR/ruby/current/bin/ruby',
+        'if [[ -x "$ruby_bin" ]]; then',
+        "ruby_version=$($ruby_bin -e 'puts RUBY_VERSION[0..2]')",
+        "export GEM_HOME=$INSTALL_DIR/ruby/gems/$ruby_version",
+        "export GEM_PATH=$INSTALL_DIR/ruby/gems/$ruby_version",
+        %[export PATH=$PATH:$INSTALL_DIR/ruby/gems/$ruby_version/bin],
+        'fi',
+        ''
+      ].join("\n")
+    end
+  end
+
+  class ActivateCommand < Command
+    def banner
+      "Usage: #{program_name} activate <version>"
+    end
+
+    def ruby_version
+      argv.first
+    end
+
+    def ruby_dir
+      File.join(install_dir, 'ruby', "ruby-#{ruby_version}")
+    end
+
+    def current_dir
+      File.join(install_dir, 'ruby', 'current')
+    end
+
+    def installed?
+      Dir.exist?(ruby_dir)
+    end
+
+    def execute
+      fail [
+        'Please provide a Ruby version.',
+        "Run `#{program_name} list` to see installed versions."
+      ].join("\n"), false unless ruby_version
+
+      fail [
+        "Ruby #{ruby_version.inspect} is not installed yet.",
+        "Please run `#{program_name} install -h` for additional info."
+      ].join("\n"), false unless installed?
+
+      FileUtils.rm current_dir if File.exist?(current_dir)
+      FileUtils.ln_s ruby_dir, current_dir
+    end
+  end
+
+  class InstallCommand < Command
+    DARWIN_DEPENDENCIES = %w[
+      readline libyaml openssl libffi pkg-config
+    ]
+
+    UBUNTU_DEPENDENCIES = %w[
+      autoconf automake bison build-essential libc6-dev libffi-dev
+      libreadline-dev libreadline6 libreadline6-dev libssl-dev
+      libtool libyaml-dev ncurses-dev openssl zlib1g zlib1g-dev
+    ]
+
+    def banner
+      "Usage: #{program_name} install <version> [options]"
+    end
+
+    def ruby_version
+      argv.first
+    end
+
+    def command_options
+      opt_parser.on('--patch file1,file2,file3', Array, 'Apply the specified patch file. Can be an url.') do |list|
+        options[:patch_files] = list
+      end
+
+      opt_parser.on('--configure OPTIONS', 'Pass in flags to the ./configure script') do |value|
+        options[:configure_options] = value
+      end
+    end
+
+    def install_dependencies
+      if RUBY_PLATFORM =~ /darwin/
+        system 'brew', 'install', *DARWIN_DEPENDENCIES
+      else
+        system 'apt-get', 'install', *UBUNTU_DEPENDENCIES
+      end
+    end
+
+    def execute
+      fail 'You must provide the Ruby version' unless ruby_version
+
+      create_src_dir
+      install_dependencies
+      download_ruby_tarball
+      extract_ruby_tarball
+      apply_patch_files
+      configure
+      make_install
+    end
+
+    def create_src_dir
+      FileUtils.mkdir_p(src_dir)
+    end
+
+    def download_ruby_tarball
+      Dir.chdir(src_dir)
+      output_file = File.basename(tarball_url)
+      system('wget', '-O', output_file, tarball_url) unless File.file?(output_file)
+    end
+
+    def extract_ruby_tarball
+      Dir.chdir(src_dir)
+      extracted_dir = File.basename(tarball_url, '.tar.gz')
+      FileUtils.rm_rf(extracted_dir)
+      system 'tar', 'xf', File.basename(tarball_url)
+    end
+
+    def apply_patch_files
+      Dir.chdir File.join(src_dir, "ruby-#{ruby_version}")
+
+      options.fetch(:patch_files, []).each do |patch|
+        if patch =~ /https?/
+          system "wget -q -O - #{patch} | patch -p1 -i -"
+        else
+          system "patch -p1 < #{patch}"
+        end
+      end
+    end
+
+    def configure
+      prefix = File.join(install_dir, 'ruby', File.basename(tarball_url, '.tar.gz'))
+      system "./configure --prefix #{prefix} #{options[:configure_options]}"
+    end
+
+    def make_install
+      Dir.chdir File.join(src_dir, "ruby-#{ruby_version}")
+      system 'make'
+      system 'make install'
+    end
+
+    def tarball_url
+      'http://ftp.ruby-lang.org/pub/ruby/' + ruby_version[0..2] + "/ruby-#{ruby_version}.tar.gz"
+    end
+  end
+end
+
+CLI.new(
+  ARGV, $stdout, $stderr,
+  ENV.fetch('INSTALL_DIR', File.join(Dir.home, 'local'))
+).execute
