@@ -49,7 +49,7 @@ __hellobits_prompt () {
     local RAILS_PROMPT="${RAILS_VERSION}#"
   fi
 
-  RUBY_PROMPT="${GRAY}[${USER}|${RAILS_PROMPT}${RUBY_VERSION}]${NO_COLOR} "
+  RUBY_PROMPT="${NO_COLOR}[${USER}|${RAILS_PROMPT}${RUBY_VERSION}]${NO_COLOR} "
 
   if [ "$STATUS" != "" ]; then
     if [[ "$STATUS" =~ "$CHANGES_NOT_STAGED" ]]; then

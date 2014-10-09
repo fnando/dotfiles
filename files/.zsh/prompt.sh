@@ -48,7 +48,7 @@ __hellobits_prompt () {
     rails_prompt="${rails_version}#"
   fi
 
-  ruby_prompt="${gray}[${USER}|${rails_prompt}${ruby_version}]${no_color} "
+  ruby_prompt="${no_color}[${USER}|${rails_prompt}${ruby_version}]${no_color} "
 
   if [ "$git_status" != "" ]; then
     if [[ "$git_status" =~ "$changes_not_staged" ]]; then
