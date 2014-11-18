@@ -9,5 +9,6 @@ zle -N down-line-or-beginning-search
 bindkey "^[[A" up-line-or-beginning-search # Up
 bindkey "^[[B" down-line-or-beginning-search # Down
 bindkey \^U backward-kill-line  # Ctrl+U
+bindkey \^D kill-whole-line  # Ctrl+D
 bindkey "^[[3~" delete-char # fn-delete
 bindkey "^r" history-incremental-search-backward

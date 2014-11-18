@@ -11,6 +11,7 @@ set page-completions off
 set show-all-if-ambiguous on
 set skip-completed-text on
 set visible-stats on
+set bell-style off
 
 # Enable autocomplete navigation through
 # tab and shift-tab
@@ -29,3 +30,6 @@ set visible-stats on
 
 # Kill words with ctrl+w
 "\C-w": backward-kill-word
+
+# Kill whole line, no matter what's the cursor position.
+"\C-d": kill-whole-line
