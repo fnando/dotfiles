@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+cmd=''
+[[ -f `pwd`/Gemfile ]] && has_gemfile=true
+[[ -f `pwd`/Procfile ]] && has_procfile=true
+[[ -f `pwd`/bin/rake ]] && has_local_bin=true
+
+if [[ "$has_procfile" = true ]]; then
+  cmd="foreman run"
+fi
+
+if [[ "$has_gemfile" = true ]]; then
+  cmd="$cmd bundle exec"
+fi
+
+if [[ "$has_local_bin" = true ]]; then
+  cmd="$cmd ./bin/rake"
+else
+  cmd="$cmd rake"
+fi
+
+$cmd $@
