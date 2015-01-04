@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+interface=${1:-en0}
+ifconfig $interface | grep 'inet ' | cut -d' ' -f2

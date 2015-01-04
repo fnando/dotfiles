@@ -15,3 +15,4 @@ source $HOME/.zsh/bundler.sh
 source $HOME/.zsh/foreman.sh
 source $HOME/.zsh/git.sh
 source $HOME/.zsh/psgrep.sh
+source $HOME/.zsh/tmux.sh

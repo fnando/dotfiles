@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+interface=${1:-eth0}
+ifconfig $interface | grep 'inet addr' | sed -E 's/[^:]+:([^ ]+).*$/\1/'
