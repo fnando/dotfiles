@@ -516,9 +516,11 @@
 	<key>NSWindow Frame NSColorPanel</key>
 	<string>427 351 201 314 0 0 1920 1058 </string>
 	<key>NSWindow Frame Preferences</key>
-	<string>749 156 924 485 0 0 1920 1058 </string>
+	<string>269 156 924 485 0 0 1440 878 </string>
+	<key>NSWindow Frame UKCrashReporter</key>
+	<string>155 473 592 584 0 0 1920 1057 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>4 273 1330 785 0 0 1920 1058 </string>
+	<string>245 217 1330 785 0 0 1920 1057 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
 	<string>786 160 1264 854 0 0 1920 1058 </string>
 	<key>New Bookmarks</key>
@@ -2038,7 +2040,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2014-07-15T22:42:49Z</date>
+	<date>2015-01-06T19:55:11Z</date>
 	<key>SavePasteHistory</key>
 	<false/>
 	<key>ShowBookmarkName</key>
@@ -2061,6 +2063,8 @@
 	<integer>10</integer>
 	<key>TripleClickSelectsFullWrappedLines</key>
 	<false/>
+	<key>UKCrashReporterLastCrashReportDate</key>
+	<real>1420574080</real>
 	<key>URLHandlersByGuid</key>
 	<dict/>
 	<key>UseBorder</key>
@@ -2069,6 +2073,10 @@
 	<true/>
 	<key>UseLionStyleFullscreen</key>
 	<true/>
+	<key>WebKitDefaultFontSize</key>
+	<integer>11</integer>
+	<key>WebKitStandardFont</key>
+	<string>.Helvetica Neue DeskInterface</string>
 	<key>WindowNumber</key>
 	<false/>
 	<key>WindowStyle</key>
