@@ -2,7 +2,7 @@ filetype off
 set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
 
-Bundle "bling/vim-airline"
+"Bundle "bling/vim-airline"
 Bundle "DAddYE/soda.vim"
 Bundle "garbas/vim-snipmate"
 Bundle "gmarik/vundle"

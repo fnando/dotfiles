@@ -86,7 +86,7 @@ set history=1000
 set hlsearch
 set ignorecase
 set incsearch
-set laststatus=2
+set laststatus=1
 set linespace=5
 set list
 set listchars=tab:▸\ ,eol:¬,trail:·,nbsp:·
