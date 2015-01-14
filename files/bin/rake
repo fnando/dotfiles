@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
 cmd=''
+bin_dir=$(gem env gemhome)/bin
+
 [[ -f `pwd`/Gemfile ]] && has_gemfile=true
 [[ -f `pwd`/Procfile ]] && has_procfile=true
 [[ -f `pwd`/bin/rake ]] && has_local_bin=true
@@ -16,7 +18,7 @@ fi
 if [[ "$has_local_bin" = true ]]; then
   cmd="$cmd ./bin/rake"
 else
-  cmd="$cmd rake"
+  cmd="$cmd $bin_dir/rake"
 fi
 
 $cmd $@
