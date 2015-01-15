@@ -71,6 +71,7 @@ chflags hidden $HOME/local &> /dev/null
 
 # Copy binaries to ~/local/bin
 cp -R $dotfiles_dir/files/bin $HOME/local
+find $HOME/local/bin -type f -exec chmod +x {} \;
 
 # Clone vundle.
 if [[ ! -d "$HOME/.vim/bundle/vundle" ]]; then
