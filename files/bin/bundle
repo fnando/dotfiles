@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+cmd=''
+bin_dir=$(gem env gemhome)/bin
+
+[[ -f `pwd`/Procfile ]] && has_procfile=true
+
+if [[ "$has_procfile" = true ]]; then
+  cmd="foreman run"
+fi
+
+cmd="$cmd $bin_dir/bundle"
+
+$cmd $@
