@@ -67,9 +67,10 @@ done
 
 # Set up local directory
 mkdir -p $HOME/local
-chflags hidden $HOME/local &> /dev/null
+[ -x '/usr/bin/chflags' ] && chflags hidden $HOME/local
 
 # Copy binaries to ~/local/bin
+echo "#=> Copying binaries"
 cp -R $dotfiles_dir/files/bin $HOME/local
 find $HOME/local/bin -type f -exec chmod +x {} \;
 
@@ -79,4 +80,4 @@ if [[ ! -d "$HOME/.vim/bundle/vundle" ]]; then
   git clone https://github.com/gmarik/vundle.git $HOME/.vim/bundle/vundle &> /dev/null
 fi
 
-echo '#=> Done! Run `reload` to reload all settings.'
+echo '#=> Done! Restart your terminal!'
