@@ -11,5 +11,5 @@ wget -O /tmp/nodejs.tar.gz "http://nodejs.org/dist/latest/${filename}"
 tar xf /tmp/nodejs.tar.gz -C /tmp
 rm -rf $HOME/local/node
 mv /tmp/node-v* $HOME/local/node
-rm $HOME/local/bin/{node,npm}
+rm -f $HOME/local/bin/{node,npm}
 ln -s $HOME/local/node/bin/{node,npm} $HOME/local/bin
