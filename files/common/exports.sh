@@ -1,8 +1,8 @@
 export INSTALL_DIR=${INSTALL_DIR:-$HOME/local}
 export GEM_HOME=${GEM_HOME:-$INSTALL_DIR/ruby/gems}
 export GEM_PATH=${GEM_PATH:-$GEM_HOME}
-export NPM_HOME=${NPM_HOME:-$INSTALL_DIR/node/npm}
-export NODE_PATH=${NODE_PATH:-./node_modules:$HOME/local/node/npm/lib/node_modules}
+export NPM_HOME=${NPM_HOME:-$INSTALL_DIR/npm}
+export NODE_PATH=${NODE_PATH:-./node_modules:$HOME/local/npm/lib/node_modules}
 export LC_ALL="en_US.UTF-8"
 export LANG="en_US"
 export EDITOR=vim
