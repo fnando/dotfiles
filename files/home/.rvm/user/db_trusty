@@ -1,0 +1,3 @@
+rvm_remote_server_url=http://rubies.hellobits.com
+rvm_remote_server_path=trusty
+rvm_remote_server_verify_downloads=1
