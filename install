@@ -18,6 +18,13 @@ dotfiles_dir=/tmp/dotfiles-master
 dotfiles_url=https://github.com/fnando/dotfiles/archive/master.zip
 user_file_backup="/tmp/user_${RANDOM}.sh"
 
+# Detect codename
+if [[ "$(uname)" == "Darwin" ]]; then
+  codename=osx
+else
+  codename=$(lsb_release --short --codename)
+fi
+
 if [[ "$unzip_available" = "" ]]; then
   exit_with_message "#=> Make sure you have the unzip command available"
 fi
@@ -73,6 +80,9 @@ mkdir -p $HOME/local
 echo "#=> Copying binaries"
 cp -R $dotfiles_dir/files/bin $HOME/local
 find $HOME/local/bin -type f -exec chmod +x {} \;
+
+# Copy RVM user db
+cp $HOME/.rvm/user/db_$codename $HOME/.rvm/user/db
 
 # Clone vundle.
 if [[ ! -d "$HOME/.vim/bundle/vundle" ]]; then
