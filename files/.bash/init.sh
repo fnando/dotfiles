@@ -15,3 +15,4 @@ source $HOME/.bash/foreman.sh
 source $HOME/.bash/git.sh
 source $HOME/.bash/psgrep.sh
 source $HOME/.bash/tmux.sh
+source $HOME/.bash/rvm.sh
