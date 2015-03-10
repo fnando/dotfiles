@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+\. "${rvm_path}/scripts/functions/hooks/binstubs"
+
+function add_local_bin_to_path() {
+  local ruby_bin="$rvm_ruby_home/bin"
+  local gem_home_bin="$rvm_ruby_gem_home/bin"
+  local local_bin="$HOME/local/bin"
+
+  remove_binstubs_from_path "$ruby_bin"
+  remove_binstubs_from_path "$gem_home_bin"
+  remove_binstubs_from_path "$local_bin"
+
+  export PATH="$local_bin:$ruby_bin:$gem_home_bin:$PATH"
+}
+
+if [[ -d "${HOME}/local/bin" ]]; then
+  add_local_bin_to_path
+fi
