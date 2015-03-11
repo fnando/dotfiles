@@ -38,12 +38,10 @@ fi
 
 if [[ "$has_local_bin" = true ]]; then
   cmd="$cmd ./bin/$command_name"
-elif [[ -x "$wrapped_bin" ]]; then
+elif [ -x "$wrapped_bin" ] && [ "$cmd" == "" ]; then
   cmd="$wrapped_bin"
 else
-  echo "=> Cannot find bin: $command_name"
-  echo "=> Is it installed?"
-  exit 1
+  cmd="$cmd $command_name"
 fi
 
 $cmd $@
