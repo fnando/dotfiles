@@ -91,4 +91,10 @@ if [[ ! -d "$HOME/.vim/bundle/vundle" ]]; then
   git clone https://github.com/gmarik/vundle.git $HOME/.vim/bundle/vundle &> /dev/null
 fi
 
+# Set up SSH.
+chmod 700 ~/.ssh
+chmod 600 ~/.ssh/config
+mkdir -p ~/.ssh/controlmaster
+chmod 700 ~/.ssh/controlmaster
+
 echo '#=> Done! Restart your terminal!'
