@@ -1,0 +1,9 @@
+#!/usr/bin/env ruby
+target_dir = File.expand_path(ARGV.first || Dir.pwd)
+Dir.chdir(target_dir)
+
+exit(1) unless File.exist?("#{target_dir}/Gemfile")
+
+require 'bundler'
+paths = Bundler.load.specs.map(&:full_gem_path)
+system("ctags -R -f '#{target_dir}/.gemtags' #{paths.join(' ')}")
