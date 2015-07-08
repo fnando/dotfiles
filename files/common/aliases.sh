@@ -9,3 +9,4 @@ alias h="heroku"
 alias c="codeplane"
 alias fr="foreman run"
 alias fs="foreman start"
+alias beep='echo -e "\a"'
