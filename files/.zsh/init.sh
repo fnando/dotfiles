@@ -17,3 +17,4 @@ source $HOME/.zsh/git.sh
 source $HOME/.zsh/psgrep.sh
 source $HOME/.zsh/tmux.sh
 source $HOME/.zsh/rvm.sh
+source $HOME/.zsh/rbenv.sh
