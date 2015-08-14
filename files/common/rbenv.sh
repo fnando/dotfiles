@@ -1,4 +1,6 @@
-if [[ -f "$HOME/.rbenv/bin/rbenv" ]]; then
+rbenv_path=$(which rbenv)
+
+if [[ -x "$rbenv_path" ]]; then
   unset GEM_HOME
   unset GEM_PATH
   eval "$(rbenv init -)"

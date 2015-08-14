@@ -81,10 +81,6 @@ echo "#=> Copying binaries"
 cp -R $dotfiles_dir/files/bin $HOME/local
 find $HOME/local/bin -type f -exec chmod +x {} \;
 
-# Copy RVM user db
-cp $HOME/.rvm/user/db_$codename $HOME/.rvm/user/db
-chmod +x $HOME/.rvm/hooks/after_use_add_local_bin_to_path
-
 # Clone vundle.
 if [[ ! -d "$HOME/.vim/bundle/vundle" ]]; then
   echo "#=> Cloning vim's vundle plugin"
