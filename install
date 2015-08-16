@@ -7,6 +7,29 @@ function exit_with_message() {
   exit 1
 }
 
+function install_rbenv_plugin() {
+  plugin=$1
+  git_url=$2
+
+  which rbenv > /dev/null
+  if [[ "$?" == "0" ]]; then
+    plugin_dir=$HOME/.rbenv/plugins/$plugin
+
+    if [[ -d "$plugin_dir" ]]; then
+      echo "#=> Updating rbenv plugin ($plugin)"
+
+      (
+        cd $plugin_dir
+        git reset --hard > /dev/null
+        git pull > /dev/null
+      )
+    else
+      echo "#=> Installing rbenv plugin ($plugin)"
+      git clone $git_url $plugin_dir
+    fi
+  fi
+}
+
 # First, retrieve the zip file from Github.
 # It will use wget or curl (whichever is defined.)
 curl_available=$(command -v curl)
@@ -86,6 +109,10 @@ if [[ ! -d "$HOME/.vim/bundle/vundle" ]]; then
   echo "#=> Cloning vim's vundle plugin"
   git clone https://github.com/gmarik/vundle.git $HOME/.vim/bundle/vundle &> /dev/null
 fi
+
+# Install rbenv plugins
+install_rbenv_plugin 'rbenv-gem-rehash' 'https://github.com/sstephenson/rbenv-gem-rehash.git'
+[ "$codename" != "osx" ] && install_rbenv_plugin 'ruby-build' 'https://github.com/sstephenson/ruby-build.git'
 
 # Set up SSH.
 chmod 700 ~/.ssh
