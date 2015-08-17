@@ -11,7 +11,7 @@ function install_rbenv_plugin() {
   plugin=$1
   git_url=$2
 
-  which rbenv > /dev/null
+  status=$(which rbenv > /dev/null)
   if [[ "$?" == "0" ]]; then
     plugin_dir=$HOME/.rbenv/plugins/$plugin
 
@@ -94,6 +94,13 @@ for shell_name in zsh bash; do
     echo "#=> Restoring ${HOME}/.${shell_name}/user.sh"
   fi
 done
+
+# Source init file
+if [[ "$SHELL" == "/bin/bash" ]]; then
+  source $HOME/.bash/exports.sh
+else
+  source $HOME/.zsh/exports.sh
+fi
 
 # Set up local directory
 mkdir -p $HOME/local
