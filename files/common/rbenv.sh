@@ -1,4 +1,4 @@
-rbenv_path=$(which rbenv)
+rbenv_path=$(which rbenv > /dev/null)
 
 if [[ -x "$rbenv_path" ]]; then
   unset GEM_HOME
