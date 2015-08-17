@@ -1,6 +1,6 @@
-rbenv_path=$(which rbenv > /dev/null)
+rbenv_exists=`which rbenv > /dev/null`
 
-if [[ -x "$rbenv_path" ]]; then
+if [[ "$?" == "0" ]]; then
   unset GEM_HOME
   unset GEM_PATH
   eval "$(rbenv init -)"
