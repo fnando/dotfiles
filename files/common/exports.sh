@@ -5,8 +5,8 @@ export NPM_HOME=${NPM_HOME:-$INSTALL_DIR/npm}
 export NODE_PATH=${NODE_PATH:-./node_modules:$HOME/local/npm/lib/node_modules}
 export LC_ALL="en_US.UTF-8"
 export LANG="en_US"
-export EDITOR=vim
-export VISUAL=vim
+export EDITOR=${EDITOR:-vim}
+export VISUAL=${VISUAL:-vim}
 export GREP_OPTIONS="--color=auto"
 export GREP_COLOR="4;33"
 export CDPATH=.:/vagrant:/Projects:$HOME:$HOME/Projects
