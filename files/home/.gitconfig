@@ -29,8 +29,6 @@
   autosetuprebase = always
 [push]
   default = current
-[commit]
-  template = ~/.gitmessage
 [core]
   excludesfile = ~/.gitignore
   attributesfile = ~/.gitattributes
