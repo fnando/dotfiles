@@ -5,5 +5,5 @@ Dir.chdir(target_dir)
 exit(1) unless File.exist?("#{target_dir}/Gemfile")
 
 require 'bundler'
-paths = Bundler.load.specs.map(&:full_gem_path)
-system("ctags -R -f '#{target_dir}/.gemtags' #{paths.join(' ')}")
+paths = [target_dir, *Bundler.load.specs.map(&:full_gem_path)]
+system("ctags --languages=ruby -R -f '#{target_dir}/.ruby-ctags' #{paths.join(' ')}")

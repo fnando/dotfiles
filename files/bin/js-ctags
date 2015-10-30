@@ -1,0 +1,12 @@
+#!/usr/bin/env ruby
+target_dir = File.expand_path(ARGV.first || Dir.pwd)
+Dir.chdir(target_dir)
+
+bower_dir = File.join(target_dir, "bower_components")
+npm_dir = File.join(target_dir, "node_modules")
+
+paths = [target_dir]
+paths << bower_dir if Dir.exist?(bower_dir)
+paths << npm_dir if Dir.exist?(npm_dir)
+
+system("ctags --languages=javascript -R -f '#{target_dir}/.js-ctags' #{paths.join(' ')}")
