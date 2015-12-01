@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+if [[ "$#" = 0 ]]; then
+  echo "Usage: rtf LEXER [theme=tango]"
+  exit
+fi
+
+lexer="$1"
+theme="${2:-tango}"
+
+pygmentize -l "$lexer" -f rtf -O style="$theme",fontsize=40,fontface=Hack |
+sed -E 's/\\b / /g' |                        # remove bold
+sed -E 's/\\f0/\\f0\\sl288\\slmult1/g'       # add 1.2 line height
