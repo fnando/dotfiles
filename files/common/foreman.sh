@@ -1,4 +1,4 @@
-export BUNDLE_JOBS=3
+export BUNDLE_JOBS=${BUNDLE_JOBS:-3}
 
 alias fr="foreman run"
 alias fs="foreman start"

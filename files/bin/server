@@ -22,8 +22,10 @@ app = Rack::Builder.app do
   use Rack::ContentLength
   use Rack::CommonLogger
   use PostLogger
-  use Rack::Static, urls: {"/" => "index.html"}, :root => Dir.pwd if ENV["INDEX"]
+  use Rack::Static,
+      urls: {"/" => "index.html"},
+      root: Dir.pwd if ENV["INDEX"]
   run Rack::Directory.new(Dir.pwd)
 end
 
-Rack::Handler::Thin.run app, :Port => ENV.fetch("PORT", 1234)
+Rack::Handler::Thin.run app, Port: ENV.fetch("PORT", 1234)

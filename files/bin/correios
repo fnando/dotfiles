@@ -13,7 +13,7 @@ end
 data = JSON.load(open("#{API_URL}/#{code}").read)
 
 data.each do |entry|
-  puts "#{entry["local"]} — #{entry["data"]}"
+  puts "#{entry['local']} — #{entry['data']}"
   puts entry["acao"]
   puts entry["detalhes"] unless entry["detalhes"] == "-"
   puts

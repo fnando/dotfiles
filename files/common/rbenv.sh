@@ -3,5 +3,6 @@ rbenv_exists=`which rbenv > /dev/null`
 if [[ "$?" == "0" ]]; then
   unset GEM_HOME
   unset GEM_PATH
+  export PATH="$HOME/.rbenv/bin:$PATH"
   eval "$(rbenv init -)"
 fi

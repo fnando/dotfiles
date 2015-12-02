@@ -12,6 +12,8 @@ curl -Ls https://raw.github.com/fnando/dotfiles/master/install | bash
 wget -q -O - https://raw.github.com/fnando/dotfiles/master/install | bash
 ```
 
+On OSX you may want to disable the line that sets the `PATH` on `/etc/profile` (Bash) and `/etc/zprofile` (ZSH).
+
 ## License
 
 Copyright (c) 2014 Nando Vieira
