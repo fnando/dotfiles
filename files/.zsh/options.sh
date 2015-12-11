@@ -16,6 +16,7 @@ setopt histfindnodups
 setopt histignorealldups
 setopt histreduceblanks
 setopt histsavenodups
+setopt histignorespace
 setopt incappendhistory
 setopt long_list_jobs
 setopt pushd_ignore_dups
