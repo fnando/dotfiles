@@ -10,3 +10,7 @@ fi
 if [[ "$GIT_SIGNING_KEY" != "" ]]; then
   git config --global user.signingkey "$GIT_SIGNING_KEY"
 fi
+
+if [[ "$GIT_DIFF_HIGHLIGHT" != "" ]]; then
+  git config --global core.pager "$GIT_DIFF_HIGHLIGHT | less"
+fi

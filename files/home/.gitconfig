@@ -5,12 +5,12 @@
   ui = true
 [color "diff"]
   commit = yellow
-  frag = cyan reverse
-  meta = black
+  frag = cyan
+  meta = yellow
   new = green
   old = red
   plain = black
-  whitespace = normal red
+  whitespace = red reverse
 [alias]
   b = branch
   ca = commit --amend
@@ -37,3 +37,8 @@
   ff = only
 [fetch]
   prune = true
+[color "diff-highlight"]
+  newHighlight = green reverse
+  newNormal = green
+  oldHighlight = red reverse
+  oldNormal = red
