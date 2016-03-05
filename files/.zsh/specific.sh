@@ -11,3 +11,4 @@ noglob-command() {
 noglob-command 'git'
 noglob-command 'npm'
 noglob-command 'bower'
+noglob-command 'ri'
