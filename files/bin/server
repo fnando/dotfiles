@@ -1,4 +1,4 @@
-#!/Users/fnando/local/bin/ruby
+#!/usr/bin/env ruby
 gem "rack"
 require "rack"
 require "yaml"
