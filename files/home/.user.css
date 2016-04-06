@@ -1,4 +1,6 @@
 /* uol */
-[class*="folha_uol_com_br"] section#article-comments.comments-article {
+[class*="folha_uol_com_br"] section#article-comments.comments-article,
+[class*="folha_uol_com_br"] [class*="livraria"],
+[class*="folha_uol_com_br"] [class*="advertising"] {
   display: none !important;
 }
