@@ -1,0 +1,4 @@
+/* uol */
+[class*="folha_uol_com_br"] section#article-comments.comments-article {
+  display: none !important;
+}
