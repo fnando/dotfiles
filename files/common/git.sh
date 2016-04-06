@@ -12,7 +12,7 @@ if [[ "$(git config --global --get user.name)" != "$GIT_AUTHOR_NAME" ]]; then
 fi
 
 if [[ "$GIT_AUTHOR_SIGNING_KEY" != "" ]]; then
-  git config --global user.signingkey "$GIT_SIGNING_KEY"
+  git config --global user.signingkey "$GIT_AUTHOR_SIGNING_KEY"
 fi
 
 if [[ "$GIT_DIFF_HIGHLIGHT" != "" ]]; then
