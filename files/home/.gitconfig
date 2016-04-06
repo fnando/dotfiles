@@ -11,10 +11,12 @@
   old = red
   plain = black
   whitespace = red reverse
+[commit]
+  gpgSign = true
 [alias]
   b = branch
   ca = commit --amend
-  ci = commit -S
+  ci = commit
   co = checkout
   dw = diff --word-diff
   fl = log -p
