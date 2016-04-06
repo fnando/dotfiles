@@ -14,8 +14,7 @@
 [alias]
   b = branch
   ca = commit --amend
-  ci = commit
-  cis = commit -S
+  ci = commit -S
   co = checkout
   dw = diff --word-diff
   fl = log -p
