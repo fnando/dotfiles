@@ -125,6 +125,8 @@ fi
 
 # Install rbenv plugins
 install_rbenv_plugin 'rbenv-gem-rehash' 'https://github.com/sstephenson/rbenv-gem-rehash.git'
+install_rbenv_plugin 'rbenv-use' 'https://github.com/rkh/rbenv-use.git'
+install_rbenv_plugin 'rbenv-whatis' 'https://github.com/rkh/rbenv-whatis.git'
 [ "$codename" != "osx" ] && install_rbenv_plugin 'ruby-build' 'https://github.com/sstephenson/ruby-build.git'
 
 # Set up SSH.
