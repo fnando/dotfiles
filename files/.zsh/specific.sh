@@ -4,8 +4,7 @@ alias reload="source ~/.zshrc"
 
 noglob-command() {
   name=$1
-  bin_path=`which $1 2> /dev/null`
-  [[ -x "$bin_path" ]] && eval "alias $name='noglob $bin_path'"
+  eval "alias $name='noglob $name'"
 }
 
 noglob-command 'git'

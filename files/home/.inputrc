@@ -2,7 +2,7 @@ set completion-ignore-case on
 set completion-map-case on
 set convert-meta off
 set expand-tilde on
-set ignoreeof on
+#set ignoreeof on
 set input-meta on
 set mark-symlinked-directories on
 set meta-flag on
