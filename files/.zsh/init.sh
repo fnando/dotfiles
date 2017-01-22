@@ -18,3 +18,4 @@ source $HOME/.zsh/tmux.sh
 source $HOME/.zsh/rvm.sh
 source $HOME/.zsh/rbenv.sh
 source $HOME/.zsh/prompt.sh
+source $HOME/.zsh/nvm.sh

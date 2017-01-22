@@ -30,9 +30,15 @@ function install_rbenv_plugin() {
 }
 
 # Store variables that will be used later on.
-git_email=$(git config --get --global user.email)
-git_name=$(git config --get --global user.name)
-git_signingkey=$(git config --get --global user.signingkey)
+git_email=$(git config --get --global user.email || echo '')
+git_name=$(git config --get --global user.name || echo '')
+git_signingkey=$(git config --get --global user.signingkey || echo '')
+
+if [[ "$git_signingkey" != "" ]]; then
+  git_gpgsign=true
+else
+  git_gpgsign=false
+fi
 
 # First, retrieve the zip file from Github.
 # It will use wget or curl (whichever is defined.)
@@ -145,5 +151,6 @@ echo "#=> Setting Git information"
 [ "" != "$git_name" ] && git config --global user.name "$git_name"
 [ "" != "$git_email" ] && git config --global user.email "$git_email"
 [ "" != "$git_signingkey" ] && git config --global user.signingkey "$git_signingkey"
+git config --global commit.gpgsign $git_gpgsign
 
 echo '#=> Done! Restart your terminal!'
