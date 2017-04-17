@@ -163,9 +163,6 @@ defaults write com.apple.dock enable-spring-load-actions-on-all-items -bool true
 # Show indicator lights for open applications in the Dock
 defaults write com.apple.dock show-process-indicators -bool true
 
-# Disable mission control
-defaults write com.apple.dock mcx-expose-disabled -bool true
-
 # Disable Dashboard
 defaults write com.apple.dashboard mcx-disabled -bool true
 
