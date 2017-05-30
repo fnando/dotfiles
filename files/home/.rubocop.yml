@@ -52,3 +52,9 @@ Style/PercentLiteralDelimiters:
     '%w': []
     '%W': []
     '%x': []
+
+Metrics/LineLength:
+  Enabled: false
+
+Style/EmptyMethod:
+  EnforcedStyle: expanded
