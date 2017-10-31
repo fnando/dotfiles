@@ -8,3 +8,4 @@ alias subl="subl -n"
 alias h="heroku"
 alias c="codeplane"
 alias beep='echo -e "\a"'
+alias grep="grep --color=auto"

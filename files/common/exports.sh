@@ -7,7 +7,6 @@ export LC_ALL="en_US.UTF-8"
 export LANG="en_US"
 export EDITOR=${EDITOR:-vim}
 export VISUAL=${VISUAL:-vim}
-export GREP_OPTIONS="--color=auto"
 export GREP_COLOR="4;33"
 export CDPATH=.:/vagrant:/Projects:$HOME:$HOME/Projects
 export HISTSIZE=1000000
