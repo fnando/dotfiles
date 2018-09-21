@@ -19,3 +19,4 @@ source $HOME/.zsh/rvm.sh
 source $HOME/.zsh/rbenv.sh
 source $HOME/.zsh/prompt.sh
 source $HOME/.zsh/nvm.sh
+source $HOME/.bash/go.sh
