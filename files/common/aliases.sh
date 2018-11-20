@@ -1,4 +1,9 @@
-alias ll="ls -FGlahs"
+if [[ -x "$(which colorls)" ]]; then
+  alias ll="colorls --light -A"
+else
+  alias ll="ls -FGlahs"
+fi
+
 alias ri="ri -f ansi"
 alias pcat="pygmentize -f terminal256 -O style=tango -g"
 alias hex="openssl rand -hex"

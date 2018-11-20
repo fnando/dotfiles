@@ -3,7 +3,6 @@ export SHELL_NAME="zsh"
 
 source $HOME/.zsh/user.sh
 source $HOME/.zsh/exports.sh
-source $HOME/.zsh/aliases.sh
 source $HOME/.zsh/specific.sh
 source $HOME/.zsh/other.sh
 source $HOME/.zsh/keybindings.sh
@@ -20,3 +19,4 @@ source $HOME/.zsh/rbenv.sh
 source $HOME/.zsh/prompt.sh
 source $HOME/.zsh/nvm.sh
 source $HOME/.bash/go.sh
+source $HOME/.zsh/aliases.sh
