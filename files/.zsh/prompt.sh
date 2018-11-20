@@ -68,36 +68,43 @@ __fnando_git_status () {
     state="${state}${fg_yellow}*${fg_reset}"
   fi
 
-  echo "± ${fg_reset}${prompt_color}${git_branch}${fg_reset}${state}"
+  echo "${fg_yellow}\uf7a1${fg_reset} ${prompt_color}${git_branch}${fg_reset}${state}"
 }
 
 __fnando_ruby () {
   if [ -f Gemfile.lock ]; then
     ruby_version=$(ruby -e "puts RUBY_VERSION")
-    echo "|ruby=${ruby_version}"
+    echo "${fg_red}\ue23e ${ruby_version}${fg_reset}"
   fi
 }
 
 __fnando_rails () {
   if [ -f Gemfile.lock ]; then
     rails_version=$(cat Gemfile.lock | grep -E " +rails \([0-9]+" | sed 's/ *rails (\(.*\))/\1/')
-    [ "$rails_version" != "" ] && echo "|rails=${rails_version}"
+    [ "$rails_version" != "" ] && echo " ${fg_red}\ue73b ${rails_version}${fg_reset}"
   fi
 }
 
 __fnando_node () {
   if [ -f package.json  ] && [ -x "$(which node)" ]; then
     node_version=$(node -v | sed -E 's/v//')
-    echo "|node=${node_version}"
+    echo "${fg_green}\uf898   ${node_version}${fg_reset}"
+  fi
+}
+
+__fnando_react () {
+  if [ -f yarn.lock ]; then
+    react_version=$(yarn info react version --silent)
+    [ "$react_version" != "" ] && echo " ${fg_blue}\ue7ba ${react_version}${fg_reset}"
   fi
 }
 
 __fnando_blocks () {
-  blocks="$(__fnando_ruby)$(__fnando_rails)$(__fnando_node)"
-  blocks=$(echo $blocks | sed -E 's/^\|//')
+  blocks="$(__fnando_ruby)$(__fnando_rails)$(__fnando_node)$(__fnando_react)"
+  blocks=$(echo $blocks | sed -E 's/^ +//')
 
   if [[ "$blocks" != "" ]]; then
-    blocks="${fg_blue}[${blocks}]${fg_reset} "
+    blocks="${blocks} "
   fi
 
   echo $blocks
@@ -105,11 +112,11 @@ __fnando_blocks () {
 
 __fnando_path () {
   current_path="${PWD/#$HOME/~}"
-  echo "in ${fg_yellow}${current_path}${fg_reset}"
+  echo "in ${fg_blue}${current_path}${fg_reset}"
 }
 
 __fnando_prompt() {
-  prompt="\n$(__fnando_blocks)$(__fnando_path) $(__fnando_git_status)\n$ "
+  prompt="\n$(__fnando_path) $(__fnando_git_status) $(__fnando_blocks)\n$ "
   echo $prompt
 }
 
