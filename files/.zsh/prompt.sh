@@ -74,27 +74,27 @@ __fnando_git_status () {
 __fnando_ruby () {
   if [ -f Gemfile.lock ]; then
     ruby_version=$(ruby -e "puts RUBY_VERSION")
-    echo " ruby=${ruby_version}"
+    echo "|ruby=${ruby_version}"
   fi
 }
 
 __fnando_rails () {
   if [ -f Gemfile.lock ]; then
     rails_version=$(cat Gemfile.lock | grep -E " +rails \([0-9]+" | sed 's/ *rails (\(.*\))/\1/')
-    [ "$rails_version" != "" ] && echo " rails=${rails_version}"
+    [ "$rails_version" != "" ] && echo "|rails=${rails_version}"
   fi
 }
 
 __fnando_node () {
   if [ -f package.json  ] && [ -x "$(which node)" ]; then
     node_version=$(node -v | sed -E 's/v//')
-    echo " node=${node_version}"
+    echo "|node=${node_version}"
   fi
 }
 
 __fnando_blocks () {
   blocks="$(__fnando_ruby)$(__fnando_rails)$(__fnando_node)"
-  blocks=$(echo $blocks | sed -E 's/^ +//' | sed -E 's/ /|/')
+  blocks=$(echo $blocks | sed -E 's/^\|//')
 
   if [[ "$blocks" != "" ]]; then
     blocks="${fg_blue}[${blocks}]${fg_reset} "
