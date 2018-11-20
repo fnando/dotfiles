@@ -1,4 +1,4 @@
-__hellobits_prompt () {
+__fnando_prompt () {
   history -a
   history -c
   history -r
@@ -88,4 +88,4 @@ __hellobits_prompt () {
   fi
 }
 
-PROMPT_COMMAND=__hellobits_prompt
+PROMPT_COMMAND=__fnando_prompt

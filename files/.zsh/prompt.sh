@@ -9,7 +9,7 @@ fg_red="\033[0;31m"
 fg_white="\033[1;37m"
 fg_yellow="\033[0;33m"
 
-__hellobits_git_branch () {
+__fnando_git_branch () {
   branch=$(git branch 2> /dev/null | grep \* | sed 's/* //')
 
   if [[ "$branch" = "" ]]; then
@@ -21,7 +21,7 @@ __hellobits_git_branch () {
   echo $branch
 }
 
-__hellobits_git_status () {
+__fnando_git_status () {
   nothing_to_commit="# Initial commit"
   behind="Your branch is behind"
   ahead="Your branch is ahead"
@@ -31,7 +31,7 @@ __hellobits_git_status () {
   to_be_commited="Changes to be committed"
   changes_not_staged="Changes not staged for commit"
 
-  git_branch=$(__hellobits_git_branch)
+  git_branch=$(__fnando_git_branch)
   git_status=$(git status 2> /dev/null | tr "\\n" " ")
 
   if [[ "$git_branch" = "" ]]; then
@@ -71,29 +71,29 @@ __hellobits_git_status () {
   echo "± ${fg_reset}${prompt_color}${git_branch}${fg_reset}${state}"
 }
 
-__hellobits_ruby () {
+__fnando_ruby () {
   if [ -f Gemfile.lock ]; then
     ruby_version=$(ruby -e "puts RUBY_VERSION")
     echo " ruby=${ruby_version}"
   fi
 }
 
-__hellobits_rails () {
+__fnando_rails () {
   if [ -f Gemfile.lock ]; then
     rails_version=$(cat Gemfile.lock | grep -E " +rails \([0-9]+" | sed 's/ *rails (\(.*\))/\1/')
     [ "$rails_version" != "" ] && echo " rails=${rails_version}"
   fi
 }
 
-__hellobits_node () {
+__fnando_node () {
   if [ -f package.json  ] && [ -x "$(which node)" ]; then
     node_version=$(node -v | sed -E 's/v//')
     echo " node=${node_version}"
   fi
 }
 
-__hellobits_blocks () {
-  blocks="$(__hellobits_ruby)$(__hellobits_rails)$(__hellobits_node)"
+__fnando_blocks () {
+  blocks="$(__fnando_ruby)$(__fnando_rails)$(__fnando_node)"
   blocks=$(echo $blocks | sed -E 's/^ +//' | sed -E 's/ /|/')
 
   if [[ "$blocks" != "" ]]; then
@@ -103,14 +103,14 @@ __hellobits_blocks () {
   echo $blocks
 }
 
-__hellobits_path () {
+__fnando_path () {
   current_path="${PWD/#$HOME/~}"
   echo "in ${fg_yellow}${current_path}${fg_reset}"
 }
 
-__hellobits_prompt() {
-  prompt="\n$(__hellobits_blocks)$(__hellobits_path) $(__hellobits_git_status)\n$ "
+__fnando_prompt() {
+  prompt="\n$(__fnando_blocks)$(__fnando_path) $(__fnando_git_status)\n$ "
   echo $prompt
 }
 
-PROMPT='$(__hellobits_prompt)'
+PROMPT='$(__fnando_prompt)'
