@@ -1,5 +1,30 @@
 #!/usr/bin/env bash
 
+# Disable menu bar transparency
+defaults write NSGlobalDomain AppleEnableMenuBarTransparency -bool false
+
+# Show remaining battery time; hide percentage
+defaults write com.apple.menuextra.battery ShowPercent -string "NO"
+defaults write com.apple.menuextra.battery ShowTime -string "YES"
+
+# Increase window resize speed for Cocoa applications
+defaults write NSGlobalDomain NSWindowResizeTime -float 0.001
+
+# Enable subpixel font rendering on non-Apple LCDs
+defaults write NSGlobalDomain AppleFontSmoothing -int 2
+
+# Show all filename extensions in Finder
+defaults write NSGlobalDomain AppleShowAllExtensions -bool true
+
+# Allow text selection in Quick Look
+defaults write com.apple.finder QLEnableTextSelection -bool true
+
+# Show item info below desktop icons
+/usr/libexec/PlistBuddy -c "Set :DesktopViewSettings:IconViewSettings:showItemInfo true" ~/Library/Preferences/com.apple.finder.plist
+
+# Enable snap-to-grid for desktop icons
+/usr/libexec/PlistBuddy -c "Set :DesktopViewSettings:IconViewSettings:arrangeBy grid" ~/Library/Preferences/com.apple.finder.plist
+
 # Expand save panel by default
 defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode -bool true
 defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode2 -bool true
@@ -70,6 +95,9 @@ defaults write com.apple.finder QuitMenuItem -bool false
 # Disable window animations and Get Info animations
 defaults write com.apple.finder DisableAllAnimations -bool true
 
+# Disable shadow in screenshots
+defaults write com.apple.screencapture disable-shadow -bool true
+
 # Set default Finder path.
 # For desktop, use `PfDe`.
 # For other paths, use `PfLo` and `file:///full/path/here/`
@@ -135,6 +163,9 @@ defaults write com.apple.finder WarnOnEmptyTrash -bool false
 # Empty Trash securely by default
 defaults write com.apple.finder EmptyTrashSecurely -bool true
 
+# Enable highlight hover effect for the grid view of a stack (Dock)
+defaults write com.apple.dock mouse-over-hilte-stack -bool true
+
 # Show the ~/Library folder
 chflags nohidden ~/Library
 
@@ -181,6 +212,9 @@ defaults write com.apple.dock autohide-delay -float 0
 # Use Dock on the left
 defaults write com.apple.dock orientation -string "left"
 
+# Enable the 2D Dock
+defaults write com.apple.dock no-glass -bool true
+
 # Set Dock zoom size
 defaults write com.apple.dock magnification -int 1
 
@@ -190,6 +224,9 @@ defaults write com.apple.dock autohide-time-modifier -float 0
 # Press Tab to highlight each item on a web page
 defaults write com.apple.Safari WebKitTabToLinksPreferenceKey -bool true
 defaults write com.apple.Safari com.apple.Safari.ContentPageGroupIdentifier.WebKit2TabsToLinks -bool true
+
+# Tell Safari to open new window links in tabs
+defaults write com.apple.Safari TargetedClicksCreateTabs -bool true
 
 # Reduce delay when rendering pages
 defaults write com.apple.Safari WebKitInitialTimedLayoutDelay 0.1
@@ -289,3 +326,5 @@ defaults write com.apple.iTunes dontAutomaticallySyncIPods -bool true
 
 # Disable backups on iTunes
 defaults write com.apple.iTunes DeviceBackupsDisabled -bool true
+
+echo "OSX Hacks Done. Note that some of these changes require a logout/restart to take effect."
