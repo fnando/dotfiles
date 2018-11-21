@@ -65,7 +65,7 @@ __fnando_git_status () {
   fi
 
   if [[ "$git_status" =~ "$untracked" ]]; then
-    state="${state}${fg_yellow}*${fg_reset}"
+    state="${state}${fg_red}*${fg_reset}"
   fi
 
   echo "${fg_yellow}\uf7a1${fg_reset} ${prompt_color}${git_branch}${fg_reset}${state}"
