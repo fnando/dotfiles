@@ -14,9 +14,7 @@ source $HOME/.zsh/bundler.sh
 source $HOME/.zsh/foreman.sh
 source $HOME/.zsh/psgrep.sh
 source $HOME/.zsh/tmux.sh
-source $HOME/.zsh/rvm.sh
-source $HOME/.zsh/rbenv.sh
 source $HOME/.zsh/prompt.sh
-source $HOME/.zsh/nvm.sh
 source $HOME/.bash/go.sh
 source $HOME/.zsh/aliases.sh
+source $HOME/.zsh/asdf.sh

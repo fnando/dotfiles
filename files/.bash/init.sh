@@ -13,8 +13,6 @@ source $HOME/.bash/bundler.sh
 source $HOME/.bash/foreman.sh
 source $HOME/.bash/psgrep.sh
 source $HOME/.bash/tmux.sh
-source $HOME/.bash/rvm.sh
-source $HOME/.bash/rbenv.sh
 source $HOME/.bash/prompt.sh
-source $HOME/.zsh/nvm.sh
 source $HOME/.bash/go.sh
+source $HOME/.zsh/asdf.sh

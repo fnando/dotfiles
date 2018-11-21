@@ -6,29 +6,6 @@ function exit_with_message() {
   exit 1
 }
 
-function install_rbenv_plugin() {
-  plugin=$1
-  git_url=$2
-
-  status=$(which rbenv > /dev/null)
-  if [[ "$?" == "0" ]]; then
-    plugin_dir=$HOME/.rbenv/plugins/$plugin
-
-    if [[ -d "$plugin_dir" ]]; then
-      echo "#=> Updating rbenv plugin ($plugin)"
-
-      (
-        cd $plugin_dir
-        git reset --hard > /dev/null
-        git pull > /dev/null
-      )
-    else
-      echo "#=> Installing rbenv plugin ($plugin)"
-      git clone $git_url $plugin_dir
-    fi
-  fi
-}
-
 # Store variables that will be used later on.
 git_email=$(git config --get --global user.email || echo '')
 git_name=$(git config --get --global user.name || echo '')
@@ -133,12 +110,6 @@ if [[ ! -d "$HOME/.vim/bundle/vundle" ]]; then
   echo "#=> Cloning vim's vundle plugin"
   git clone https://github.com/gmarik/vundle.git $HOME/.vim/bundle/vundle &> /dev/null
 fi
-
-# Install rbenv plugins
-install_rbenv_plugin 'rbenv-gem-rehash' 'https://github.com/sstephenson/rbenv-gem-rehash.git'
-install_rbenv_plugin 'rbenv-use' 'https://github.com/rkh/rbenv-use.git'
-install_rbenv_plugin 'rbenv-whatis' 'https://github.com/rkh/rbenv-whatis.git'
-[ "$codename" != "osx" ] && install_rbenv_plugin 'ruby-build' 'https://github.com/sstephenson/ruby-build.git'
 
 # Set up SSH.
 chmod 700 ~/.ssh
