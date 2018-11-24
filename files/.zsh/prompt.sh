@@ -93,8 +93,18 @@ __fnando_node () {
 }
 
 __fnando_react () {
-  if [ -f yarn.lock ]; then
-    react_version=$(yarn info react version --silent)
+  if [ -f package.json ]; then
+    name_hex=$(pwd | md5)
+    content_hex=$(cat package.json | md5)
+    cache_file="/tmp/react-${name_hex}-${content_hex}"
+
+    if [ -f "$cache_file" ]; then
+      react_version=$(cat "$cache_file")
+    else
+      react_version=$(npm ls react | grep react@ | sed -E 's/[^0-9.]//g')
+      echo -n "$react_version" > "$cache_file"
+    fi
+
     [ "$react_version" != "" ] && echo " ${fg_blue}\ue7ba ${react_version}${fg_reset}"
   fi
 }
