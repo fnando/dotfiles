@@ -62,7 +62,7 @@ if [[ ! -d "${dotfiles_dir}/files" ]]; then
   unzip -q $dotfiles_zip -d /tmp
 fi
 
-for shell_name in zsh bash; do
+for shell_name in zsh; do
   which $shell_name &> /dev/null || continue
 
   echo "#=> Installing settings for $shell_name"
