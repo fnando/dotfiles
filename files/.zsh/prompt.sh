@@ -93,9 +93,15 @@ __fnando_node () {
 }
 
 __fnando_react () {
-  if [ -f package.json ]; then
+  for dep_file in yarn.lock package-lock.json package.json; do
+    if [ -f "$dep_file" ]; then
+      break
+    fi
+  done
+
+  if [ -f "$dep_file" ]; then
     name_hex=$(pwd | md5)
-    content_hex=$(cat package.json | md5)
+    content_hex=$(cat "$dep_file" | md5)
     cache_file="/tmp/react-${name_hex}-${content_hex}"
 
     if [ -f "$cache_file" ]; then
