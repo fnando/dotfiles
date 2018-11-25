@@ -16,5 +16,5 @@ source $HOME/.zsh/foreman.sh
 source $HOME/.zsh/psgrep.sh
 source $HOME/.zsh/tmux.sh
 source $HOME/.zsh/prompt.sh
-source $HOME/.bash/go.sh
+source $HOME/.zsh/go.sh
 source $HOME/.zsh/aliases.sh
