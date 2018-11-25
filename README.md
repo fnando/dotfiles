@@ -1,8 +1,41 @@
 # Dotfiles
 
-Welcome to my dotfiles!
+![Screenshot of my terminal](https://github.com/fnando/dotfiles/blob/master/screenshots/terminal.png)
 
-To install it, just execute the following command:
+Welcome to my dotfiles! It features:
+
+- Light theme
+- ZSH configuration
+- [pry](http://pryrepl.org) as Ruby REPL
+- [ASDF](https://github.com/asdf-vm/asdf) as package manager
+
+## Requirements
+
+### Install ZSH
+
+On Mac:
+
+```bash
+brew install zsh
+```
+
+Then make it available:
+
+```bash
+grep -q -f $(which zsh) /etc/shells || echo $(which zsh) | sudo tee -a /etc/shells
+```
+
+Finally, set it as the default shell:
+
+```bash
+chsh -s $(which zsh)
+```
+
+On OSX you may want to disable the line that sets the `PATH` on `/etc/zprofile`.
+
+### Install Dotfiles
+
+To install these dotfiles, execute the following command:
 
 ```bash
 # If you have curl installed ########################################
@@ -12,9 +45,20 @@ curl -Ls https://raw.github.com/fnando/dotfiles/master/install | bash
 wget -q -O - https://raw.github.com/fnando/dotfiles/master/install | bash
 ```
 
-On OSX you may want to disable the line that sets the `PATH` on `/etc/profile` (Bash) and `/etc/zprofile` (ZSH).
+### Install ASDF
 
-PS: ZSH's theme uses [Hack Nerd Font](https://github.com/ryanoasis/nerd-fonts).
+After, installing these dotfiles and restarting your terminal, you can install manager for the Ruby and Node as the following:
+
+- `asdf plugin-add ruby`
+- `asdf plugin-add nodejs`
+
+### Install Nerd Fonts
+
+Install a [Nerd Font](https://github.com/ryanoasis/nerd-fonts) and activate it on your terminal profile. I personally like [Hack](https://sourcefoundry.org/hack/)'s variant.
+
+### Install colorls
+
+Install [colorls](https://rubygems.org/gems/colorls) for `ll` with icons.
 
 ## License
 
