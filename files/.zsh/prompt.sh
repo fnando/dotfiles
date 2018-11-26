@@ -93,22 +93,28 @@ __fnando_node () {
 }
 
 __fnando_react () {
-  for dep_file in yarn.lock package-lock.json package.json; do
-    if [ -f "$dep_file" ]; then
+  for manifest in yarn.lock package-lock.json package.json; do
+    if [ -f "$manifest" ]; then
       break
     fi
   done
 
-  if [ -f "$dep_file" ]; then
+  if [ -f "$manifest" ]; then
     name_hex=$(pwd | md5)
-    content_hex=$(cat "$dep_file" | md5)
+    content_hex=$(cat "$manifest" | md5)
     cache_file="/tmp/react-${name_hex}-${content_hex}"
+    pkg_manifest="node_modules/react/package.json"
 
     if [ -f "$cache_file" ]; then
       react_version=$(cat "$cache_file")
     else
-      react_version=$(npm ls react | grep react@ | sed -E 's/[^0-9.]//g')
-      echo -n "$react_version" > "$cache_file"
+      if [ -f "$pkg_manifest" ]; then
+        react_version=$(cat "$pkg_manifest" | jq '.version' | sed -E 's/[^0-9.]//g')
+      else
+        react_version=$(npm ls react 2> /dev/null | grep react@ | sed -E 's/[^0-9.]//g')
+      fi
+
+      echo -n "$react_version" | head -n1 > "$cache_file"
     fi
 
     [ "$react_version" != "" ] && echo " ${fg_blue}\ue7ba ${react_version}${fg_reset}"
