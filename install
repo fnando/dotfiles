@@ -27,7 +27,6 @@ dotfiles_zip=/tmp/dotfiles-master.zip
 dotfiles_dir="$(dirname $0)"
 dotfiles_url=https://github.com/fnando/dotfiles/archive/master.zip
 user_file_backup="/tmp/user_${RANDOM}.sh"
-# [ -d  ] && download_file
 
 # Detect codename
 if [[ "$(uname)" == "Darwin" ]]; then
@@ -62,53 +61,61 @@ if [[ ! -d "${dotfiles_dir}/files" ]]; then
   unzip -q $dotfiles_zip -d /tmp
 fi
 
-for shell_name in zsh; do
-  which $shell_name &> /dev/null || continue
+shell_name="zsh"
+user_file=$HOME/.${shell_name}/user.sh
 
-  echo "#=> Installing settings for $shell_name"
+# Make a backup copy of an existing .${shell_name}/user.sh
+if [[ -f "${HOME}/.${shell_name}/user.sh" ]]; then
+  echo -n "#=> Backing up ${user_file}... "
+  cp "$user_file" "$user_file_backup"
+  echo "OK"
+fi
 
-  user_file=$HOME/.${shell_name}/user.sh
+# Copy files
+find ${dotfiles_dir}/files/home -maxdepth 1 -mindepth 1 -exec cp -R "{}" $HOME/ \;
+cp -R ${dotfiles_dir}/files/.${shell_name} $HOME/
+find ${dotfiles_dir}/files/common -maxdepth 1 -mindepth 1 -exec cp -R "{}" $HOME/.${shell_name} \;
 
-  # Make a backup copy of an existing .${shell_name}/user.sh
-  if [[ -f "${HOME}/.${shell_name}/user.sh" ]]; then
-    echo "#=> Backing up ${HOME}/.${shell_name}/user.sh"
-    cp "${HOME}/.${shell_name}/user.sh" $user_file_backup
-  fi
+for filename in $(ls -A $dotfiles_dir/files/install); do
+  source_path="$dotfiles_dir/files/install/$filename"
+  target_path="$HOME/$filename"
 
-  # Copy files
-  find ${dotfiles_dir}/files/home -maxdepth 1 -mindepth 1 -exec cp -R "{}" $HOME/ \;
-  cp -R ${dotfiles_dir}/files/.${shell_name} $HOME/
-  find ${dotfiles_dir}/files/common -maxdepth 1 -mindepth 1 -exec cp -R "{}" $HOME/.${shell_name} \;
-
-  # Restore .${shell_name}/user.sh backup copy
-  if [[ -f $user_file_backup ]]; then
-    cp $user_file_backup $user_file
-    echo "#=> Setting $user_file permission to 0600"
-    chmod 0600 $user_file
-    echo "#=> Restoring ${HOME}/.${shell_name}/user.sh"
+  if [[ ! -f "$target_path" ]]; then
+    echo -n "#=> Copying $filename... "
+    cp "$source_path" "$target_path"
+    echo "OK"
   fi
 done
 
-# Source init file
-if [[ "$SHELL" == "/bin/bash" ]]; then
-  source $HOME/.bash/exports.sh
-else
-  source $HOME/.zsh/exports.sh
+# Restore .${shell_name}/user.sh backup copy
+if [[ -f $user_file_backup ]]; then
+  echo -n "#=> Restoring $user_file... "
+  cp "$user_file_backup" "$user_file"
+  echo "OK"
+
+  echo -n "#=> Setting $user_file permission to 0600... "
+  chmod 0600 $user_file
+  echo "OK"
 fi
+
+# Source init file
+source $HOME/.zsh/exports.sh
 
 # Set up local directory
 mkdir -p $HOME/local
-[ -x '/usr/bin/chflags' ] && chflags hidden $HOME/local
+[ -x "/usr/bin/chflags" ] && chflags hidden $HOME/local
 
 # Copy binaries to ~/local/bin
-echo "#=> Copying binaries"
+echo -n "#=> Copying binaries... "
 cp -R $dotfiles_dir/files/bin $HOME/local
 find $HOME/local/bin -type f -exec chmod +x {} \;
+echo "OK"
 
 # Clone vundle.
 if [[ ! -d "$HOME/.vim/bundle/vundle" ]]; then
-  echo "#=> Cloning vim's vundle plugin"
+  echo -n "#=> Cloning vim's vundle plugin... "
   git clone https://github.com/gmarik/vundle.git $HOME/.vim/bundle/vundle &> /dev/null
+  echo "OK"
 fi
 
 # Set up SSH.
@@ -118,11 +125,12 @@ mkdir -p ~/.ssh/controlmaster
 chmod 700 ~/.ssh/controlmaster
 
 # Write git config
-echo "#=> Setting Git information"
+echo -n "#=> Setting Git information... "
 [ "" != "$git_name" ] && git config --global user.name "$git_name"
 [ "" != "$git_email" ] && git config --global user.email "$git_email"
 [ "" != "$git_signingkey" ] && git config --global user.signingkey "$git_signingkey"
 git config --global commit.gpgsign $git_gpgsign
+echo "OK"
 
 # Set up zsh-plugins
 mkdir -p ~/.zsh-plugins
@@ -130,8 +138,9 @@ for plugin in $(cat $HOME/.default-zsh-plugins); do
   target_dir="$HOME/.zsh-plugins/$(basename $plugin)"
 
   if [[ ! -d "$target_dir" ]]; then
-    echo "#=> Installing $plugin"
+    echo -n "#=> Installing $plugin... "
     git clone --quiet "https://github.com/$plugin.git" "$target_dir"
+    echo "OK"
   fi
 done
 

@@ -13,7 +13,8 @@ for plugin in $(ls ~/.zsh-plugins); do
   echo "OK"
 done
 
-echo "#=> Upgrading vundle plugins"
+echo -n "#=> Upgrading vundle plugins... "
 vim +PluginInstall +qall
+echo "OK"
 
 echo '#=> Done!'
