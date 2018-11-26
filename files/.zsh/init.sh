@@ -18,3 +18,4 @@ source $HOME/.zsh/tmux.sh
 source $HOME/.zsh/prompt.sh
 source $HOME/.zsh/go.sh
 source $HOME/.zsh/aliases.sh
+source $HOME/.zsh/zsh-plugins.sh
