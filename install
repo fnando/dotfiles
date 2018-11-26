@@ -124,4 +124,15 @@ echo "#=> Setting Git information"
 [ "" != "$git_signingkey" ] && git config --global user.signingkey "$git_signingkey"
 git config --global commit.gpgsign $git_gpgsign
 
+# Set up zsh-plugins
+mkdir -p ~/.zsh-plugins
+for plugin in $(cat $HOME/.default-zsh-plugins); do
+  target_dir="$HOME/.zsh-plugins/$(basename $plugin)"
+
+  if [[ ! -d "$target_dir" ]]; then
+    echo "#=> Installing $plugin"
+    git clone --quiet "https://github.com/$plugin.git" "$target_dir"
+  fi
+done
+
 echo '#=> Done! Restart your terminal!'

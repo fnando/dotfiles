@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+set -e
+
+echo "#=> Upgrading zsh-plugins"
+for plugin in $(ls ~/.zsh-plugins); do
+  echo -n "  • $plugin... "
+
+  target_dir="$HOME/.zsh-plugins/$plugin"
+  cd "$target_dir"
+  git reset --hard --quiet
+  git pull --rebase --quiet
+
+  echo "OK"
+done
+
+echo "#=> Upgrading vundle plugins"
+vim +PluginInstall +qall
+
+echo '#=> Done!'
