@@ -45,6 +45,10 @@ curl -Ls https://raw.github.com/fnando/dotfiles/master/install | bash
 wget -q -O - https://raw.github.com/fnando/dotfiles/master/install | bash
 ```
 
+To upgrade your configuration to the latest version, run `dotfiles`.
+
+Any specific configuration should go to `~/.zsh/user.sh`. This file is kept around between upgrades, so you won't lose any configuration specific to your own user.
+
 ### Install ASDF
 
 After, installing these dotfiles and restarting your terminal, you can install manager for the Ruby and Node as the following:
