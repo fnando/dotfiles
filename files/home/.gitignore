@@ -12,3 +12,5 @@ Thumbs.db
 .tags
 .tags_sorted_by_file
 /node_modules
+/.env
+/.env.*
