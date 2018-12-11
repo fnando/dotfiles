@@ -28,4 +28,5 @@ app = Rack::Builder.app do
   run Rack::Directory.new(Dir.pwd)
 end
 
-Rack::Handler::Thin.run app, Port: ENV.fetch("PORT", 1234)
+handler = Rack::Handler.pick(["puma", "thin", "webrick"])
+handler.run app, Port: ENV.fetch("PORT", 1234)
