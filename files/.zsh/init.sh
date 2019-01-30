@@ -1,7 +1,6 @@
 export DOTFILES_LOADED="true"
 export SHELL_NAME="zsh"
 
-source $HOME/.zsh/user.sh
 source $HOME/.zsh/exports.sh
 source $HOME/.zsh/specific.sh
 source $HOME/.zsh/other.sh
@@ -20,3 +19,4 @@ source $HOME/.zsh/go.sh
 source $HOME/.zsh/aliases.sh
 source $HOME/.zsh/heroku.sh
 source $HOME/.zsh/zsh-plugins.sh
+source $HOME/.zsh/user.sh
