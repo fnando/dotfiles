@@ -1,32 +1,22 @@
 #!/usr/bin/env ruby
 
 require "fileutils"
+require "json"
 
 input_path = File.expand_path(ARGV[0])
 input_dir = File.dirname(input_path)
 file_name = File.basename(input_path, ".*")
 output_dir = File.join(input_dir, file_name)
 
-meta_raw = `ffprobe -v error -show_format -show_entries stream=width,height -i #{input_path.inspect} | grep -E '(width|height|duration)='`
+meta = JSON.parse(`ffprobe -v error -show_format -show_entries stream=width,height -i #{input_path.inspect} -print_format json`)
+duration = Float(meta.dig("format", "duration"))
 
-meta = meta_raw.lines.map(&:chomp).each_with_object({}) do |line, buffer|
-  key, value = line.split("=")
-  buffer[key.to_sym] = case key
-                       when "width", "height"
-                         Integer(value)
-                       when "duration"
-                         Float(value)
-                       else
-                         raise "Unexpected meta value; #{key}=#{value}"
-                       end
-end
-
-slices_count = (meta[:duration] / 60).ceil
+slices_count = (duration / 60).ceil
 FileUtils.mkdir_p(output_dir)
 
 slices_count.times do |index|
   start_time = "00:0#{index}:00.00"
   output_path = File.join(output_dir, "#{file_name}-#{index + 1}.mp4")
   system "ffmpeg", "-i", input_path, "-ss", start_time, "-t", "59.99", "-c", "copy", "-v", "quiet", "-y", output_path
-  FileUtils.touch output_path, mtime: Time.now + (index * 60)
+  FileUtils.touch output_path, mtime: Time.now - 30 + index
 end
