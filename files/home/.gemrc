@@ -3,4 +3,4 @@
 :bulk_threshold: 1000
 :backtrace: false
 :benchmark: false
-gem: "--no-rdoc --no-ri"
+gem: --no-document --suggestions
