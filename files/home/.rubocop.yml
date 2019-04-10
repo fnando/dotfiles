@@ -1,22 +1,12 @@
 AllCops:
-  TargetRubyVersion: 2.4
-  Include:
-    - '**/*.gemspec'
-    - '**/*.podspec'
-    - '**/*.jbuilder'
-    - '**/*.rake'
-    - '**/*.opal'
-    - '**/config.ru'
-    - '**/Gemfile'
-    - '**/Rakefile'
-    - '**/Capfile'
-    - '**/Guardfile'
-    - '**/Podfile'
-    - '**/Thorfile'
-    - '**/Vagrantfile'
-    - '**/Berksfile'
-    - '**/Cheffile'
-    - '**/Vagabondfile'
+  TargetRubyVersion: 2.6
+  TargetRailsVersion: 6.0
+
+  Exclude:
+    - db/schema.rb
+    - db/seeds.rb
+    - config/environments/**/*.rb
+    - bin/**/*
 
 Style/Documentation:
   Enabled: false
@@ -57,5 +47,26 @@ Style/PercentLiteralDelimiters:
 Metrics/LineLength:
   Enabled: false
 
+Metrics/MethodLength:
+  Exclude:
+    - db/migrate/**.rb
+    - config/config.rb
+
 Style/EmptyMethod:
   EnforcedStyle: expanded
+
+Layout/IndentArray:
+  EnforcedStyle: consistent
+
+Style/AccessModifierDeclarations:
+  EnforcedStyle: inline
+
+Naming/UncommunicativeMethodParamName:
+  Enabled: false
+
+Lint/Debugger:
+  Exclude:
+    - test/**/*
+
+Style/TrailingUnderscoreVariable:
+  Enabled: false
