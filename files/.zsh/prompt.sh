@@ -88,7 +88,7 @@ __fnando_rails () {
 __fnando_node () {
   if [ -f package.json  ] && [ -x "$(which node)" ]; then
     node_version=$(node -v | sed -E 's/v//')
-    echo "${fg_green}\uf898   ${node_version}${fg_reset}"
+    echo "${fg_green}\uf898  ${node_version}${fg_reset}"
   fi
 }
 
