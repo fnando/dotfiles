@@ -17,6 +17,7 @@ fi
 
 if [[ "$(git config --global user.signingkey)" != "$author_signingkey" ]]; then
   git config --global user.signingkey "$author_signingkey"
+  git config --global commit.gpgsign true
 fi
 
 if [[ "$(git config --global core.pager)" != "$git_diff_command" ]]; then
