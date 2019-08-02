@@ -2,6 +2,14 @@ cd() {
   builtin cd "${@:-$HOME}" && pwd > $CDHISTORY;
 }
 
+popd() {
+  builtin popd && pwd > $CDHISTORY;
+}
+
+pushd() {
+  builtin pushd && pwd > $CDHISTORY;
+}
+
 if [ -f $CDHISTORY ]; then
    dir=$(cat $CDHISTORY)
 
