@@ -1,32 +1,48 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
+
 gem "rack"
 require "rack"
 require "yaml"
+require "optparse"
 
-class PostLogger
-  def initialize(app)
-    @app = app
+options = {}
+OptionParser.new do |opts|
+  opts.banner = "Usage: #{$PROGRAM_NAME} [options]"
+
+  opts.on("-i", "--index", "Use index files. Defaults to true.") do |index|
+    options[:index] = index
   end
 
-  def call(env)
-    puts "= PARAMS"
-    puts
-    puts Rack::Request.new(env).params.to_yaml
-    puts
-    puts
-    @app.call(env)
+  opts.on("-p", "--port=PORT", "Defaults to 1234.") do |port|
+    options[:port] = port
   end
-end
+
+  opts.on("-b", "--binding=BINDING", "Defaults to 127.0.0.1.") do |binding|
+    options[:binding] = binding
+  end
+
+  opts.on("-h", "--help", "Prints this help") do
+    puts opts
+    exit
+  end
+end.parse!
 
 app = Rack::Builder.app do
   use Rack::ContentLength
   use Rack::CommonLogger
-  use PostLogger
-  use Rack::Static,
-      urls: {"/" => "index.html"},
-      root: Dir.pwd if ENV["INDEX"]
+  use Rack::Deflater
+
+  if options.fetch(:index, true)
+    use Rack::Static,
+        urls: {"/" => "index.html"},
+        root: Dir.pwd
+  end
+
   run Rack::Directory.new(Dir.pwd)
 end
 
-handler = Rack::Handler.pick(["puma", "thin", "webrick"])
-handler.run app, Port: ENV.fetch("PORT", 1234)
+handler = Rack::Handler.pick(%w[puma thin webrick])
+handler.run app,
+            Port: options.fetch(:port, 1234),
+            Host: options.fetch(:binding, "127.0.0.1")
