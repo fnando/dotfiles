@@ -144,4 +144,22 @@ for plugin in $(cat $HOME/.default-zsh-plugins); do
   fi
 done
 
+# Set up launch agents
+mkdir -p ~/Library/LaunchAgents
+for agent in $(ls $dotfiles_dir/files/LaunchAgents); do
+  source_file="$dotfiles_dir/files/LaunchAgents/$(basename $agent)"
+  target_file="$HOME/Library/LaunchAgents/$(basename $agent)"
+
+  if [[ -f "$target_file" ]]; then
+    echo "#=> Unload $target_file"
+    launchctl unload "$target_file"
+  fi
+
+  echo "#=> Copy $agent to ~/Library/LaunchAgents"
+  cp "$source_file" "$target_file"
+
+  echo "#=> Load $target_file"
+  launchctl load "$target_file"
+done
+
 echo '#=> Done! Restart your terminal!'

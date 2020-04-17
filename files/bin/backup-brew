@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+PATH="$PATH:$HOME/local/bin:/usr/local/bin"
+
+cd $HOME
+brew bundle dump
+mv Brewfile .Brewfile
+
+terminal-notifier \
+  -message "Brew package list has been backed up to ~/.Brewfile" \
+  -ignoreDnD \
+  -title 'Homebrew Backup' \
+  -group homebrew \
+  &> /dev/null
