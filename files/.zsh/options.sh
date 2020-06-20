@@ -19,6 +19,7 @@ setopt no_beep
 setopt no_global_rcs
 setopt no_hist_beep
 setopt no_list_beep
+setopt no_nomatch
 setopt prompt_subst
 setopt pushd_ignore_dups
 setopt pushd_minus
