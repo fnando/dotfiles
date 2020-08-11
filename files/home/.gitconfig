@@ -43,3 +43,5 @@
   newNormal = green
   oldHighlight = red reverse
   oldNormal = red
+[init]
+  defaultBranch = main
