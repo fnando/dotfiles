@@ -1,0 +1,22 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require "securerandom"
+require "digest/md5"
+
+youtube_dl = `brew --prefix youtube-dl`.chomp
+merge_format = "mkv"
+url = ARGV[0]
+output = "/tmp/#{Digest::MD5.hexdigest(url)}.#{merge_format}"
+
+unless File.executable?(youtube_dl)
+  puts "youtube-dl couldn't be found"
+  exit 1
+end
+
+system "youtube-dl",
+       "--format", "bestvideo+bestaudio",
+       "--merge-output-format", merge_format,
+       "--output", output,
+       url
+system "open", "-a", "/Applications/VLC.app", output
