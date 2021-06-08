@@ -66,6 +66,7 @@ tmutil addexclusion -p ~/Library/Detox
 tmutil addexclusion -p ~/Library/Developer
 tmutil addexclusion -p ~/Library/Group\ Containers
 tmutil addexclusion -p ~/Library/Logs
+tmutil addexclusion -p ~/Library/Java
 tmutil addexclusion -p ~/Library/Mail
 tmutil addexclusion -p ~/Library/Messages
 tmutil addexclusion -p ~/Library/Metadata
