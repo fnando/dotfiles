@@ -9,5 +9,8 @@
 # If you use Sublime Text
 # source ~/.zsh/sublime-text.sh
 
+# If you use VSCode
+# source ~/.zsh/vscode.sh
+
 # Load Git config.
 # source ~/.zsh/git.sh
