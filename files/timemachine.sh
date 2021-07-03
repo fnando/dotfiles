@@ -17,6 +17,7 @@ tmutil addexclusion -p ~/.cocoapods
 tmutil addexclusion -p ~/.composer
 tmutil addexclusion -p ~/.electron
 tmutil addexclusion -p ~/.gradle
+tmutil addexclusion -p ~/.kerl
 tmutil addexclusion -p ~/.local
 tmutil addexclusion -p ~/.m2
 tmutil addexclusion -p ~/.node-gyp
