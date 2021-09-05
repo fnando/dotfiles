@@ -1,0 +1,21 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+input = ARGV[0]
+rate = (ARGV[1] || 0.75).to_f
+dirname = File.dirname(input)
+basename = File.basename(input, ".*")
+percentage = (rate * 100).to_i
+output = File.join(dirname, "#{basename} (Slowed by #{percentage}%).mp3")
+
+command = [
+  "ffmpeg",
+  "-i",
+  input,
+  "-filter:a",
+  "atempo=#{rate}",
+  "-vn",
+  output
+]
+
+system(*command)
