@@ -13,7 +13,14 @@ export HISTSIZE=1000000
 export HISTCONTROL=ignoreboth:erasedups
 export HISTIGNORE="ls:cd:cd -:pwd:exit:date:* --help"
 export SAVEHIST=1000000
-export PATH="$HOME/bin:$HOME/local/bin:./bin:./node_modules/.bin:$GEM_HOME/bin:$NPM_HOME/bin:$HOME/.bash/bin:$HOME/.zsh/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin:/opt/X11/bin"
+
+if [[ "$(uname -m)" == "arm64" ]]; then
+  export HOMEBREW_PREFIX=/opt/homebrew
+else
+  export HOMEBREW_PREFIX=/usr/local
+fi
+
+export PATH="$HOME/bin:$HOME/local/bin:./bin:./node_modules/.bin:$GEM_HOME/bin:$NPM_HOME/bin:$HOME/.bash/bin:$HOME/.zsh/bin:$HOMEBREW_PREFIX/bin:$HOMEBREW_PREFIX/sbin:/usr/bin:/usr/sbin:/bin:/sbin:/opt/X11/bin"
 export CDHISTORY="/tmp/cd-$USER"
 export PAGER="less"
 export LESS="-REX"
