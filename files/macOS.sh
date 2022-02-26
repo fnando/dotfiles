@@ -61,13 +61,6 @@ defaults write NSGlobalDomain AppleKeyboardUIMode -int 3
 defaults write NSGlobalDomain InitialKeyRepeat -int 0
 defaults write NSGlobalDomain KeyRepeat -int 0
 
-# Use scroll gesture with the Ctrl (^) modifier key to zoom
-defaults write com.apple.universalaccess closeViewScrollWheelToggle -bool true
-defaults write com.apple.universalaccess HIDScrollZoomModifierMask -int 262144
-
-# Follow the keyboard focus while zoomed in
-defaults write com.apple.universalaccess closeViewZoomFollowsFocus -bool true
-
 # Disable press-and-hold for keys in favor of key repeat
 defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
 
@@ -326,5 +319,126 @@ defaults write com.apple.iTunes dontAutomaticallySyncIPods -bool true
 
 # Disable backups on iTunes
 defaults write com.apple.iTunes DeviceBackupsDisabled -bool true
+
+# Disable Mission Control and Quick Note shortcuts.
+defaults write com.apple.symbolichotkeys.plist AppleSymbolicHotKeys -dict-add 118 "
+  <dict>
+    <key>enabled</key>
+    <false/>
+
+    <key>value</key>
+    <dict>
+      <key>type</key>
+      <string>standard</string>
+
+      <key>parameters</key>
+      <array>
+        <integer>65535</integer>
+        <integer>18</integer>
+        <integer>262144</integer>
+      </array>
+    </dict>
+  </dict>
+"
+
+defaults write com.apple.symbolichotkeys.plist AppleSymbolicHotKeys -dict-add 190 "
+  <dict>
+    <key>enabled</key>
+    <false/>
+
+    <key>value</key>
+    <dict>
+      <key>type</key>
+      <string>standard</string>
+
+      <key>parameters</key>
+      <array>
+        <integer>113</integer>
+        <integer>12</integer>
+        <integer>8388608</integer>
+      </array>
+    </dict>
+  </dict>
+"
+
+defaults write com.apple.symbolichotkeys.plist AppleSymbolicHotKeys -dict-add 79 "
+  <dict>
+    <key>enabled</key>
+    <false/>
+
+    <key>value</key>
+    <dict>
+      <key>type</key>
+      <string>standard</string>
+
+      <key>parameters</key>
+      <array>
+        <integer>65535</integer>
+        <integer>123</integer>
+        <integer>8650752</integer>
+      </array>
+    </dict>
+  </dict>
+"
+
+defaults write com.apple.symbolichotkeys.plist AppleSymbolicHotKeys -dict-add 80 "
+  <dict>
+    <key>enabled</key>
+    <false/>
+
+    <key>value</key>
+    <dict>
+      <key>type</key>
+      <string>standard</string>
+
+      <key>parameters</key>
+      <array>
+        <integer>65535</integer>
+        <integer>123</integer>
+        <integer>8781824</integer>
+      </array>
+    </dict>
+  </dict>
+"
+
+defaults write com.apple.symbolichotkeys.plist AppleSymbolicHotKeys -dict-add 81 "
+  <dict>
+    <key>enabled</key>
+    <false/>
+
+    <key>value</key>
+    <dict>
+      <key>type</key>
+      <string>standard</string>
+
+      <key>parameters</key>
+      <array>
+        <integer>65535</integer>
+        <integer>124</integer>
+        <integer>8650752</integer>
+      </array>
+    </dict>
+  </dict>
+"
+
+defaults write com.apple.symbolichotkeys.plist AppleSymbolicHotKeys -dict-add 82 "
+  <dict>
+    <key>enabled</key>
+    <false/>
+
+    <key>value</key>
+    <dict>
+      <key>type</key>
+      <string>standard</string>
+
+      <key>parameters</key>
+      <array>
+        <integer>65535</integer>
+        <integer>124</integer>
+        <integer>8781824</integer>
+      </array>
+    </dict>
+  </dict>
+"
 
 echo "OSX Hacks Done. Note that some of these changes require a logout/restart to take effect."
