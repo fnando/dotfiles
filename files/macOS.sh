@@ -47,19 +47,33 @@ defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool
 defaults -currentHost write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
 defaults write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
 
+# Set up trackpad behavior.
+defaults write com.apple.AppleMultitouchTrackpad Clicking -int 1
+defaults write com.apple.AppleMultitouchTrackpad DragLock -int 0
+defaults write com.apple.AppleMultitouchTrackpad Dragging -int 1
+
 # Set mouse speed.
 defaults write -g com.apple.mouse.scaling 2
 
+# Disable shake mouse pointer to locate.
+defaults write -g CGDisableCursorLocationMagnification -int 1
+
 # Increase sound quality for Bluetooth headphones/headsets
-defaults write com.apple.BluetoothAudioAgent "Apple Bitpool Min (editable)" -int 40
+defaults write com.apple.BluetoothAudioAgent "Apple Bitpool Max (editable)" -int 80
+defaults write com.apple.BluetoothAudioAgent "Apple Bitpool Min (editable)" -int 80
+defaults write com.apple.BluetoothAudioAgent "Apple Initial Bitpool (editable)" -int 80
+defaults write com.apple.BluetoothAudioAgent "Apple Initial Bitpool Min (editable)" -int 80
+defaults write com.apple.BluetoothAudioAgent "Negotiated Bitpool" -int 80
+defaults write com.apple.BluetoothAudioAgent "Negotiated Bitpool Max" -int 80
+defaults write com.apple.BluetoothAudioAgent "Negotiated Bitpool Min" -int 80
 
 # Enable full keyboard access for all controls
 # (e.g. enable Tab in modal dialogs)
 defaults write NSGlobalDomain AppleKeyboardUIMode -int 3
 
 # Faster key repetition
-defaults write NSGlobalDomain InitialKeyRepeat -int 0
-defaults write NSGlobalDomain KeyRepeat -int 0
+defaults write NSGlobalDomain InitialKeyRepeat -int 15
+defaults write NSGlobalDomain KeyRepeat -int 2
 
 # Disable press-and-hold for keys in favor of key repeat
 defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
@@ -75,12 +89,27 @@ defaults write NSGlobalDomain AppleMetricUnits -bool true
 # Disable auto-correct
 defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false
 
+# Disables auto capitalization
+defaults write NSGlobalDomain NSAutomaticCapitalizationEnabled -bool false
+
+# Disables "smart" dashes
+defaults write NSGlobalDomain NSAutomaticDashSubstitutionEnabled -bool false
+
+# Disables automatic period substitutions
+defaults write NSGlobalDomain NSAutomaticPeriodSubstitutionEnabled -bool false
+
+# Disables smart quotes
+defaults write NSGlobalDomain NSAutomaticQuoteSubstitutionEnabled -bool false
+
 # Require password immediately after sleep or screen saver begins
 defaults write com.apple.screensaver askForPassword -int 1
 defaults write com.apple.screensaver askForPasswordDelay -int 0
 
 # Save screenshots in PNG format (other options: BMP, GIF, JPG, PDF, TIFF)
 defaults write com.apple.screencapture type -string "png"
+
+# Save screenshots to downloads folder.
+defaults write com.apple.screencapture location -string "${HOME}/Downloads"
 
 # allow quitting Finder via ⌘ + Q; doing so will also hide desktop icons
 defaults write com.apple.finder QuitMenuItem -bool false
@@ -156,9 +185,6 @@ defaults write com.apple.finder WarnOnEmptyTrash -bool false
 # Empty Trash securely by default
 defaults write com.apple.finder EmptyTrashSecurely -bool true
 
-# Enable highlight hover effect for the grid view of a stack (Dock)
-defaults write com.apple.dock mouse-over-hilte-stack -bool true
-
 # Show the ~/Library folder
 chflags nohidden ~/Library
 
@@ -226,6 +252,12 @@ defaults write com.apple.Safari WebKitInitialTimedLayoutDelay 0.1
 
 # Show the full URL in the address bar (note: this still hides the scheme)
 defaults write com.apple.Safari ShowFullURLInSmartSearchField -bool true
+
+# Disable Safari's AutoFill.
+defaults write com.apple.Safari AutoFillFromAddressBook -bool false
+defaults write com.apple.Safari AutoFillPasswords -bool false
+defaults write com.apple.Safari AutoFillCreditCardData -bool false
+defaults write com.apple.Safari AutoFillMiscellaneousForms -bool false
 
 # Set Safari’s home page to `about:blank` for faster loading
 defaults write com.apple.Safari HomePage -string "about:blank"
@@ -440,5 +472,11 @@ defaults write com.apple.symbolichotkeys.plist AppleSymbolicHotKeys -dict-add 82
     </dict>
   </dict>
 "
+
+# Play feedback when volume is changed
+defaults write NSGlobalDomain com.apple.sound.beep.feedback -bool false
+
+# Set 1Password's Archive shortcut to cmd-d.
+defaults write com.agilebits.onepassword7 NSUserKeyEquivalents -dict-add "Archive" -string "@d"
 
 echo "OSX Hacks Done. Note that some of these changes require a logout/restart to take effect."
