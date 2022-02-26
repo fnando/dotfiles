@@ -1,6 +1,6 @@
 # Dotfiles
 
-![Screenshot of my terminal](https://github.com/fnando/dotfiles/blob/master/screenshots/terminal.png)
+![Screenshot of my terminal](https://github.com/fnando/dotfiles/blob/main/screenshots/terminal.png)
 
 Welcome to my dotfiles! It features:
 
@@ -39,10 +39,10 @@ To install these dotfiles, execute the following command:
 
 ```bash
 # If you have curl installed ########################################
-curl -Ls https://raw.github.com/fnando/dotfiles/master/install | bash
+curl -Ls https://raw.github.com/fnando/dotfiles/main/install | bash
 
 # If you have wget installed ########################################
-wget -q -O - https://raw.github.com/fnando/dotfiles/master/install | bash
+wget -q -O - https://raw.github.com/fnando/dotfiles/main/install | bash
 ```
 
 To upgrade your configuration to the latest version, run `dotfiles`.

@@ -23,9 +23,9 @@ curl_available=$(command -v curl)
 wget_available=$(command -v wget)
 unzip_available=$(command -v unzip)
 
-dotfiles_zip=/tmp/dotfiles-master.zip
+dotfiles_zip=/tmp/dotfiles-main.zip
 dotfiles_dir="$(dirname $0)"
-dotfiles_url=https://github.com/fnando/dotfiles/archive/master.zip
+dotfiles_url=https://github.com/fnando/dotfiles/archive/main.zip
 user_file_backup="/tmp/user_${RANDOM}.sh"
 
 # Detect codename
@@ -42,7 +42,7 @@ fi
 # Check if installation must be from local files. If not, download zip file
 # and extract it to tmp directory.
 if [[ ! -d "${dotfiles_dir}/files" ]]; then
-  dotfiles_dir=/tmp/dotfiles-master
+  dotfiles_dir=/tmp/dotfiles-main
 
   echo "#=> Downloading $dotfiles_url to $dotfiles_zip"
 
