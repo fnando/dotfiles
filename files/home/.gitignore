@@ -3,7 +3,6 @@
 /.pow*
 /.rvmrc
 /.rbenv-version
-/bin/
 /.tags*
 Thumbs.db
 .vagrant
@@ -14,3 +13,4 @@ Thumbs.db
 /node_modules
 /.env
 /.env.*
+/coverage
