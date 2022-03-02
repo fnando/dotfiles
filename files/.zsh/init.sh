@@ -22,3 +22,4 @@ source $HOME/.zsh/heroku.sh
 source $HOME/.zsh/zsh-plugins.sh
 source $HOME/.zsh/path.sh
 source $HOME/.zsh/autojump.sh
+source $HOME/.zsh/android-studio.sh
