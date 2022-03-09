@@ -479,4 +479,7 @@ defaults write NSGlobalDomain com.apple.sound.beep.feedback -bool false
 # Set 1Password's Archive shortcut to cmd-d.
 defaults write com.agilebits.onepassword7 NSUserKeyEquivalents -dict-add "Archive" -string "@d"
 
+# Save Simulator's screenshots to ~/Downloads
+defaults write com.apple.iphonesimulator ScreenShotSaveLocation -string ~/Downloads
+
 echo "OSX Hacks Done. Note that some of these changes require a logout/restart to take effect."
