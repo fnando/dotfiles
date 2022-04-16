@@ -1,3 +1,8 @@
+* {
+  -webkit-user-select: initial !important;
+  user-select: initial !important;
+}
+
 [data-test^="ad-slot"] {
-  display:  none !important;
+  display: none !important;
 }
