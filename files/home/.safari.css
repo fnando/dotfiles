@@ -3,6 +3,11 @@
   user-select: initial !important;
 }
 
+*::selection {
+  background: initial !important;
+  color: initial !important;
+}
+
 [data-test^="ad-slot"] {
   display: none !important;
 }
