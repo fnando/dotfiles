@@ -1,0 +1,6 @@
+@fnando/eslint-config-codestyle
+@typescript-eslint/eslint-plugin
+@typescript-eslint/parser
+eslint
+prettier
+stylelint
