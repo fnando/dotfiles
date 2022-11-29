@@ -9,10 +9,10 @@ export EDITOR=${EDITOR:-vim}
 export VISUAL=${VISUAL:-vim}
 export GREP_COLOR="4;33"
 export CDPATH=.:/vagrant:/Projects:$HOME:$HOME/Projects
-export HISTSIZE=1000000
+export HISTSIZE=1000000000
 export HISTCONTROL=ignoreboth:erasedups
 export HISTIGNORE="ls:cd:cd -:pwd:exit:date:* --help"
-export SAVEHIST=1000000
+export SAVEHIST=1000000000
 
 if [[ "$(uname -m)" == "arm64" ]]; then
   export HOMEBREW_PREFIX=/opt/homebrew
