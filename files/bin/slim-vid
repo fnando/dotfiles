@@ -1,0 +1,33 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require "fileutils"
+require "securerandom"
+require "active_support"
+
+helpers = Object.new.extend(ActiveSupport::NumberHelper)
+
+input, _ = *ARGV
+
+if !input || !File.file?(input)
+  puts "ERROR: Please provide a valid video file"
+  exit 1
+end
+
+input = File.expand_path(input)
+name = File.basename(input, ".*")
+dir = File.dirname(input)
+ext = File.extname(input)
+id = SecureRandom.hex(10)
+output = File.join(dir, "#{name}.#{id}#{ext}")
+
+system "ffmpeg", "-loglevel", "quiet", "-i", input, output
+
+original_size = File.size(input)
+slim_size = File.size(output)
+
+puts "Original file: #{helpers.number_to_human_size(original_size)}"
+puts "Slim file: #{helpers.number_to_human_size(slim_size)}"
+
+FileUtils.move(input, File.join(dir, "#{name}.original.#{id}.#{ext}"))
+FileUtils.move(output, input)
