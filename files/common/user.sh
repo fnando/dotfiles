@@ -19,3 +19,7 @@
 
 # Load Git config.
 # source ~/.zsh/git.sh
+
+# Load 1password-cli plugin.
+# Must be loaded after all environment variables are set.
+# source ~/.zsh/1password.sh

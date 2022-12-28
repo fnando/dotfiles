@@ -1,6 +1,9 @@
 export DOTFILES_LOADED="true"
 export SHELL_NAME="zsh"
 
+autoload -U compinit
+compinit -i
+
 source $HOME/.zsh/user.sh
 source $HOME/.zsh/exports.sh
 source $HOME/.zsh/specific.sh

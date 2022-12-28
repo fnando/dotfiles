@@ -29,5 +29,3 @@ unsetopt menu_complete
 unsetopt flow_control
 zstyle ':completion:*' special-dirs true
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
-autoload -U compinit
-compinit -i
