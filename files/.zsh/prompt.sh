@@ -134,7 +134,7 @@ __fnando_blocks () {
 
 __fnando_path () {
   current_path="${PWD/#$HOME/~}"
-  echo "in ${fg_blue}${current_path}${fg_reset}"
+  echo "${PROMPT_PREFIX}in ${fg_blue}${current_path}${fg_reset}"
 }
 
 __fnando_prompt() {
