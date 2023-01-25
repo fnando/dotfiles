@@ -21,8 +21,10 @@ if [[ "$(git config --global user.signingkey)" != "$author_signingkey" ]]; then
   git config --global gpg.format ssh
 fi
 
-if [[ "$(git config --global core.pager)" != "$git_diff_command" ]]; then
-  git config --global core.pager "$git_diff_command"
+if [[ -x "$GIT_DIFF_HIGHLIGHT" ]]; then
+  if [[ "$(git config --global core.pager)" != "$git_diff_command" ]]; then
+    git config --global core.pager "$git_diff_command"
+  fi
 fi
 
 unset GIT_DIFF_HIGHLIGHT
