@@ -19,6 +19,10 @@ if [[ "$(git config --global user.signingkey)" != "$author_signingkey" ]]; then
   git config --global user.signingkey "$author_signingkey"
   git config --global commit.gpgsign true
   git config --global gpg.format ssh
+
+  if [[ "$USING_ONE_PASSWORD" = "true" ]]; then
+    git config --global --add gpg.ssh.program /Applications/1Password.app/Contents/MacOS/op-ssh-sign
+  fi
 fi
 
 if [[ -x "$GIT_DIFF_HIGHLIGHT" ]]; then

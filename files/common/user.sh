@@ -17,9 +17,10 @@
 # If you use VSCode
 # source ~/.zsh/vscode.sh
 
-# Load Git config.
-# source ~/.zsh/git.sh
-
 # Load 1password-cli plugin.
 # Must be loaded after all environment variables are set.
+# Must be loaded before git config.
 # source ~/.zsh/1password.sh
+
+# Load Git config.
+# source ~/.zsh/git.sh
