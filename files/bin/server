@@ -2,6 +2,7 @@
 # frozen_string_literal: true
 
 gem "rack"
+gem "rackup"
 require "rack"
 require "yaml"
 require "optparse"
