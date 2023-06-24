@@ -4,10 +4,22 @@
 require "fileutils"
 require "securerandom"
 require "active_support"
+require "optparse"
 
 helpers = Object.new.extend(ActiveSupport::NumberHelper)
 
-input, _ = *ARGV
+input = nil
+keep_audio = true
+
+OptionParser.new do |parser|
+  parser.banner = "Usage: #{$0} [options]"
+
+  parser.on("-a", "--audio", "Keep audio track") do |value|
+    keep_audio = value
+  end
+end.parse!
+
+input = ARGV.first
 
 if !input || !File.file?(input)
   puts "ERROR: Please provide a valid video file"
@@ -20,8 +32,15 @@ dir = File.dirname(input)
 ext = File.extname(input)
 id = SecureRandom.hex(10)
 output = File.join(dir, "#{name}.#{id}#{ext}")
+cmd = [
+  "ffmpeg",
+  "-loglevel", "quiet",
+  "-i", input,
+  keep_audio ? nil : "-an",
+  output
+].compact
 
-system "ffmpeg", "-loglevel", "quiet", "-i", input, output
+system(*cmd)
 
 original_size = File.size(input)
 slim_size = File.size(output)
