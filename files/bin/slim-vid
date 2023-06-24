@@ -5,17 +5,23 @@ require "fileutils"
 require "securerandom"
 require "active_support"
 require "optparse"
+require "shellwords"
 
 helpers = Object.new.extend(ActiveSupport::NumberHelper)
 
 input = nil
 keep_audio = true
+verbose = false
 
 OptionParser.new do |parser|
   parser.banner = "Usage: #{$0} [options]"
 
   parser.on("-a", "--audio", "Keep audio track") do |value|
     keep_audio = value
+  end
+
+  parser.on("-v", "--verbose", "Verbose output") do |value|
+    verbose = value
   end
 end.parse!
 
@@ -34,11 +40,14 @@ id = SecureRandom.hex(10)
 output = File.join(dir, "#{name}.#{id}#{ext}")
 cmd = [
   "ffmpeg",
-  "-loglevel", "quiet",
+  verbose ? nil : ["-loglevel", "quiet"],
   "-i", input,
   keep_audio ? nil : "-an",
   output
-].compact
+].flatten.compact
+
+cmd_str = cmd.map {|arg| Shellwords.escape(arg) }.join(" ")
+puts "=> Command: #{cmd_str}"
 
 system(*cmd)
 
