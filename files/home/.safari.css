@@ -16,3 +16,7 @@ body {
 [data-test^="ad-slot"] {
   display: none !important;
 }
+
+ytd-promoted-sparkles-web-renderer {
+  display: none !important;
+}
