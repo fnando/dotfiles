@@ -33,3 +33,4 @@ export LESS_TERMCAP_ue=$'\E[0m'
 export LESS_TERMCAP_us=$'\E[00;32m'
 export HOMEBREW_NO_ANALYTICS=1
 export GPG_TTY=$(tty)
+export WORDCHARS='*?[]~$^()}<>'
