@@ -6,13 +6,17 @@ require "open3"
 require "json"
 require "shellwords"
 
-options = {vault: "dev", item: "main", dotenv: false}
+options = {vault: "dev", item: "main", dotenv: false, json: false}
 
 OptionParser.new do |parser|
   parser.banner = "Usage: #{$PROGRAM_NAME} [options]"
 
   parser.on("--dotenv", "Generate output for dotenv files") do |value|
     options[:dotenv] = value
+  end
+
+  parser.on("--json", "Generate json") do |value|
+    options[:json] = value
   end
 
   parser.on("--vault=VAULT",
@@ -46,9 +50,17 @@ fields = JSON.parse(stdout, symbolize_names: true)
              .fetch(:fields)
              .filter {|field| field[:value] }
 
-fields.each do |field|
-  puts [
-    options[:dotenv] ? nil : "export ", field[:label], "=",
-    Shellwords.escape(field[:value])
-  ].compact.join
+if options[:json]
+  data = fields.each_with_object({}) do |item, buffer|
+    buffer[item[:label]] = item[:value]
+  end
+
+  puts JSON.pretty_generate(data)
+else
+  fields.each do |field|
+    puts [
+      options[:dotenv] ? nil : "export ", field[:label], "=",
+      Shellwords.escape(field[:value])
+    ].compact.join
+  end
 end
