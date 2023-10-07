@@ -8,13 +8,11 @@ require "optparse"
 require "shellwords"
 
 helpers = Object.new.extend(ActiveSupport::NumberHelper)
-
-input = nil
-keep_audio = true
+keep_audio = false
 verbose = false
 
 OptionParser.new do |parser|
-  parser.banner = "Usage: #{$0} [options]"
+  parser.banner = "Usage: #{$PROGRAM_NAME} [options]"
 
   parser.on("-a", "--audio", "Keep audio track") do |value|
     keep_audio = value
