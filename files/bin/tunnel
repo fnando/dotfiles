@@ -1,0 +1,103 @@
+#!/usr/bin/env ruby
+
+require "securerandom"
+require "optparse"
+
+gem "net-ssh"
+gem "net-scp"
+gem "ed25519"
+gem "haikunate"
+gem "bcrypt_pbkdf"
+
+require "net/ssh"
+require "net/scp"
+require "haikunate"
+
+# There are a few puts on this class that cannot be disabled by setting the log.
+# Let's override `puts` so the console it's clean!
+Net::SSH::Service::Forward.class_eval do
+  def puts(*)
+  end
+end
+
+options = {
+  local_port: 3000,
+  remote_port: 0,
+  subdomain: Haiku.call,
+  verbose: false
+}
+
+OptionParser.new do |parser|
+  parser.banner = "Usage: #{$0} [options]"
+
+  parser.on("-p", "--port=PORT", "Set local port. Defaults to 3000.") do |port|
+    options[:local_port] = port.to_i
+  end
+
+  parser.on(
+    "-r",
+    "--remote-port=PORT",
+    "Set remote port. Defaults to the next available port."
+  ) do |port|
+    options[:remote_port] = port.to_i
+  end
+
+  parser.on("-v", "--verbose", "Run in verbose mode") do |verbose|
+    options[:verbose] = verbose
+  end
+
+  parser.on(
+    "-s",
+    "--subdomain=SUBDOMAIN",
+    "Set subdomain. Defaults to random."
+  ) do |subdomain|
+    options[:subdomain] = subdomain
+  end
+end.parse!
+
+puts "=> options: #{options}" if options[:verbose]
+
+stop = false
+
+trap("INT") do
+  puts "\n👋 Bye!"
+  stop = true
+end
+
+reload_cmd = "service caddy restart"
+verbose = options[:verbose] ? Logger::DEBUG : nil
+logger = Logger.new(verbose ? $stdout : StringIO.new)
+options => {local_port:, remote_port:}
+
+Net::SSH.start("fnando.com", "root", use_agent: true, verbose:, logger:) do |ssh|
+  assigned_port = nil
+
+  session = ssh.forward.remote(local_port, "localhost", remote_port) do |port|
+    assigned_port = port
+  end
+
+  session.loop { !assigned_port }
+
+  contents = <<~CADDYFILE
+  #{options[:subdomain]}.t.fnando.dev {
+    reverse_proxy :#{assigned_port}
+  }
+  CADDYFILE
+
+  caddyfile = "/tmp/caddyfile"
+  remote_caddyfile = "/etc/caddy/sites-enabled/#{options[:subdomain]}.conf"
+
+  File.open(caddyfile, "w+") {|io| io << contents }
+
+  ssh.scp.upload(caddyfile, remote_caddyfile)
+  sleep 0.1
+  ssh.exec reload_cmd
+
+  puts "⚡️ localhost:#{local_port} ➡️  localhost:#{assigned_port}"
+  puts "⚡️ https://#{options[:subdomain]}.t.fnando.dev"
+  puts "🙅‍♂️ Press ctrl-c to stop"
+
+  ssh.loop { !stop }
+  ssh.exec "rm #{remote_caddyfile}"
+  ssh.exec reload_cmd
+end
