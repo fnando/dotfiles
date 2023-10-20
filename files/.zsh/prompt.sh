@@ -92,6 +92,13 @@ __fnando_node () {
   fi
 }
 
+__fnando_golang () {
+  if [ -f go.mod  ] && [ -x "$(which go)" ]; then
+    go_version=$(go version | sed -E 's/^go version go([0-9.]+).+$/\1/')
+    echo " ${fg_blue}\ue627 ${go_version}${fg_reset}"
+  fi
+}
+
 __fnando_react () {
   for manifest in yarn.lock package-lock.json package.json; do
     if [ -f "$manifest" ]; then
@@ -122,7 +129,7 @@ __fnando_react () {
 }
 
 __fnando_blocks () {
-  blocks="$(__fnando_ruby)$(__fnando_rails)$(__fnando_node)$(__fnando_react)"
+  blocks="$(__fnando_ruby)$(__fnando_rails)$(__fnando_node)$(__fnando_react)$(__fnando_golang)"
   blocks=$(echo $blocks | sed -E 's/^ +//')
 
   if [[ "$blocks" != "" ]]; then
