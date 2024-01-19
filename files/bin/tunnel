@@ -1,13 +1,18 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
 
 require "securerandom"
 require "optparse"
+require "bundler/inline"
 
-gem "net-ssh"
-gem "net-scp"
-gem "ed25519"
-gem "haikunate"
-gem "bcrypt_pbkdf"
+gemfile do
+  source "https://rubygems.org"
+  gem "net-ssh"
+  gem "net-scp"
+  gem "ed25519"
+  gem "haikunate"
+  gem "bcrypt_pbkdf"
+end
 
 require "net/ssh"
 require "net/scp"
@@ -28,7 +33,7 @@ options = {
 }
 
 OptionParser.new do |parser|
-  parser.banner = "Usage: #{$0} [options]"
+  parser.banner = "Usage: #{$PROGRAM_NAME} [options]"
 
   parser.on("-p", "--port=PORT", "Set local port. Defaults to 3000.") do |port|
     options[:local_port] = port.to_i
@@ -60,8 +65,8 @@ puts "=> options: #{options}" if options[:verbose]
 stop = false
 
 trap("INT") do
-  puts "\n👋 Bye!"
   stop = true
+  puts "\n⚙️  Shutting down https://#{options[:subdomain]}.t.fnando.dev"
 end
 
 reload_cmd = "service caddy restart"
@@ -69,35 +74,62 @@ verbose = options[:verbose] ? Logger::DEBUG : nil
 logger = Logger.new(verbose ? $stdout : StringIO.new)
 options => {local_port:, remote_port:}
 
-Net::SSH.start("fnando.com", "root", use_agent: true, verbose:, logger:) do |ssh|
-  assigned_port = nil
+run = lambda do
+  Net::SSH.start(
+    "fnando.com",
+    "root",
+    use_agent: true,
+    verbose:,
+    logger:
+  ) do |ssh|
+    assigned_port = nil
 
-  session = ssh.forward.remote(local_port, "localhost", remote_port) do |port|
-    assigned_port = port
+    session = ssh.forward.remote(local_port, "localhost", remote_port) do |port|
+      assigned_port = port
+    end
+
+    session.loop { !assigned_port }
+
+    contents = <<~CADDYFILE
+      #{options[:subdomain]}.t.fnando.dev {
+      \treverse_proxy :#{assigned_port}
+      }
+    CADDYFILE
+
+    caddyfile = "/tmp/caddyfile"
+    remote_caddyfile = "/etc/caddy/sites-enabled/#{options[:subdomain]}.conf"
+
+    File.open(caddyfile, "w+") {|io| io << contents }
+
+    ssh.scp.upload(caddyfile, remote_caddyfile)
+    sleep 0.1
+    ssh.exec reload_cmd
+
+    puts
+    puts "⚡️ localhost:#{local_port} ➡️  localhost:#{assigned_port}"
+    puts "⚡️ https://#{options[:subdomain]}.t.fnando.dev"
+    puts "🙅‍♂️ Press ctrl-c to stop"
+
+    ssh.loop { !stop }
+    ssh.exec "rm -rf #{remote_caddyfile}"
+    ssh.exec reload_cmd
+    puts "👋 Bye!"
   end
+end
 
-  session.loop { !assigned_port }
+loop do
+  break if stop
 
-  contents = <<~CADDYFILE
-  #{options[:subdomain]}.t.fnando.dev {
-    reverse_proxy :#{assigned_port}
-  }
-  CADDYFILE
+  run.call unless stop
+rescue Errno::ECONNREFUSED
+  puts "⚠️  localhost:#{local_port} is not running... waiting!"
 
-  caddyfile = "/tmp/caddyfile"
-  remote_caddyfile = "/etc/caddy/sites-enabled/#{options[:subdomain]}.conf"
+  loop do
+    break if stop
 
-  File.open(caddyfile, "w+") {|io| io << contents }
-
-  ssh.scp.upload(caddyfile, remote_caddyfile)
-  sleep 0.1
-  ssh.exec reload_cmd
-
-  puts "⚡️ localhost:#{local_port} ➡️  localhost:#{assigned_port}"
-  puts "⚡️ https://#{options[:subdomain]}.t.fnando.dev"
-  puts "🙅‍♂️ Press ctrl-c to stop"
-
-  ssh.loop { !stop }
-  ssh.exec "rm #{remote_caddyfile}"
-  ssh.exec reload_cmd
+    Socket.tcp("localhost", local_port, connect_timeout: 1).close
+    break
+  rescue Errno::ECONNREFUSED
+    sleep 1
+  end
 end
