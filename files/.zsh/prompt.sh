@@ -68,7 +68,7 @@ __fnando_git_status () {
     state="${state}${fg_red}*${fg_reset}"
   fi
 
-  echo "${fg_yellow}\uf7a1${fg_reset} ${prompt_color}${git_branch}${fg_reset}${state}"
+  echo "${fg_yellow}\ue702${fg_reset} ${prompt_color}${git_branch}${fg_reset}${state}"
 }
 
 __fnando_ruby () {
@@ -96,6 +96,13 @@ __fnando_golang () {
   if [ -f go.mod  ] && [ -x "$(which go)" ]; then
     go_version=$(go version | sed -E 's/^go version go([0-9.]+).+$/\1/')
     echo " ${fg_blue}\ue627 ${go_version}${fg_reset}"
+  fi
+}
+
+__fnando_rust () {
+  if [ -f Cargo.lock  ] && [ -x "$(which rustc)" ]; then
+    rust_version=$(rustc --version | sed -E 's/^rustc ([0-9.]+).+$/\1/')
+    echo " ${fg_red}\ue7a8 ${rust_version}${fg_reset}"
   fi
 }
 
@@ -129,7 +136,7 @@ __fnando_react () {
 }
 
 __fnando_blocks () {
-  blocks="$(__fnando_ruby)$(__fnando_rails)$(__fnando_node)$(__fnando_react)$(__fnando_golang)"
+  blocks="$(__fnando_ruby)$(__fnando_rails)$(__fnando_node)$(__fnando_react)$(__fnando_golang)$(__fnando_rust)"
   blocks=$(echo $blocks | sed -E 's/^ +//')
 
   if [[ "$blocks" != "" ]]; then
