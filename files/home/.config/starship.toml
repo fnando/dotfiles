@@ -1,0 +1,49 @@
+format = '''${custom.hostname} in $directory$git_branch$git_status$git_metrics$ruby$nodejs$golang$rust$python$php
+\$ '''
+
+[ruby]
+format = '[$symbol($version )]($style)'
+symbol = "\ue21e "
+
+[git_branch]
+symbol = "\ue65d "
+
+[git_status]
+stashed = ""
+format = '([$all_status$ahead_behind]($style) )'
+
+[git_metrics]
+disabled = false
+
+[python]
+symbol = "\ue73c "
+style = "green"
+
+[php]
+symbol = "\ue73d "
+
+[golang]
+symbol = "\ue627 "
+
+[nodejs]
+format = '[$symbol($version )]($style)'
+
+[rust]
+style = "red"
+symbol = "\ue7a8"
+format = '[$symbol ($version )]($style)'
+
+[directory]
+style = "blue"
+truncate_to_repo = false
+
+[custom.hostname]
+when = true
+command = "hostname | cut -d. -f1"
+format = '[\[$symbol($output)\]]($style)'
+style = "default"
+
+[custom.git]
+when = true
+command = "starship-git"
+style = "default"
