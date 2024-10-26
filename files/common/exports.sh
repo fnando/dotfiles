@@ -13,6 +13,7 @@ export HISTSIZE=1000000000
 export HISTCONTROL=ignoreboth:erasedups
 export HISTIGNORE="ls:cd:cd -:pwd:exit:date:* --help"
 export SAVEHIST=1000000000
+export HOMEBREW_NO_ENV_HINTS=1
 
 if [[ "$(uname -m)" == "arm64" ]]; then
   export HOMEBREW_PREFIX=/opt/homebrew
