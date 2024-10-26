@@ -13,7 +13,6 @@ export HISTSIZE=1000000000
 export HISTCONTROL=ignoreboth:erasedups
 export HISTIGNORE="ls:cd:cd -:pwd:exit:date:* --help"
 export SAVEHIST=1000000000
-export HOMEBREW_NO_ENV_HINTS=1
 
 if [[ "$(uname -m)" == "arm64" ]]; then
   export HOMEBREW_PREFIX=/opt/homebrew
@@ -33,5 +32,6 @@ export LESS_TERMCAP_so=$'\E[01;44;33m'
 export LESS_TERMCAP_ue=$'\E[0m'
 export LESS_TERMCAP_us=$'\E[00;32m'
 export HOMEBREW_NO_ANALYTICS=1
+export HOMEBREW_NO_ENV_HINTS=1
 export GPG_TTY=$(tty)
 export WORDCHARS='*?[]~$^()}<>'
