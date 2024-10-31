@@ -1,4 +1,4 @@
-format = '''${custom.hostname} in $directory$git_branch$git_status$git_metrics$ruby$nodejs$golang$rust$python$php
+format = '''${custom.hostname} in $directory$git_branch$git_status$git_metrics$ruby$nodejs$golang$rust$python$php${custom.stellar_cli}
 \$ '''
 
 [ruby]
@@ -47,3 +47,10 @@ style = "default"
 when = true
 command = "starship-git"
 style = "default"
+
+[custom.stellar_cli]
+when = "(grep 'soroban-sdk' Cargo.toml &> /dev/null && which stellar &> /dev/null) || false"
+command = "stellar --version | head -n1 | cut -f2 -d' '"
+symbol = "\ueb44"
+format = '[$symbol ($output )]($style)'
+style = "blue"
