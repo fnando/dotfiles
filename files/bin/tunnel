@@ -76,7 +76,7 @@ options => {local_port:, remote_port:}
 
 run = lambda do
   Net::SSH.start(
-    "fnando.com",
+    "ssh.t.fnando.dev",
     "root",
     use_agent: true,
     verbose:,
