@@ -1,0 +1,3 @@
+#! /bin/sh
+
+exec "$HOME/local/princexml/lib/prince/bin/prince" --prefix="$HOME/local/princexml/lib/prince" "$@"

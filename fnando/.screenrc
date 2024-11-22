@@ -1,0 +1,10 @@
+startup_message off
+hardstatus on
+hardstatus alwayslastline "%{wk}[%H] Screen(s): %w %C%A"
+term screen-256color
+activity "<%n>"
+silencewait 15
+bell_msg "DING! (%n)"
+vbell_msg "DING! (%n)"
+vbell on
+nethack off

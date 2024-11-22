@@ -1,0 +1,23 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+input = ARGV[0]
+dirname = File.dirname(input)
+basename = File.basename(input, ".*")
+
+left_channel_output = File.join(dirname, "#{basename} (Left).mp3")
+right_channel_output = File.join(dirname, "#{basename} (Right).mp3")
+
+command = [
+  "ffmpeg",
+  "-i",
+  input,
+  "-map_channel",
+  "0.0.0",
+  left_channel_output,
+  "-map_channel",
+  "0.0.1",
+  right_channel_output
+]
+
+system(*command)

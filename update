@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+set -e
+
+echo "#=> Updating zsh plugins..."
+for repo in $(cat $HOME/.config/default-zsh-plugins); do
+  plugin=$(basename $repo)
+  echo -n "  • $repo... "
+
+  target_dir="$HOME/.config/zsh-plugins/$plugin"
+
+  if [[ -d $target_dir ]]; then
+    cd "$target_dir"
+    git reset --hard --quiet
+    git pull --rebase --quiet
+  else
+    git clone --quiet "https://github.com/$repo.git" "$target_dir"
+  fi
+
+  echo "OK"
+done
+
+echo -n "#=> Updating vundle plugins... "
+vim +PluginInstall +qall
+echo "OK"
+
+echo '#=> Done!'

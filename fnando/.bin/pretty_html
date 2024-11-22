@@ -1,0 +1,23 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+gem "nokogiri"
+require "nokogiri"
+
+path = File.expand_path(ARGV[0]) if ARGV.any?
+
+contents = if $stdin.tty?
+             File.read(path)
+           else
+             $stdin.read
+           end
+
+html = Nokogiri::HTML(contents).to_xhtml(indent: 2)
+
+if path
+  File.open(path, "w") do |io|
+    io << html
+  end
+else
+  puts html
+end

@@ -1,0 +1,10 @@
+--skip-action-cable
+--skip-action-mailbox
+--skip-action-text
+--skip-active-storage
+--skip-bootsnap
+--skip-dev-gems
+--skip-listen
+--skip-spring
+--skip-sprockets
+--skip-turbolinks

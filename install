@@ -1,0 +1,58 @@
+#!/usr/bin/env bash
+
+set -e
+
+function exit_with_message() {
+  echo $1
+  exit 1
+}
+
+# Store variables that will be used later on.
+git_email=$(git config --get --global user.email || echo '')
+git_name=$(git config --get --global user.name || echo '')
+git_signingkey=$(git config --get --global user.signingkey || echo '')
+
+if [[ "$git_signingkey" != "" ]]; then
+  git_gpgsign=true
+else
+  git_gpgsign=false
+fi
+
+# Check if stow is available.
+if [[ ! -x $(which stow) ]]; then
+  exit_with_message "=> Please make sure stow is installed"
+fi
+
+# Source init file
+source $HOME/.config/zsh/exports.sh
+
+# Clone vundle.
+if [[ ! -d "$HOME/.vim/bundle/vundle" ]]; then
+  echo -n "#=> Cloning vim's vundle plugin... "
+  git clone https://github.com/gmarik/vundle.git $HOME/.vim/bundle/vundle &> /dev/null
+  echo "OK"
+fi
+
+# Set up SSH.
+chmod 700 ~/.ssh
+chmod 600 ~/.ssh/config
+mkdir -p ~/.ssh/controlmaster
+chmod 700 ~/.ssh/controlmaster
+
+# Write git config
+echo -n "#=> Setting Git information... "
+[ "" != "$git_name" ] && git config --global user.name "$git_name"
+[ "" != "$git_email" ] && git config --global user.email "$git_email"
+[ "" != "$git_signingkey" ] && git config --global user.signingkey "$git_signingkey"
+git config --global commit.gpgsign $git_gpgsign
+echo "OK"
+
+./update
+
+# Set up launch agents
+if [[ "$(uname)" == "Darwin" ]]; then
+  launchctl unload "$target_file" || true
+  launchctl load "$target_file"
+fi
+
+echo '#=> Done! Restart your terminal!'
