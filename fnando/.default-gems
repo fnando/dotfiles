@@ -1,0 +1,8 @@
+bundler
+pry
+rubocop
+rubocop-fnando
+ruby-lsp
+solargraph
+sorbet
+sorbet-runtime

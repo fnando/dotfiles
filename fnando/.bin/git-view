@@ -1,0 +1,29 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require "json"
+
+def command_json(command)
+  JSON.parse(command, symbolize_names: true)
+end
+
+repo = command_json(`gh repo view --json nameWithOwner`).fetch(:nameWithOwner)
+branch = `git b --show-current`.chomp
+commit = `git rev-parse HEAD`.chomp if branch.empty?
+
+if branch
+  pull_request = command_json(`gh pr list --json headRefName,number`)
+                 .find {|pr| pr[:headRefName] == branch }
+end
+
+url = if pull_request
+        "https://github.com/#{repo}/pull/#{pull_request[:number]}"
+      elsif branch != ""
+        "https://github.com/#{repo}/tree/#{branch}"
+      elsif commit != ""
+        "https://github.com/#{repo}/tree/#{commit}"
+      else
+        "https://github.com/#{repo}"
+      end
+
+system "open", url

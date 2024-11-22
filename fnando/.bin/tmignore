@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+find $HOME/Projects -name 'node_modules' -type d -depth 3 -exec tmutil addexclusion -p {} \;
+find $HOME/Projects -name '.gradle' -type d -depth 4 -exec tmutil addexclusion -p {} \;
+find $HOME/Projects -regex '.*/android/app/build' -type d -depth 5 -exec tmutil addexclusion -p {} \;
+find $HOME/Projects -regex '.*/target' -type d -depth 3 -exec tmutil addexclusion -p {} \;
+find $HOME/Projects -regex '.*/Pods' -type d -depth 4 -exec tmutil addexclusion -p {} \;

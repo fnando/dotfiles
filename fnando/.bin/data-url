@@ -1,0 +1,50 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require "optparse"
+require "base64"
+
+options = {}
+OptionParser.new do |parser|
+  parser.banner = "Usage: #{$PROGRAM_NAME} [options]"
+
+  parser.on("-e=EXTENSION", "--extension=EXTENSION",
+            "Set file extension (to be used with stdin)") do |extension|
+    options[:extension] = extension
+  end
+
+  parser.on("-i=INPUT", "--input=INPUT",
+            "Set file that will be used. Use `-` for stdin") do |input|
+    options[:input] = input
+  end
+end.parse!
+
+if options[:input] == "-"
+  contents = $stdin.read
+  extension = options.fetch(:extension) do
+    puts "ERROR: Extension hasn't been set with stdin"
+    exit 1
+  end
+elsif options[:input] && File.file?(options[:input])
+  contents = File.read(options[:input])
+  extension = File.extname(options[:input]).to_s
+else
+  puts "ERROR: Input hasn't been set"
+  exit 1
+end
+
+content_types = {
+  "svg" => "image/svg+xml",
+  "png" => "image/png",
+  "jpg" => "image/jpeg",
+  "jpeg" => "image/jpeg",
+  "webp" => "image/webp",
+  "gif" => "image/gif"
+}
+
+extension = extension.delete(".").downcase
+content_type = content_types.fetch(extension) do
+  puts "ERROR: #{extension.inspect} is not a valid extension"
+end
+
+puts "data:#{content_type};base64,#{Base64.strict_encode64(contents)}"

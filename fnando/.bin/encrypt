@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+input=$1
+output=${2:-$input.encrypted}
+
+usage() {
+  echo "Usage: encrypt INPUT_FILE OUTPUT_FILE"
+}
+
+if [[ "$input" == "" ]]; then
+  usage
+  exit 1
+fi
+
+if [[ "$output" == "" ]]; then
+  usage
+  exit 1
+fi
+
+openssl des3 -in "$input" -out "$output"

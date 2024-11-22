@@ -1,0 +1,35 @@
+set completion-ignore-case on
+set completion-map-case on
+set convert-meta off
+set expand-tilde on
+#set ignoreeof on
+set input-meta on
+set mark-symlinked-directories on
+set meta-flag on
+set output-meta on
+set page-completions off
+set show-all-if-ambiguous on
+set skip-completed-text on
+set visible-stats on
+set bell-style off
+
+# Enable autocomplete navigation through
+# tab and shift-tab
+# TAB: menu-complete
+# "\e[Z": "\e-1\C-i"
+
+# Enable seaching with up and down arrows
+"\e[B": history-search-forward
+"\e[A": history-search-backward
+
+# Expand matches using *
+"\C-x*": glob-expand-word
+
+# Press ctrl+x, ctrl+r to reload the inputrc file.
+"\C-x\C-r": re-read-init-file
+
+# Kill words with ctrl+w
+"\C-w": backward-kill-word
+
+# Kill whole line, no matter what's the cursor position.
+"\C-d": kill-whole-line

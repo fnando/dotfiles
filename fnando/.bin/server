@@ -1,0 +1,70 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+gem "rack"
+gem "rackup"
+gem "puma"
+require "rack"
+require "rackup"
+require "yaml"
+require "optparse"
+
+options = {root: Dir.pwd, index: true}
+
+OptionParser.new do |opts|
+  opts.banner = "Usage: #{$PROGRAM_NAME} [options]"
+
+  opts.on("-r", "--root=DIR",
+          "Set root directory. Defaults to current directory.") do |root|
+    options[:root] = File.expand_path(root)
+  end
+
+  opts.on("-i", "--index", "Use index files. Defaults to true.") do |index|
+    options[:index] = index
+  end
+
+  opts.on("-p", "--port=PORT", "Defaults to 1234.") do |port|
+    options[:port] = port
+  end
+
+  opts.on("-b", "--binding=BINDING", "Defaults to 127.0.0.1.") do |binding|
+    options[:binding] = binding
+  end
+
+  opts.on("-h", "--help", "Prints this help") do
+    puts opts
+    exit
+  end
+end.parse!
+
+app = Rack::Builder.app do
+  use Rack::ContentLength
+  use Rack::CommonLogger
+  use Rack::Deflater
+
+  if options[:index]
+    use Rack::Static,
+        urls: {"/" => "index.html"},
+        root: options[:root]
+  end
+
+  run lambda {|env|
+    directory_app = Rack::Directory.new(options[:root])
+    response = directory_app.call(env)
+
+    return response if response.first == 200
+
+    index_file = File.join(options[:root], "index.html")
+
+    if File.file?(index_file)
+      return [200, {"Content-Type" => "text/html"}, [File.read(index_file)]]
+    end
+
+    response
+  }
+end
+
+handler = Rackup::Handler.pick(%w[puma])
+handler.run app,
+            Port: options.fetch(:port, 1234),
+            Host: options.fetch(:binding, "127.0.0.1")

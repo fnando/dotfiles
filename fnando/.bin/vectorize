@@ -1,0 +1,43 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require "shellwords"
+require "tempfile"
+
+tmpfile = File.join(Dir.tmpdir, "file.bmp")
+input = ARGV.first.to_s.strip
+
+if input.empty?
+  $stderr << "USAGE: #{$PROGRAM_NAME} [IMAGE_PATH]\n"
+  exit 1
+end
+
+unless File.file?(input)
+  $stderr << "ERROR: #{input.inspect} is not a valid file.\n"
+  exit 1
+end
+
+system "convert",
+       Shellwords.shellescape(input),
+       "-alpha",
+       "remove",
+       "-alpha",
+       "off",
+       "-auto-threshold",
+       "otsu",
+       tmpfile
+
+output = File.join(File.dirname(input), "#{File.basename(input, '.*')}.svg")
+bgcolor = `convert #{Shellwords.shellescape(tmpfile)} -format "%[pixel:u.p{0,0}]" info:`.chomp
+has_black_bgcolor = bgcolor == "srgb(0,0,0)"
+
+system(
+  *[
+    "potrace",
+    Shellwords.shellescape(tmpfile),
+    has_black_bgcolor ? "--invert" : nil,
+    "--svg",
+    "--output",
+    Shellwords.shellescape(output)
+  ].compact
+)

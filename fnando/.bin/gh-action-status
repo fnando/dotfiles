@@ -1,0 +1,16 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require "English"
+require "json"
+
+data = JSON.parse(`gh run list --json databaseId,name`, symbolize_names: true)
+run_id = data.select {|action| action[:name] == ARGV[0] }
+             .map {|action| action[:databaseId] }
+             .max
+
+system "gh", "run", "view", run_id.to_s, "--exit-status"
+
+failed = $CHILD_STATUS.exitstatus.nonzero?
+
+system "gh", "run", "view", run_id.to_s, "--log-failed" if failed

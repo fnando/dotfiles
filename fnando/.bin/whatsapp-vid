@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+if [[ ! -f "$1" ]]; then
+  echo "Usage: $0 [VIDEO PATH]"
+fi
+
+ffmpeg -i $1  -c:v libx264 -profile:v baseline -level 3.0 -pix_fmt yuv420p $1.mp4

@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+xcrun simctl list --json devices available | jq '.devices | to_entries[] | (.key | capture("com\\.apple\\.CoreSimulator\\.SimRuntime\\.iOS-(?<version>.+)")) as {$version} | .value[] | {name: "\(.name)", version: $version | sub("-"; "."), udid}'

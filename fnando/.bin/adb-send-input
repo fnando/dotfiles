@@ -1,0 +1,13 @@
+#!/usr/bin/env ruby
+
+require "shellwords"
+
+words = `pbpaste`
+        .chomp
+        .split("%s")
+        .flat_map {|word| [word.gsub(" ", "%s"), "%", "s"] }
+        .slice(0..-3)
+
+words.each do |word|
+  system "adb", "shell", "input", "text", word
+end

@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+branch=`git branch 2> /dev/null | grep \* | sed 's/* //'`
+git config branch.$branch.remote origin
+git config branch.$branch.merge refs/heads/$branch
+echo "tracking origin/$branch"

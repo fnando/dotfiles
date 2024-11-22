@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+icon=checkmark.circle
+summary="Finished in $BOLT_ELAPSED, $BOLT_TEST_COUNT tests"
+
+if [[ "$BOLT_FAIL_COUNT" != "0" ]]; then
+  icon=exclamationmark.triangle
+  summary="$summary, $BOLT_FAIL_COUNT failed"
+fi
+
+if [[ "$BOLT_SKIP_COUNT" != "0" ]]; then
+  summary="$summary, $BOLT_SKIP_COUNT skipped"
+fi
+
+http --form --ignore-stdin POST http://127.0.0.1:32323/hud title="$BOLT_TITLE" message="$summary" symbolName=$icon

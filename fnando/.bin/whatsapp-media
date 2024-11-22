@@ -1,0 +1,71 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require "time"
+require "fileutils"
+
+files = ARGV.filter do |file|
+  next unless file.match?(/\.(jp?eg|mp4)$/i)
+
+  true
+end
+
+counter = Hash.new {|h, k| h[k] = -1 }
+
+files.each do |file|
+  matches =
+    file.match(/(?<date>\d{4}-\d{2}-\d{2}).*?(?<time>\d{2}.\d{2}.\d{2})/i)
+
+  next unless matches
+
+  date = matches[:date]
+  time = matches[:time].tr(".", ":")
+
+  datetime = Time.parse("#{date}T#{time}-03:00")
+
+  ext = File.extname(file).downcase
+  base_output = "file-#{date}-#{time.tr(':', '-')}"
+  counter[base_output] += 1
+  output = File.join(
+    File.dirname(file),
+    "output",
+    "#{base_output}-#{counter[base_output]}#{ext}"
+  )
+
+  FileUtils.mkdir_p(File.dirname(output))
+  FileUtils.rm_rf(output)
+  FileUtils.cp(file, output)
+  File.utime(File.atime(file), datetime, output)
+
+  exif_timestamp = "#{date.tr('-', ':')} #{time}"
+  ffmpeg_timestamp = datetime.iso8601
+  ffmpeg_output = output.gsub(".mp4", "-final.mp4").to_s
+
+  case ext
+  when ".jpeg", ".jpg"
+    system "exiftool",
+           "-quiet",
+           "-overwrite_original",
+           "-datetimeoriginal='#{exif_timestamp}'",
+           "-EXIF:OffsetTime*=-3:00",
+           output
+  when ".mp4"
+    cmd = [
+      "ffmpeg",
+      "-hide_banner",
+      "-loglevel error",
+      "-i",
+      output,
+      "-y",
+      "-metadata",
+      %["creation_time=#{ffmpeg_timestamp}"],
+      "-codec",
+      "copy",
+      ffmpeg_output
+    ]
+
+    system(cmd.join(" "))
+    FileUtils.rm output
+    FileUtils.mv ffmpeg_output, output
+  end
+end

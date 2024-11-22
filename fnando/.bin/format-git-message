@@ -1,0 +1,45 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require "open3"
+
+file = ARGV.last
+
+exit(1) unless File.file?(file)
+
+content = File.read(file)
+number_of_lines = 0
+lines = content.lines.map(&:chomp)
+
+lines.each do |line|
+  break if line.include?("# Please enter the commit message")
+
+  number_of_lines += 1
+end
+
+message_lines = lines.shift(number_of_lines).map {|line| line.chomp.rstrip }
+
+formatted = message_lines.each_with_object([]) do |line, buffer|
+  line = line.chomp
+  prefix = " " * line[/^(([-*]|[a-z\d]+[.)])\s+)/, 1].to_s.size
+
+  if line.size <= 72 || line.count(" ") <= 1
+    buffer << line
+  else
+    words = line.split
+    new_line = ""
+
+    words.each do |word|
+      new_line = if new_line.size + word.size < 72
+                   "#{new_line}#{word} "
+                 else
+                   buffer << new_line unless new_line.empty?
+                   "#{prefix}#{word} "
+                 end
+    end
+
+    buffer << new_line.rstrip
+  end
+end
+
+puts lines.unshift(*formatted).join("\n")
