@@ -8,7 +8,6 @@ mv Brewfile .Brewfile
 
 terminal-notifier \
   -message "Brew package list has been backed up to ~/.Brewfile" \
-  -ignoreDnD \
   -title 'Homebrew Backup' \
   -group homebrew \
   &> /dev/null
