@@ -31,7 +31,6 @@ source $zsh_dir/go.sh
 source $zsh_dir/aliases.sh
 source $zsh_dir/zsh-plugins.sh
 source $zsh_dir/path.sh
-source $zsh_dir/autojump.sh
 source $zsh_dir/android-studio.sh
 
 if [[ -f $after_hook ]]; then
