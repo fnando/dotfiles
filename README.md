@@ -38,17 +38,16 @@ On macOS you may want to disable the line that sets the `PATH` on
 
 ### Install Dotfiles
 
-1. Clone https://github.com/fnando/dotfiles somewhere, like
-   `~/Projects/dotfiles`.
-2. Go to `~/Projects/dotfiles` then run `./install`.
+1. Clone https://github.com/fnando/dotfiles somewhere, like `~/.dotfiles`.
+2. Go to `~/.dotfiles` then run `./install`.
 3. Now run `stow fnando -t $HOME` to symlink all config files.
 4. Restart your terminal.
 
 How it works: most of the configuration is managed by
 [stow](https://www.gnu.org/software/stow/), which symlinks files to the right
 places. That means you can easily add or remove configurations by adding or
-changing files on the `~/Projects/dotfiles` directory. Then you can commit and
-push these changes to your own repo.
+changing files on the `~/.dotfiles` directory. Then you can commit and push
+these changes to your own repo.
 
 ### Install ASDF
 
