@@ -355,6 +355,7 @@
       "Unlimited Scrollback": false,
       "Use Bold Font": false,
       "Use Bright Bold": false,
+      "Use Cursor Guide": true,
       "Use Italic Font": false,
       "Use Non-ASCII Font": false,
       "Vertical Spacing": 1.1000000000000001,
