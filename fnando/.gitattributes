@@ -1,1 +1,2 @@
 *.png diff=exif
+zsh-history.db merge=histdb
