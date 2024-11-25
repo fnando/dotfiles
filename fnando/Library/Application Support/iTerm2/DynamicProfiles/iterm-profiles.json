@@ -1,13 +1,7 @@
 {
 "Profiles": [
 {
-  "Ansi 5 Color" : {
-    "Red Component" : 0.40000000000000002,
-    "Color Space" : "sRGB",
-    "Blue Component" : 0.55294117647058827,
-    "Alpha Component" : 1,
-    "Green Component" : 0
-  },
+  "ASCII Ligatures" : true,
   "Working Directory" : "\/Users\/fnando",
   "Prompt Before Closing 2" : false,
   "Dynamic Profile Filename" : "\/Users\/fnando\/Library\/Application Support\/iTerm2\/DynamicProfiles\/iterm-profiles.json",
@@ -289,13 +283,7 @@
   "Name" : "fnando",
   "Blinking Cursor" : false,
   "Guid" : "43BDAE23-2A8F-4AD8-8260-4AC4887232FB",
-  "Ansi 8 Color" : {
-    "Red Component" : 0.13333333333333333,
-    "Color Space" : "sRGB",
-    "Blue Component" : 0.13333333333333333,
-    "Alpha Component" : 1,
-    "Green Component" : 0.13333333333333333
-  },
+  "Idle Code" : 0,
   "Ansi 10 Color" : {
     "Red Component" : 0.35686274509803922,
     "Color Space" : "sRGB",
@@ -303,7 +291,13 @@
     "Alpha Component" : 1,
     "Green Component" : 0.61568627450980395
   },
-  "Idle Code" : 0,
+  "Ansi 8 Color" : {
+    "Red Component" : 0.13333333333333333,
+    "Color Space" : "sRGB",
+    "Blue Component" : 0.13333333333333333,
+    "Alpha Component" : 1,
+    "Green Component" : 0.13333333333333333
+  },
   "Ambiguous Double Width" : false,
   "Blur Radius" : 11.18158522862468,
   "Ansi 0 Color" : {
@@ -367,11 +361,23 @@
   "Columns" : 191,
   "Visual Bell" : false,
   "Custom Directory" : "Recycle",
-  "Thin Strokes" : 0,
-  "ASCII Ligatures" : true
+  "Ansi 5 Color" : {
+    "Red Component" : 0.40000000000000002,
+    "Color Space" : "sRGB",
+    "Blue Component" : 0.55294117647058827,
+    "Alpha Component" : 1,
+    "Green Component" : 0
+  },
+  "Thin Strokes" : 0
 },
 {
-  "ASCII Ligatures" : true,
+  "Ansi 5 Color" : {
+    "Red Component" : 0.76896989345550537,
+    "Color Space" : "P3",
+    "Blue Component" : 0.90320760011672974,
+    "Alpha Component" : 1,
+    "Green Component" : 0.65255838632583618
+  },
   "Working Directory" : "\/Users\/fnando",
   "Prompt Before Closing 2" : false,
   "Dynamic Profile Filename" : "\/Users\/fnando\/Library\/Application Support\/iTerm2\/DynamicProfiles\/iterm-profiles.json",
@@ -384,11 +390,11 @@
   },
   "Rows" : 44,
   "Ansi 11 Color" : {
-    "Red Component" : 0.97647058823529409,
-    "Color Space" : "sRGB",
-    "Blue Component" : 0.0078431372549019607,
+    "Red Component" : 0.96113520860671997,
+    "Color Space" : "P3",
+    "Blue Component" : 0.46488755941390991,
     "Alpha Component" : 1,
-    "Green Component" : 0.68235294117647061
+    "Green Component" : 0.75544160604476929
   },
   "Use Italic Font" : false,
   "Foreground Color" : {
@@ -443,11 +449,11 @@
   "Flashing Bell" : false,
   "BM Growl" : true,
   "Ansi 3 Color" : {
-    "Red Component" : 0.97647058823529409,
-    "Color Space" : "sRGB",
-    "Blue Component" : 0.0078431372549019607,
+    "Red Component" : 0.96113520860671997,
+    "Color Space" : "P3",
+    "Blue Component" : 0.46488755941390991,
     "Alpha Component" : 1,
-    "Green Component" : 0.68235294117647061
+    "Green Component" : 0.75544160604476929
   },
   "Icon" : 0,
   "Use Non-ASCII Font" : false,
@@ -580,18 +586,18 @@
     }
   },
   "Ansi 14 Color" : {
-    "Red Component" : 0,
-    "Color Space" : "sRGB",
-    "Blue Component" : 0.69803921568627447,
+    "Red Component" : 0.61162078380584717,
+    "Color Space" : "P3",
+    "Blue Component" : 0.84476369619369507,
     "Alpha Component" : 1,
-    "Green Component" : 0.65098039215686276
+    "Green Component" : 0.8125184178352356
   },
   "Ansi 2 Color" : {
-    "Red Component" : 0.3592987060546875,
-    "Color Space" : "sRGB",
-    "Blue Component" : 0.30792236328125,
+    "Red Component" : 0.63895869255065918,
+    "Color Space" : "P3",
+    "Blue Component" : 0.54729437828063965,
     "Alpha Component" : 1,
-    "Green Component" : 0.8459625244140625
+    "Green Component" : 0.74498128890991211
   },
   "Send Code When Idle" : false,
   "ASCII Anti Aliased" : true,
@@ -599,11 +605,11 @@
     "Dynamic"
   ],
   "Ansi 9 Color" : {
-    "Red Component" : 0.89411764705882357,
-    "Color Space" : "sRGB",
-    "Blue Component" : 0.14117647058823529,
+    "Red Component" : 0.92165189981460571,
+    "Color Space" : "P3",
+    "Blue Component" : 0.57298403978347778,
     "Alpha Component" : 1,
-    "Green Component" : 0.31372549019607843
+    "Green Component" : 0.43462502956390381
   },
   "Use Bold Font" : false,
   "Silence Bell" : true,
@@ -633,38 +639,38 @@
     "Green Component" : 0.59607845544815063
   },
   "Ansi 1 Color" : {
-    "Red Component" : 0.89411765336990356,
-    "Color Space" : "sRGB",
-    "Blue Component" : 0.14117647707462311,
+    "Red Component" : 0.92165189981460571,
+    "Color Space" : "P3",
+    "Blue Component" : 0.57298403978347778,
     "Alpha Component" : 1,
-    "Green Component" : 0.3151092529296875
+    "Green Component" : 0.43462502956390381
   },
   "Name" : "fnando-dark",
   "Blinking Cursor" : false,
   "Guid" : "74935EA3-BC2A-4B5C-BE72-F8C811A72866",
-  "Idle Code" : 0,
-  "Ansi 10 Color" : {
-    "Red Component" : 0.49411764705882355,
-    "Color Space" : "P3",
-    "Blue Component" : 0.38039215686274508,
-    "Alpha Component" : 1,
-    "Green Component" : 0.83529411764705885
-  },
   "Ansi 8 Color" : {
-    "Red Component" : 0.13333333333333333,
-    "Color Space" : "sRGB",
-    "Blue Component" : 0.13333333333333333,
+    "Red Component" : 0.27708888053894043,
+    "Color Space" : "P3",
+    "Blue Component" : 0.48978400230407715,
     "Alpha Component" : 1,
-    "Green Component" : 0.13333333333333333
+    "Green Component" : 0.25208801031112671
   },
+  "Ansi 10 Color" : {
+    "Red Component" : 0.61176470588235299,
+    "Color Space" : "P3",
+    "Blue Component" : 0.52549019607843139,
+    "Alpha Component" : 1,
+    "Green Component" : 0.74901960784313726
+  },
+  "Idle Code" : 0,
   "Ambiguous Double Width" : false,
   "Blur Radius" : 11.18158522862468,
   "Ansi 0 Color" : {
-    "Red Component" : 0.13333333333333333,
-    "Color Space" : "sRGB",
-    "Blue Component" : 0.13333333333333333,
+    "Red Component" : 0.27708888053894043,
+    "Color Space" : "P3",
+    "Blue Component" : 0.48978400230407715,
     "Alpha Component" : 1,
-    "Green Component" : 0.13333333333333333
+    "Green Component" : 0.25208801031112671
   },
   "Blur" : true,
   "Normal Font" : "JetBrainsMonoNFP-Medium 16",
@@ -691,11 +697,11 @@
   },
   "Unicode Version" : 9,
   "Ansi 6 Color" : {
-    "Red Component" : 0,
-    "Color Space" : "sRGB",
-    "Blue Component" : 0.69803921568627447,
+    "Red Component" : 0.61162078380584717,
+    "Color Space" : "P3",
+    "Blue Component" : 0.84476369619369507,
     "Alpha Component" : 1,
-    "Green Component" : 0.65098039215686276
+    "Green Component" : 0.8125184178352356
   },
   "Transparency" : 0,
   "Background Color" : {
@@ -711,23 +717,17 @@
   ],
   "Non Ascii Font" : "Monaco 12",
   "Ansi 13 Color" : {
-    "Red Component" : 0.40000000000000002,
-    "Color Space" : "sRGB",
-    "Blue Component" : 0.55294117647058827,
+    "Red Component" : 0.76896989345550537,
+    "Color Space" : "P3",
+    "Blue Component" : 0.90320760011672974,
     "Alpha Component" : 1,
-    "Green Component" : 0
+    "Green Component" : 0.65255838632583618
   },
   "Columns" : 191,
   "Visual Bell" : false,
   "Custom Directory" : "Recycle",
-  "Ansi 5 Color" : {
-    "Red Component" : 0.40000000000000002,
-    "Color Space" : "sRGB",
-    "Blue Component" : 0.55294117647058827,
-    "Alpha Component" : 1,
-    "Green Component" : 0
-  },
-  "Thin Strokes" : 0
+  "Thin Strokes" : 0,
+  "ASCII Ligatures" : true
 }
 ]
 }
