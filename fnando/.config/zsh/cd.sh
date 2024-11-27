@@ -18,10 +18,9 @@ if [ -f $CDHISTORY ]; then
    fi
 fi
 
-if [ ! -f $CDHISTORY ]; then              # Only autocd when the $CDHISTORY file
-  if [ -d /Projects ]; then               # cannot be found. In this case, try
-    cd /Projects                          # to find the /Projects directory,
-  elif [ -d /vagrant ]; then              # defaulting to the vagrant directory.
-    cd /vagrant
+# Only autocd when the $CDHISTORY file cannot be found.
+if [ ! -f $CDHISTORY ]; then
+  if [ -d $HOME/Projects ]; then
+    cd $HOME/Projects
   fi
 fi
