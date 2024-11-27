@@ -7,7 +7,7 @@
 // custom settings, run the `open default settings` command
 // from the command palette or from `Zed` application menu.
 {
-  "theme": "One Light",
+  "theme": "Slick",
   "assistant": {
     "default_model": {
       "provider": "copilot_chat",
@@ -16,7 +16,13 @@
     "version": "2"
   },
   "collaboration_panel": {
-    "dock": "right"
+    "button": false
+  },
+  "notification_panel": {
+    "button": false
+  },
+  "chat_panel": {
+    "button": false
   },
   "telemetry": {
     "diagnostics": false,
@@ -24,9 +30,6 @@
   },
   "ui_font_size": 16,
   "buffer_font_size": 16,
-  "buffer_font_features": {
-    "ligatures": true
-  },
   "ui_font_family": "SF Pro Text",
   "buffer_font_family": "JetBrains Mono",
   "terminal": {
@@ -76,7 +79,13 @@
     "terminal.ansi.dim_red": "#e45124",
     "terminal.ansi.dim_white": "#777777",
     "terminal.ansi.dim_yellow": "#f9ae02",
-    "terminal.foreground": "#222222"
+    "terminal.foreground": "#222222",
+    "terminal.bright_foreground": "#222222",
+    "players": [
+      {
+        "cursor": "#1798e0"
+      }
+    ]
   },
   "jupyter": {
     "kernel_selections": {
