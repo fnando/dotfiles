@@ -1,0 +1,87 @@
+// Zed settings
+//
+// For information on how to configure Zed, see the Zed
+// documentation: https://zed.dev/docs/configuring-zed
+//
+// To see all of Zed's default settings without changing your
+// custom settings, run the `open default settings` command
+// from the command palette or from `Zed` application menu.
+{
+  "theme": "One Light",
+  "assistant": {
+    "default_model": {
+      "provider": "copilot_chat",
+      "model": "gpt-4o"
+    },
+    "version": "2"
+  },
+  "collaboration_panel": {
+    "dock": "right"
+  },
+  "telemetry": {
+    "diagnostics": false,
+    "metrics": false
+  },
+  "ui_font_size": 16,
+  "buffer_font_size": 16,
+  "buffer_font_features": {
+    "ligatures": true
+  },
+  "ui_font_family": "SF Pro Text",
+  "buffer_font_family": "JetBrains Mono",
+  "terminal": {
+    "font_family": "JetBrainsMono Nerd Font Propo",
+    "font_size": 16,
+    "cursor_shape": "block",
+    "font_weight": 500
+  },
+  "base_keymap": "SublimeText",
+  "show_whitespaces": "all",
+  "file_scan_exclusions": [
+    "**/.git",
+    "target/**",
+    "**/node_modules/**",
+    "**/.svn",
+    "**/.hg",
+    "**/CVS",
+    "**/.DS_Store",
+    "**/Thumbs.db",
+    "**/.classpath",
+    "**/.settings",
+    "**/dist/**",
+    "**/build/**"
+  ],
+  "experimental.theme_overrides": {
+    "terminal.ansi.black": "#222222",
+    "terminal.ansi.blue": "#0599d0",
+    "terminal.ansi.cyan": "#00a6b2",
+    "terminal.ansi.green": "#5c9e4f",
+    "terminal.ansi.magenta": "#66018d",
+    "terminal.ansi.red": "#e45124",
+    "terminal.ansi.white": "#777777",
+    "terminal.ansi.yellow": "#f9ae02",
+    "terminal.ansi.bright_black": "#222222",
+    "terminal.ansi.bright_blue": "#0599d0",
+    "terminal.ansi.bright_cyan": "#00a6b2",
+    "terminal.ansi.bright_green": "#5c9e4f",
+    "terminal.ansi.bright_magenta": "#66018d",
+    "terminal.ansi.bright_red": "#e45124",
+    "terminal.ansi.bright_white": "#777777",
+    "terminal.ansi.bright_yellow": "#f9ae02",
+    "terminal.ansi.dim_black": "#222222",
+    "terminal.ansi.dim_blue": "#0599d0",
+    "terminal.ansi.dim_cyan": "#00a6b2",
+    "terminal.ansi.dim_green": "#5c9e4f",
+    "terminal.ansi.dim_magenta": "#66018d",
+    "terminal.ansi.dim_red": "#e45124",
+    "terminal.ansi.dim_white": "#777777",
+    "terminal.ansi.dim_yellow": "#f9ae02",
+    "terminal.foreground": "#222222"
+  },
+  "jupyter": {
+    "kernel_selections": {
+      "typescript": "deno",
+      "javascript": "deno"
+    }
+  }
+}
