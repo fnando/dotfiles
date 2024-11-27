@@ -7,10 +7,10 @@ noglob-command() {
   eval "alias $name='noglob $name'"
 }
 
-noglob-command 'git'
-noglob-command 'npm'
-noglob-command 'bower'
-noglob-command 'ri'
-noglob-command 'rake'
-noglob-command 'http'
-noglob-command 'll'
+noglob-command "git"
+noglob-command "npm"
+noglob-command "bower"
+noglob-command "ri"
+noglob-command "rake"
+noglob-command "http"
+noglob-command "ll"
