@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+if [ -z "$1" ]; then
+  echo "Usage: rscp <source> <destination>"
+  exit 1
+fi
+
+rsync -vr --partial --progress -e ssh $1 $2
