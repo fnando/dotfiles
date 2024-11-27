@@ -22,7 +22,6 @@ source $zsh_dir/options.sh
 source $zsh_dir/asdf.sh
 source $zsh_dir/cd.sh
 source $zsh_dir/md.sh
-source $zsh_dir/rscp.sh
 source $zsh_dir/bundler.sh
 source $zsh_dir/psgrep.sh
 source $zsh_dir/tmux.sh
