@@ -1,0 +1,16 @@
+[
+  {
+    "bindings": {
+      "ctrl-t": "workspace::NewTerminal",
+      "ctrl-`": "workspace::ToggleBottomDock",
+      "ctrl-shift-left": "editor::SelectToPreviousSubwordStart",
+      "ctrl-shift-right": "editor::SelectToNextSubwordEnd",
+      "alt-shift-left": "editor::SelectToPreviousWordStart",
+      "alt-shift-right": "editor::SelectToNextWordEnd",
+      "ctrl-shift-k": "editor::DeleteLine",
+      "ctrl-shift-i": "editor::SelectLargerSyntaxNode", // Expand Selection
+      "ctrl-shift-l": "editor::SelectSmallerSyntaxNode", // Shrink Selection
+      "f5": "editor::SortLinesCaseInsensitive"
+    }
+  }
+]
