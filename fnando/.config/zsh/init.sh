@@ -30,7 +30,6 @@ source $zsh_dir/cargo.sh
 source $zsh_dir/starship.sh
 source $zsh_dir/aliases.sh
 source $zsh_dir/zsh-plugins.sh
-source $zsh_dir/path.sh
 source $zsh_dir/android-studio.sh
 
 source-file-if-exists $after_hook

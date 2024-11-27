@@ -20,7 +20,7 @@ else
   export HOMEBREW_PREFIX=/usr/local
 fi
 
-export PATH="$HOME/.bin:$HOME/.local/bin:./bin:./node_modules/.bin:$GEM_HOME/bin:$NPM_HOME/bin:$HOME/.bash/bin:$HOME/.zsh/bin:/usr/local/MacGPG2/bin:$HOMEBREW_PREFIX/bin:$HOMEBREW_PREFIX/sbin:/usr/local/bin:/usr/bin:/usr/sbin:/bin:/sbin:/opt/X11/bin"
+export PATH="$HOME/.bin:$HOME/.local/bin:./bin:./node_modules/.bin:$HOME/.bash/bin:$HOME/.zsh/bin:/usr/local/MacGPG2/bin:$HOMEBREW_PREFIX/bin:$HOMEBREW_PREFIX/sbin:/usr/local/bin:/usr/bin:/usr/sbin:/bin:/sbin:/opt/X11/bin"
 export CDHISTORY="/tmp/cd-$USER"
 export PAGER="less"
 export LESS="-REX"
