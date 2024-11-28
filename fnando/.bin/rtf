@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+
 if [[ "$#" = 0 ]]; then
   echo "Usage: rtf LEXER [theme=tango]"
   exit

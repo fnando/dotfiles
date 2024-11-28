@@ -27,5 +27,21 @@ setopt share_history
 unsetopt correct_all
 unsetopt menu_complete
 unsetopt flow_control
+
+# case-insensitive completion
 zstyle ':completion:*' special-dirs true
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+zstyle ':completion:*' list-colors '${(s.:.)LS_COLORS}'
+
+set -o ignoreeof
+set bell-style none
+ulimit -S -c 0
+unset MAILCHECK
+
+_noglob-command "git"
+_noglob-command "npm"
+_noglob-command "bower"
+_noglob-command "ri"
+_noglob-command "rake"
+_noglob-command "http"
+_noglob-command "ll"

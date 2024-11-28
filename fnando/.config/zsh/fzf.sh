@@ -1,0 +1,1 @@
+eval "$(fzf --zsh)" || true

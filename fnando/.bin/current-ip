@@ -1,4 +1,9 @@
 #!/usr/bin/env bash
 
-script=current-ip-$(uname | tr '[:upper:]' '[:lower:]')
-$script $1
+if [[ "$(uname)" == "Darwin" ]]; then
+  interface=${1:-en0}
+  ifconfig $interface | grep 'inet ' | cut -d' ' -f2
+else
+  interface=${1:-eth0}
+  ifconfig $interface | grep 'inet addr' | sed -E 's/[^:]+:([^ ]+).*$/\1/'
+fi

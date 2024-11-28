@@ -1,2 +1,2 @@
 # Set up rust's cargo
-source-file-if-exists "$HOME/.cargo/env"
+_source-file-if-exists "$HOME/.cargo/env"

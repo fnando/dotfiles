@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-wget -q -O - https://raw.github.com/fnando/dotfiles/master/install | bash
-wget -q -O - https://raw.github.com/fnando/dotfiles/master/upgrade | bash

@@ -1,4 +1,21 @@
 #!/usr/bin/env bash
 
+default_eth_device=$(system_profiler SPAirPortDataType | grep -E ' en\d:' | tr -d ' ' | tr -d ':')
+
+if [[ "$@" =~ "-h" ]]; then
+  echo "Usage: spoof [ETHERNET_INTERFACE]"
+  echo
+  echo "ETHERNET_INTERFACE defaults to $default_eth_device."
+  exit
+fi
+
+current-mac() {
+  eth_device=$1
+  ifconfig $eth_device | grep '\tether ' | cut -d' ' -f2
+}
+
+eth_device=${1:-$default_eth_device}
+echo "from: $(current-mac $eth_device)"
 mac=$(openssl rand -hex 1 | tr '[:lower:]' '[:upper:]' | xargs echo "obase=2;ibase=16;" | bc | cut -c1-6 | sed 's/$/00/' | xargs echo "obase=16;ibase=2;" | bc | sed "s/$/:$(openssl rand -hex 5 | sed 's/\(..\)/\1:/g; s/.$//' | tr '[:lower:]' '[:upper:]')/")
-sudo ifconfig en0 ether $mac
+sudo ifconfig $eth_device ether $mac
+echo "  to: $(current-mac $eth_device)"

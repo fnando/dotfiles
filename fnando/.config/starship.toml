@@ -1,5 +1,28 @@
-format = '''${custom.hostname} in $directory$git_branch$git_status$git_metrics$ruby$nodejs$golang$rust$python$php${custom.stellar_cli}
-\$ '''
+format = """
+${custom.hostname} \
+in $directory\
+$git_branch\
+$git_status\
+$git_metrics\
+$ruby\
+$nodejs\
+$golang\
+$rust\
+$python\
+$php\
+${custom.stellar_cli}
+$status\\$ """
+
+[status]
+format = "[$symbol]($style) "
+disabled = false
+symbol = "●"
+success_symbol = ""
+not_executable_symbol = ""
+not_found_symbol = ""
+sigint_symbol = ""
+signal_symbol = ""
+style = "red"
 
 [ruby]
 format = '[$symbol($version )]($style)'
@@ -41,11 +64,6 @@ truncate_to_repo = false
 when = true
 command = "hostname | cut -d. -f1"
 format = '[\[$symbol($output)\]]($style)'
-style = "default"
-
-[custom.git]
-when = true
-command = "starship-git"
 style = "default"
 
 [custom.stellar_cli]

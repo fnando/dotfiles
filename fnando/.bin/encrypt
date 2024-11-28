@@ -16,4 +16,4 @@ if [[ "$output" == "" ]]; then
   exit 1
 fi
 
-openssl des3 -in "$input" -out "$output"
+openssl enc -aes-256-cbc -pbkdf2 -salt -pbkdf2 -in "$input" -out "$output"
