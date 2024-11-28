@@ -9,4 +9,4 @@ if [[ ! -f $op_env ]]; then
   chmod 600 $op_env
 fi
 
-source-file-if-exists $op_env
+_source-file-if-exists $op_env

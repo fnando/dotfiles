@@ -13,6 +13,7 @@ tap "hashicorp/tap"
 tap "heroku/brew"
 tap "homebrew-ffmpeg/ffmpeg"
 tap "homebrew/bundle"
+tap "homebrew/command-not-found"
 tap "homebrew/services"
 tap "jakehilborn/jakehilborn"
 tap "jonof/kenutils"
@@ -198,6 +199,8 @@ brew "espeak"
 brew "exiftool"
 # ISO AAC audio encoder
 brew "faac"
+# Like neofetch, but much faster because written mostly in C
+brew "fastfetch"
 # Standalone library of the Fraunhofer FDK AAC code from Android
 brew "fdk-aac"
 # Play, record, convert, and stream audio and video
@@ -470,6 +473,8 @@ brew "yamllint"
 brew "yt-dlp"
 # Pluggable terminal workspace, with terminal multiplexer as the base feature
 brew "zellij"
+# Flexible and fast Zsh plugin manager
+brew "zinit"
 # UNIX shell (command interpreter)
 brew "zsh"
 # Fish-like fast/unobtrusive autosuggestions for zsh
