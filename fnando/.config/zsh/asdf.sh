@@ -19,5 +19,7 @@ fi
 if [[ -f "$asdf_golang_file" ]]; then
   source "$asdf_golang_file"
   export GOPATH="${GOPATH:-$HOME/Projects/golang}"
-  export PATH="$GOPATH/bin:$(go env GOROOT)/bin:$PATH"
+
+  _prepend-path "$GOPATH/bin"
+  _prepend-path "$(go env GOROOT)/bin"
 fi

@@ -6,5 +6,9 @@ fi
 
 if [[ "$JAVA_HOME" != "" ]]; then
   export ANDROID_HOME=$HOME/Library/Android/sdk
-  export PATH="$JAVA_HOME/bin:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$HOME/Library/Android/sdk/emulator:$HOME/Library/Android/sdk/tools/bin:$PATH"
+  _prepend-path "$JAVA_HOME/bin"
+  _prepend-path "$ANDROID_HOME/cmdline-tools/latest/bin"
+  _prepend-path "$ANDROID_HOME/platform-tools"
+  _prepend-path "$HOME/Library/Android/sdk/emulator"
+  _prepend-path "$HOME/Library/Android/sdk/tools/bin"
 fi

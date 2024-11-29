@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PATH="$PATH:$HOME/local/bin:/usr/local/bin"
+PATH="$PATH:$HOME/.local/bin:/usr/local/bin"
 
 terminal-notifier \
   -message "CCC has finished a backup routine" \
