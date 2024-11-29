@@ -23,9 +23,18 @@ else
   export HOMEBREW_PREFIX=/usr/local
 fi
 
-if [[ "$DOTFILES_LOADED" == "" ]]; then
-  export PATH="$HOME/.bin:$HOME/.local/bin:./bin:./node_modules/.bin:$HOME/.bash/bin:$HOME/.zsh/bin:/usr/local/MacGPG2/bin:$HOMEBREW_PREFIX/bin:$HOMEBREW_PREFIX/sbin:/usr/local/bin:/usr/bin:/usr/sbin:/bin:/sbin:/opt/X11/bin"
-fi
+test-env() {
+  export HELLO=hello-there
+}
+
+_append-path "/usr/local/bin"
+_append-path "/usr/bin"
+_append-path "/usr/sbin"
+_append-path "/bin"
+_append-path "/sbin"
+_append-path "/opt/X11/bin"
+_prepend-path "$HOMEBREW_PREFIX/bin"
+_prepend-path "$HOMEBREW_PREFIX/sbin"
 
 export CDHISTORY="/tmp/cd-$USER"
 export PAGER="less"
