@@ -51,6 +51,7 @@ echo "OK"
 
 # Set up launch agents
 if [[ "$(uname)" == "Darwin" ]]; then
+  target_file="$HOME/Library/LaunchAgents/com.fnando.backup-brew.plist"
   launchctl unload "$target_file" || true
   launchctl load "$target_file"
 fi
