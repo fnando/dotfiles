@@ -54,4 +54,4 @@ export HOMEBREW_NO_ANALYTICS=1
 export HOMEBREW_NO_ENV_HINTS=1
 export GPG_TTY=$(tty)
 export WORDCHARS='*?[]~$^()}<>'
-export ZSH_COMPDUMP=$HOME/.config/zsh-compdump
+export ZSH_COMPDUMP=$XDG_CONFIG_HOME/zsh-compdump

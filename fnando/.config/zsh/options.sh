@@ -1,5 +1,6 @@
 bindkey -e
-cdpath=( . /vagrant /Projects ~ ~/Projects )
+cdpath=( . ~ ~/Projects )
+fpath+=($XDG_CONFIG_HOME/zsh-functions)
 setopt always_to_end
 setopt auto_menu
 setopt auto_name_dirs

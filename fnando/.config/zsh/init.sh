@@ -23,7 +23,6 @@ source $zsh_dir/md.sh
 source $zsh_dir/bundler.sh
 source $zsh_dir/psgrep.sh
 source $zsh_dir/tmux.sh
-source $zsh_dir/cargo.sh
 source $zsh_dir/starship.sh
 source $zsh_dir/aliases.sh
 source $zsh_dir/fzf.sh
@@ -32,6 +31,7 @@ source $zsh_dir/zinit.sh
 _source-file-if-exists $after_hook
 
 # Ensure these dirs are always first in the PATH
+_prepend-path "$HOME/.cargo/bin"
 _prepend-path "$HOME/.bin"
 _prepend-path "$HOME/.local/bin"
 _prepend-path "./bin"
