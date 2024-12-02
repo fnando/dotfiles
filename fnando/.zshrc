@@ -1,1 +1,1 @@
-source $HOME/.config/zsh/init.sh
+source $XDG_CONFIG_HOME/zsh/init.sh
