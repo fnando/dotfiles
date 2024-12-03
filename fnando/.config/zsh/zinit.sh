@@ -9,7 +9,4 @@ zinit light zsh-users/zsh-completions
 
 _source-file-if-exists $HOMEBREW_PREFIX/Library/Taps/homebrew/homebrew-command-not-found/handler.sh
 
-autoload -Uz compinit
-compinit -i
-
 zinit cdreplay -q
