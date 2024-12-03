@@ -1,9 +1,11 @@
 export DOTFILES_LOADED="true"
 export SHELL_NAME="zsh"
-export XDG_CONFIG_HOME=$HOME/.config
+export XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
 
 typeset -U path PATH
+autoload -Uz compinit
 autoload -Uz add-zsh-hook
+compinit -i
 
 zsh_dir=$XDG_CONFIG_HOME/zsh
 
