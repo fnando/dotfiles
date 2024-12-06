@@ -1,10 +1,13 @@
 --skip-action-cable
 --skip-action-mailbox
 --skip-action-text
+--skip-active-job
 --skip-active-storage
 --skip-bootsnap
 --skip-dev-gems
+--skip-jbuilder
 --skip-listen
+--skip-solid
 --skip-spring
 --skip-sprockets
 --skip-turbolinks
