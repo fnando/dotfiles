@@ -130,7 +130,7 @@ brew "libsodium"
 # Audio codecs extracted from Android open source project
 brew "opencore-amr"
 # Framework for layout and rendering of i18n text
-brew "pango"
+brew "pango", link: false
 # Fastest and safest AV1 video encoder
 brew "rav1e"
 # OCR (Optical Character Recognition) engine
@@ -329,6 +329,8 @@ brew "markdownlint-cli"
 brew "memcached"
 # Minimalist GNU for Windows and GCC cross-compilers
 brew "mingw-w64"
+# Polyglot runtime manager (asdf rust clone)
+brew "mise"
 # Simple tool to make locally trusted development certificates
 brew "mkcert"
 # QUIC transport protocol implementation
@@ -343,6 +345,8 @@ brew "mysql-client"
 brew "ninja"
 # Port scanning utility for large networks
 brew "nmap"
+# Retrieves currently playing media, and simulates media actions
+brew "nowplaying-cli"
 # PNG file optimizer
 brew "optipng"
 # Oil Runtime Compiler (ORC)
@@ -379,8 +383,6 @@ brew "postgresql@17", restart_service: true, link: true
 brew "potrace"
 # Pretty-print tabular data in Python
 brew "python-tabulate"
-# Interpreted, interactive, object-oriented programming language
-brew "python@3.11", link: false
 # Generic machine emulator and virtualizer
 brew "qemu"
 # Cross-platform application and UI framework
@@ -560,6 +562,8 @@ cask "sonos"
 cask "stats"
 # Text editor for code, markup and prose
 cask "sublime-text"
+# Native GUI tool for relational databases
+cask "tableplus"
 # Unpacks archive files
 cask "the-unarchiver"
 # Virtual machines UI using QEMU

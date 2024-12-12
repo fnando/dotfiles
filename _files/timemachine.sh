@@ -80,5 +80,6 @@ tmutil addexclusion -p ~/Library/Screen\ Savers
 tmutil addexclusion -p ~/Library/WebKit
 tmutil addexclusion -p ~/Movies
 tmutil addexclusion -p ~/VirtualBox\ VMs
+tmutil addexclusion -p ~/.local/share/mise
 
 tmignore

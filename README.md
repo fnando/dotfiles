@@ -6,7 +6,7 @@ Welcome to my dotfiles! It features:
 
 - Light theme
 - ZSH configuration
-- [ASDF](https://github.com/asdf-vm/asdf) as package manager
+- [mise](https://mise.jdx.dev/) as runtime manager
 
 ## Requirements
 
@@ -48,14 +48,6 @@ How it works: most of the configuration is managed by
 places. That means you can easily add or remove configurations by adding or
 changing files on the `~/.dotfiles` directory. Then you can commit and push
 these changes to your own repo.
-
-### Install ASDF
-
-Now you can install some plugins for ASDF:
-
-- `asdf plugin add ruby`
-- `asdf plugin add nodejs`
-- `asdf plugin add rust`
 
 ### Install Nerd Fonts
 

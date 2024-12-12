@@ -19,7 +19,7 @@ _source-file-if-exists $before_hook
 source $zsh_dir/exports.sh
 source $zsh_dir/options.sh
 source $zsh_dir/keybindings.sh
-source $zsh_dir/asdf.sh
+source $zsh_dir/mise.sh
 source $zsh_dir/cd.sh
 source $zsh_dir/md.sh
 source $zsh_dir/bundler.sh
@@ -36,5 +36,6 @@ _source-file-if-exists $after_hook
 _prepend-path "$HOME/.cargo/bin"
 _prepend-path "$HOME/.bin"
 _prepend-path "$HOME/.local/bin"
+_prepend-path "$HOME/.local/ruby/gems/bin"
 _prepend-path "./bin"
 _prepend-path "./node_modules/.bin"
