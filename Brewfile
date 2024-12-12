@@ -130,7 +130,7 @@ brew "libsodium"
 # Audio codecs extracted from Android open source project
 brew "opencore-amr"
 # Framework for layout and rendering of i18n text
-brew "pango", link: false
+brew "pango"
 # Fastest and safest AV1 video encoder
 brew "rav1e"
 # OCR (Optical Character Recognition) engine
@@ -301,10 +301,6 @@ brew "jpeg"
 brew "jpegoptim"
 # Lightweight and flexible command-line JSON processor
 brew "jq"
-# Static analysis tool for Kubernetes YAML files and Helm charts
-brew "kube-linter"
-# Kubernetes command-line interface
-brew "kubernetes-cli"
 # Implementations for atomic memory update operations
 brew "libatomic_ops"
 # BSD-style licensed readline alternative
