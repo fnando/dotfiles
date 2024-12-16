@@ -141,8 +141,6 @@ brew "theora"
 brew "xvid"
 # Play, record, convert, and stream audio and video
 brew "ffmpeg"
-# Open Visual Inference And Optimization toolkit for AI inference
-brew "openvino"
 # Core component of the AcoustID project (Audio fingerprinting)
 brew "chromaprint"
 # Statistics utility to count lines of code
@@ -502,8 +500,6 @@ brew "russellbanks/tap/komac"
 brew "sergiobenitez/osxct/x86_64-unknown-linux-gnu"
 # Extract, view, and test RAR archives
 brew "sidneys/homebrew/unrar"
-# CLI for building for and interacting with the Stellar network
-brew "stellar/tap/soroban-cli", args: ["HEAD"]
 # Stripe CLI utility
 brew "stripe/stripe-cli/stripe"
 # Apple simulator utilities
@@ -530,8 +526,6 @@ cask "docker"
 cask "flycast"
 cask "font-jetbrains-mono"
 cask "font-jetbrains-mono-nerd-font"
-# YouTube player focusing on privacy
-cask "freetube"
 # Web browser
 cask "google-chrome"
 # Utility to hide menu bar items
@@ -565,7 +559,7 @@ cask "the-unarchiver"
 # Virtual machines UI using QEMU
 cask "utm"
 # Open-source code editor
-cask "visual-studio-code", args: { appdir: "/Applications" }
+cask "visual-studio-code"
 # Multimedia player
 cask "vlc"
 # Alternative and privacy-friendly YouTube frontend
