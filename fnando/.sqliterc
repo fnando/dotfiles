@@ -1,7 +1,7 @@
-pragma foreign_keys = ON;
+pragma foreign_keys;
 .headers on
 .mode box --wrap 60 --word-wrap
-.expert on
+.expert
 .timer on
 .separator ","
 .nullvalue "NULL"
