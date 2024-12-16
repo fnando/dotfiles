@@ -113,6 +113,12 @@ brew "caddy", restart_service: true
 brew "cargo-outdated"
 # CD/DVD/Blu-ray premastering and recording software
 brew "cdrtools"
+# Statistics utility to count lines of code
+brew "cloc"
+# Cross-platform make
+brew "cmake"
+# Unit testing framework for C
+brew "cmocka"
 # Minimalistic plugin API for video effects
 brew "frei0r"
 # Asynchronous event library
@@ -141,14 +147,6 @@ brew "theora"
 brew "xvid"
 # Play, record, convert, and stream audio and video
 brew "ffmpeg"
-# Core component of the AcoustID project (Audio fingerprinting)
-brew "chromaprint"
-# Statistics utility to count lines of code
-brew "cloc"
-# Cross-platform make
-brew "cmake"
-# Unit testing framework for C
-brew "cmocka"
 # Music player with an ncurses based interface
 brew "cmus"
 # Container runtimes on MacOS (and Linux) with minimal setup
@@ -372,7 +370,7 @@ brew "pngcrush"
 # PNG image optimizing utility
 brew "pngquant"
 # Object-relational database system
-brew "postgresql@17", restart_service: true, link: true
+brew "postgresql@17", link: true
 # Convert bitmaps to vector graphics
 brew "potrace"
 # Pretty-print tabular data in Python
@@ -388,7 +386,7 @@ brew "re2c"
 # Reattach process (e.g., tmux) to background
 brew "reattach-to-user-namespace"
 # Persistent key-value database, with built-in net interface
-brew "redis", restart_service: true
+brew "redis"
 # Readline wrapper: adds readline support to tools that lack it
 brew "rlwrap"
 # Utility that provides fast incremental file transfer
@@ -522,6 +520,8 @@ cask "chromedriver"
 cask "divvy"
 # App to build and share containerised applications and microservices
 cask "docker"
+# Web browser
+cask "firefox"
 # Dreamcast, Naomi and Atomiswave emulator
 cask "flycast"
 cask "font-jetbrains-mono"
@@ -559,7 +559,7 @@ cask "the-unarchiver"
 # Virtual machines UI using QEMU
 cask "utm"
 # Open-source code editor
-cask "visual-studio-code"
+cask "visual-studio-code", args: { appdir: "/Applications" }
 # Multimedia player
 cask "vlc"
 # Alternative and privacy-friendly YouTube frontend
