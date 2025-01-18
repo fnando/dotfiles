@@ -6,8 +6,8 @@ zle -N down-line-or-beginning-search
 
 bindkey "^[b" emacs-backward-word # ctrl-right
 bindkey "^[f" emacs-forward-word # ctrl-left
-bindkey "^J" emacs-backward-word # ctrl-j
-bindkey "^K" emacs-forward-word # ctrl-k
+bindkey "^o" emacs-backward-word # ctrl-o
+bindkey "^p" emacs-forward-word # ctrl-p
 bindkey "^[[A" up-line-or-beginning-search # up
 bindkey "^[[B" down-line-or-beginning-search # down
 bindkey '^u' backward-kill-line  # ctrl-u
