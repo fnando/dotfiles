@@ -11,6 +11,7 @@ window-padding-y = 10
 unfocused-split-opacity = 0.4
 quit-after-last-window-closed = true
 macos-titlebar-style = transparent
+bold-is-bright = false
 
 cursor-color = #1798e0
 cursor-text = #fff
