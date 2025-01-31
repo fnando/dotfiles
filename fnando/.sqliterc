@@ -1,4 +1,4 @@
-pragma foreign_keys;
+pragma foreign_keys = on;
 .headers on
 .mode box --wrap 60 --word-wrap
 .expert
