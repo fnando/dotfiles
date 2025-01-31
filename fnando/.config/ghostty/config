@@ -1,0 +1,52 @@
+window-colorspace = display-p3
+window-padding-color = extend-always
+font-size = 17
+font-family = JetBrainsMono NFM SemiBold
+cursor-style = block
+shell-integration-features = no-cursor
+cursor-style-blink = false
+window-save-state = always
+window-padding-x = 10
+window-padding-y = 10
+unfocused-split-opacity = 0.4
+quit-after-last-window-closed = true
+macos-titlebar-style = transparent
+
+cursor-color = #1798e0
+cursor-text = #fff
+foreground = #222
+background = #fff
+selection-background = #c2deff
+selection-foreground = #222
+
+# black
+palette = 0=#222
+palette = 8=#222
+
+# red
+palette = 1=#e45125
+palette = 9=#e45125
+
+# green
+palette = 2=#5d9e4f
+palette = 10=#5d9e4f
+
+# yellow
+palette = 3=#f9ae05
+palette = 11=#f9ae05
+
+# blue
+palette = 4=#019ad1
+palette = 12=#019ad1
+
+# magenta
+palette = 5=#66008c
+palette = 13=#66008c
+
+# cyan
+palette = 6=#00a6b2
+palette = 14=#00a6b2
+
+# white
+palette = 7=#777777
+palette = 15=#777777
