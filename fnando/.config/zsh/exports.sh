@@ -1,9 +1,7 @@
 export WORDCHARS=${WORDCHARS//[&=\/;\!#%\{]}
 export INSTALL_DIR=${INSTALL_DIR:-$HOME/.local}
-export GEM_HOME=${GEM_HOME:-$INSTALL_DIR/ruby/gems}
-export GEM_PATH=${GEM_PATH:-$GEM_HOME}
 export NPM_HOME=${NPM_HOME:-$INSTALL_DIR/npm}
-export NODE_PATH=${NODE_PATH:-./node_modules:$HOME/local/npm/lib/node_modules}
+export NODE_PATH=${NODE_PATH:-./node_modules:$HOME/.local/npm/lib/node_modules}
 export LC_ALL="en_US.UTF-8"
 export LANG="en_US"
 export EDITOR=${EDITOR:-vim}
@@ -36,6 +34,11 @@ _append-path "/opt/X11/bin"
 _prepend-path "$HOMEBREW_PREFIX/bin"
 _prepend-path "$HOMEBREW_PREFIX/sbin"
 _prepend-path "$HOME/.local/share/mise/shims"
+
+current_ruby=$(mise ls ruby -c --json | jq --raw-output '.[0].version')
+export GEM_HOME="$INSTALL_DIR/ruby/$current_ruby/gems"
+export GEM_INSTALL="$GEM_HOME"
+_prepend-path "$GEM_HOME/gems/bin"
 
 export CDHISTORY="/tmp/cd-$USER"
 export PAGER="less"
