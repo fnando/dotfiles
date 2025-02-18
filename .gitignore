@@ -2,3 +2,4 @@ fnando/.config/gh/hosts.yml
 fnando/.config/zsh/user.sh
 fnando/.config/tpm/plugins/
 fnando/.config/tmux/plugins/
+fnando/.bin/mailhog
