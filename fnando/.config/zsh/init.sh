@@ -32,10 +32,16 @@ source $zsh_dir/zinit.sh
 
 _source-file-if-exists $after_hook
 
+# Ensure there's a ruby dir per version.
+current_ruby=$(mise ls ruby -c --json | jq --raw-output '.[0].version')
+export GEM_HOME="$INSTALL_DIR/ruby/$current_ruby/gems"
+export GEM_INSTALL="$GEM_HOME"
+_prepend-path "$GEM_HOME/bin"
+
 # Ensure these dirs are always first in the PATH
 _prepend-path "$HOME/.cargo/bin"
 _prepend-path "$HOME/.bin"
 _prepend-path "$HOME/.local/bin"
-_prepend-path "$HOME/.local/ruby/gems/bin"
+_prepend-path "$HOME/.local/share/mise/shims"
 _prepend-path "./bin"
 _prepend-path "./node_modules/.bin"
