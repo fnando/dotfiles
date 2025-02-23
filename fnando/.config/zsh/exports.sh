@@ -25,20 +25,9 @@ test-env() {
   export HELLO=hello-there
 }
 
-_append-path "/usr/local/bin"
-_append-path "/usr/bin"
-_append-path "/usr/sbin"
-_append-path "/bin"
-_append-path "/sbin"
-_append-path "/opt/X11/bin"
+export PATH="/usr/local/bin:/usr/bin:/usr/sbin:/bin:/sbin:/opt/X11/bin"
 _prepend-path "$HOMEBREW_PREFIX/bin"
 _prepend-path "$HOMEBREW_PREFIX/sbin"
-_prepend-path "$HOME/.local/share/mise/shims"
-
-current_ruby=$(mise ls ruby -c --json | jq --raw-output '.[0].version')
-export GEM_HOME="$INSTALL_DIR/ruby/$current_ruby/gems"
-export GEM_INSTALL="$GEM_HOME"
-_prepend-path "$GEM_HOME/gems/bin"
 
 export CDHISTORY="/tmp/cd-$USER"
 export PAGER="less"
