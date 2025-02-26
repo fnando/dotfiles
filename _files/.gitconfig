@@ -1,0 +1,63 @@
+[color]
+  branch = auto
+  diff = auto
+  status = auto
+  ui = true
+[color "diff"]
+  commit = yellow
+  frag = cyan
+  meta = yellow
+  new = green
+  old = red
+  plain = black
+  whitespace = red reverse
+[commit]
+  verbose = true
+[alias]
+  b = branch
+  ca = commit --amend
+  ci = commit
+  co = checkout
+  dw = diff --word-diff
+  fl = log -p
+  lg = log --oneline --decorate
+  sb = status -sb
+  sh = !git-sh
+  st = status
+  who = shortlog -s --
+[help]
+  autocorrect = 1
+[branch]
+  autosetuprebase = always
+  sort = -committerdate
+[push]
+  default = current
+  autosetupremote = true
+[core]
+  excludesfile = ~/.gitignore
+  attributesfile = ~/.gitattributes
+[merge]
+  ff = only
+[fetch]
+  prune = true
+  pruneTags = true
+  all = true
+[color "diff-highlight"]
+  newHighlight = green reverse
+  newNormal = green
+  oldHighlight = red reverse
+  oldNormal = red
+[init]
+  defaultBranch = main
+[rebase]
+  autosquash = true
+  updaterefs = true
+[pull]
+  rebase = true
+[tag]
+  sort = version:refname
+[diff]
+  colormoved = plain
+  renames = true
+  mnemonicprefix = true
+  algorithm = histogram
