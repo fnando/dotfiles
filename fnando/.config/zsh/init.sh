@@ -34,7 +34,7 @@ _source-file-if-exists $after_hook
 
 # Ensure there's a ruby dir per version.
 current_ruby=$(mise ls ruby -c --json | jq --raw-output '.[0].version')
-export GEM_HOME="$INSTALL_DIR/ruby/$current_ruby/gems"
+export GEM_HOME="$INSTALL_DIR/ruby/$current_ruby"
 export GEM_INSTALL="$GEM_HOME"
 _prepend-path "$GEM_HOME/bin"
 
