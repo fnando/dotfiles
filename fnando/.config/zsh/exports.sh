@@ -21,6 +21,13 @@ else
   export HOMEBREW_PREFIX=/usr/local
 fi
 
+if [[ "$(uname)" == "Darwin" ]]; then
+  export CPATH="$HOMEBREW_PREFIX/include:$CPATH"
+  export LIBRARY_PATH="$HOMEBREW_PREFIX/lib:$LIBRARY_PATH"
+  export LDFLAGS="-L$HOMEBREW_PREFIX/lib"
+  export CPPFLAGS="-I$HOMEBREW_PREFIX/include"
+fi
+
 test-env() {
   export HELLO=hello-there
 }
