@@ -6,3 +6,4 @@ alias beep='echo -e "\a"'
 alias grep="grep --color=auto"
 alias clippy="cargo clippy -- -Dwarnings -Dclippy::all -Dclippy::pedantic"
 alias reload="source ~/.zshrc"
+alias pcat="bat"
