@@ -7,7 +7,8 @@
 // custom settings, run the `open default settings` command
 // from the command palette or from `Zed` application menu.
 {
-  "theme": "Slick",
+  "icon_theme": "Colored Zed Icons Theme Light",
+  "theme": "One Light",
   "assistant": {
     "default_model": {
       "provider": "copilot_chat",
