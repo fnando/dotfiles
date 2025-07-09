@@ -57,3 +57,5 @@ export DOCKER_TELEMETRY=false
 export GPG_TTY=$(tty)
 export WORDCHARS='*?[]~$^()}<>'
 export ZSH_COMPDUMP=$XDG_CONFIG_HOME/zsh-compdump
+export YARN_CACHE_FOLDER=/tmp/yarn-cache
+export npm_config_cache=/tmp/npm-cache
