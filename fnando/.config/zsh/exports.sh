@@ -46,6 +46,7 @@ export LESS_TERMCAP_se=$'\E[0m'
 export LESS_TERMCAP_so=$'\E[01;44;33m'
 export LESS_TERMCAP_ue=$'\E[0m'
 export LESS_TERMCAP_us=$'\E[00;32m'
+export HOMEBREW_CACHE="/tmp/homebrew-cache"
 export HOMEBREW_CASK_OPTS="--appdir=/Applications --fontdir=~/Library/Fonts"
 export HOMEBREW_BUNDLE_NO_LOCK=1
 export HOMEBREW_BUNDLE_DUMP_NO_VSCODE=1
