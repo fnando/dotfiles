@@ -15,3 +15,5 @@ Thumbs.db
 /coverage
 /.ruby-lsp
 .minitestfailures
+mise.toml
+/.claude
