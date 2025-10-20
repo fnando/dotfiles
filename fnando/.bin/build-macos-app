@@ -1,0 +1,190 @@
+#!/usr/bin/env ruby
+
+require "fileutils"
+require "optparse"
+require "shellwords"
+require "json"
+
+def run(*args, description:, log_file: nil)
+  args = args.map { Shellwords.escape(_1) }
+
+  if log_file
+    FileUtils.mkdir_p(File.dirname(log_file))
+    File.open(log_file, "w") do |f|
+      f << "# Command: #{args.join(" ")}\n\n"
+    end
+    args << "&> #{log_file}"
+  end
+
+  cmd = args.join(" ")
+
+  print "=> #{description}..."
+  system(cmd)
+  puts(" done.")
+
+  if $?.exitstatus != 0
+    puts("Command failed: #{cmd}")
+    puts("See log file: #{log_file}") if log_file
+    exit(1)
+  end
+end
+
+version = nil
+app_name = nil
+scheme = nil
+project_file_path = Dir["*.xcodeproj/project.pbxproj"].first
+project_file = File.read(project_file_path)
+current_version = project_file[/MARKETING_VERSION = ([^;]+);/, 1]
+build_version = project_file[/CURRENT_PROJECT_VERSION = (\d+)/, 1].to_i + 1
+
+cli = OptionParser.new do |opts|
+  opts.on("-a", "--app=APP", "The app name") do |v|
+    app_name = v
+  end
+
+  opts.on("-s", "--scheme=SCHEME", "The app scheme that will be used") do |v|
+    scheme = v
+  end
+
+  opts.on("-v", "--version=VERSION", "The version that will be released") do |v|
+    version = v
+  end
+
+  opts.on("-b", "--build-version=BUILD_VERSION", "The build version that will be released") do |v|
+    build_version = v
+  end
+
+  opts.on("-r", "--retry", "Do not update version when re-running build script") do |v|
+    version = current_version
+    build_version -= 1
+  end
+end
+cli.parse!
+
+unless File.directory?("../Sparkle")
+  puts "ERROR: ../Sparkle doesn't exist"
+  puts "Run `gh clone sparkle-project/Sparkle ../Sparkle` to clone it."
+
+  unless File.executable?("../Sparkle/.build/artifacts/sparkle/Sparkle/bin/generate_appcast")
+    puts "Then run `cd ../Sparkle && make build` to create `generate_appcast`."
+  end
+end
+
+unless File.directory?("../macos-apps")
+  puts "ERROR: ../macos-apps doesn't exist"
+  puts "Run `gh clone fnando/macos-apps ../macos-apps` to clone it."
+end
+
+unless app_name
+  print("App name: ")
+  app_name = gets.chomp.strip
+end
+
+unless version
+  semver = Gem::Version.create(current_version).segments
+  semver[2] += 1
+  version = semver.join(".")
+  puts("Current version: #{current_version}")
+  print("Next version (defaults to #{version}): ")
+  input = gets.chomp.strip
+  version = input unless input == ""
+end
+
+unless scheme
+  xcode_config = JSON.parse(`xcodebuild -list -json`, symbolize_names: true)
+  available_schemes = xcode_config.fetch(:project).fetch(:schemes)
+
+  if available_schemes.size == 1
+    scheme = available_schemes.first
+  else
+    puts("Available schemes:")
+    available_schemes.each_with_index do |s, i|
+      puts("  [#{i + 1}] #{s}")
+    end
+
+    print("Select a scheme by number: ")
+    input = gets.chomp.strip.to_i
+    scheme = available_schemes[input - 1]
+  end
+end
+
+project_file.gsub!(/MARKETING_VERSION = ([^;]+);/m, "MARKETING_VERSION = #{version};")
+project_file.gsub!(/CURRENT_PROJECT_VERSION = ([^;]+);/m, "CURRENT_PROJECT_VERSION = #{build_version};")
+
+File.open(project_file_path, "w") do |io|
+  io << project_file
+end
+
+FileUtils.rm_rf("build")
+run(
+  *%W[xcodebuild -scheme #{scheme} -configuration Release clean archive -archivePath build/#{app_name}.xcarchive],
+  description: "Build archive",
+  log_file: "log/1_archive.log"
+)
+
+run(
+  *%W[xcodebuild -exportArchive -archivePath build/#{app_name}.xcarchive -exportPath build/export -exportOptionsPlist ExportOptions.plist],
+  description: "Export app",
+  log_file: "log/2_export_app.log"
+)
+
+run(
+  *%W[ditto -c -k --sequesterRsrc --keepParent build/export/#{app_name}.app build/export/#{app_name}.zip],
+  description: "Create zip for notarization",
+  log_file: "log/3_notarization_zip.log"
+)
+
+run(
+  *%W[xcrun notarytool submit build/export/#{app_name}.zip --keychain-profile notarytool-password --wait],
+  description: "Submit app for notarization",
+  log_file: "log/4_notarization.log"
+)
+
+run(
+  *%W[xcrun stapler staple build/export/#{app_name}.app],
+  description: "Staple notarization ticket to app",
+  log_file: "log/5_staple.log"
+)
+
+FileUtils.rm("build/export/#{app_name}.zip")
+
+run(
+  *%W[ditto -c -k --sequesterRsrc --keepParent build/export/#{app_name}.app build/export/#{app_name}-#{version}.zip],
+  description: "Create final distribution zip",
+  log_file: "log/6_create_final_zip.log"
+)
+
+run(
+  *%W[../Sparkle/.build/artifacts/sparkle/Sparkle/bin/generate_appcast --download-url-prefix https://github.com/fnando/macos-apps/releases/download/#{app_name}-v#{version}/ build/export],
+  description: "Generate appcast",
+  log_file: "log/7_generate_appcast.log"
+)
+
+run(
+  *%W[cp build/export/#{app_name}.xml ../macos-apps/appcast/#{app_name}.xml],
+  description: "Copy appcast to macos-apps repo",
+  log_file: "log/8_copy_appcast.log"
+)
+
+run(
+  *%W[codesign -dvvv build/export/#{app_name}.app],
+  description: "Check detailed code signature",
+  log_file: "log/9_verify_signature_details.log"
+)
+
+run(
+  *%W[codesign --verify --deep --strict --verbose=2 build/export/#{app_name}.app],
+  description: "Verify code signature (deep)",
+  log_file: "log/10_verify_signature_deep.log"
+)
+
+run(
+  *%W[spctl -a -vvv -t exec build/export/#{app_name}.app],
+  description: "Check Gatekeeper assessment",
+  log_file: "log/11_verify_gatekeeper.log"
+)
+
+puts "\n✅ Build complete! App is signed, notarized, and ready for distribution."
+puts "   Version: #{version}"
+puts "   Build: #{build_version}"
+puts "   Location: build/export/#{app_name}-#{version}.zip"
