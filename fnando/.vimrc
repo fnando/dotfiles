@@ -1,6 +1,9 @@
 " Maintained by: Nando Vieira
 " http://nandovieira.com
 
+set nobackup
+set nowritebackup
+set noswapfile
 set nocompatible
 
 if filereadable(expand("~/.vundle.vim"))

@@ -155,13 +155,13 @@ run(
 )
 
 run(
-  *%W[../Sparkle/.build/artifacts/sparkle/Sparkle/bin/generate_appcast --download-url-prefix https://github.com/fnando/macos-apps/releases/download/#{app_name}-v#{version}/ build/export],
+  *%W[../Sparkle/.build/artifacts/sparkle/Sparkle/bin/generate_appcast --download-url-prefix https://github.com/fnando/macos-apps/releases/download/#{app_name}-v#{version}/ -o build/export/appcast.xml build/export],
   description: "Generate appcast",
   log_file: "log/7_generate_appcast.log"
 )
 
 run(
-  *%W[cp build/export/#{app_name}.xml ../macos-apps/appcast/#{app_name}.xml],
+  *%W[cp build/export/appcast.xml ../macos-apps/appcast/#{app_name}.xml],
   description: "Copy appcast to macos-apps repo",
   log_file: "log/8_copy_appcast.log"
 )
