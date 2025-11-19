@@ -3,6 +3,7 @@ export SHELL_NAME="zsh"
 export XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
 
 typeset -U path PATH
+fpath=($XDG_CONFIG_HOME/zsh-completions $fpath)
 autoload -Uz compinit
 autoload -Uz add-zsh-hook
 compinit -i
