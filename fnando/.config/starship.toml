@@ -1,5 +1,7 @@
+"$schema" = "https://starship.rs/config-schema.json"
+
 format = """
-${custom.hostname} \
+${custom.hostname}\
 in $directory\
 $git_branch\
 $git_status\
@@ -61,7 +63,7 @@ style = "blue"
 truncate_to_repo = false
 
 [custom.hostname]
-when = true
+when = 'test -z "$STARSHIP_HIDE_HOSTNAME"'
 command = "hostname | cut -d. -f1"
 format = '[\[$symbol($output)\]]($style)'
 style = "default"
@@ -70,5 +72,5 @@ style = "default"
 when = "(grep 'soroban-sdk' Cargo.toml &> /dev/null && which stellar &> /dev/null) || false"
 command = "stellar --version | head -n1 | cut -f2 -d' '"
 symbol = "\ueb44"
-format = '[$symbol ($output )]($style)'
+format = '[$symbol ($output )]($style) '
 style = "blue"
