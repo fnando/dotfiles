@@ -9,12 +9,11 @@
 {
   "icon_theme": "Colored Zed Icons Theme Light",
   "theme": "One Light",
-  "assistant": {
+  "agent": {
     "default_model": {
       "provider": "copilot_chat",
       "model": "gpt-4o"
     },
-    "version": "2"
   },
   "collaboration_panel": {
     "button": false
@@ -23,7 +22,7 @@
     "button": false
   },
   "chat_panel": {
-    "button": false
+    "button": "never"
   },
   "telemetry": {
     "diagnostics": false,

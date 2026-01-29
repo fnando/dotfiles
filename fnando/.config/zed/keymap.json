@@ -14,5 +14,11 @@
       "cmd-shift-\\": "workspace::ToggleLeftDock",
       "cmd-ctrl-g": "editor::SelectAllMatches"
     }
+  },
+  {
+    "context": "Workspace",
+    "bindings": {
+      "cmd-r": null
+    }
   }
 ]
