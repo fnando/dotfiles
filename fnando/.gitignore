@@ -17,3 +17,4 @@ Thumbs.db
 .minitestfailures
 mise.toml
 /.claude
+.aider*

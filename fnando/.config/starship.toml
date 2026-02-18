@@ -64,8 +64,8 @@ truncate_to_repo = false
 
 [custom.hostname]
 when = 'test -z "$STARSHIP_HIDE_HOSTNAME"'
-command = "hostname | cut -d. -f1"
-format = '[\[$symbol($output)\]]($style)'
+command = "echo -n ${STARSHIP_CUSTOM_HOSTNAME:-$(hostname | cut -d. -f1)}"
+format = '[\[$symbol($output)\]]($style) '
 style = "default"
 
 [custom.stellar_cli]

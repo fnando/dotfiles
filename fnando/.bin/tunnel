@@ -11,6 +11,7 @@ gemfile do
   gem "net-scp"
   gem "ed25519"
   gem "haikunate"
+  gem "logger"
   gem "bcrypt_pbkdf"
 end
 
