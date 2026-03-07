@@ -1,5 +1,6 @@
 [
   {
+    "use_key_equivalents": true,
     "bindings": {
       "ctrl-t": "workspace::NewTerminal",
       "ctrl-`": "workspace::ToggleBottomDock",
@@ -12,13 +13,30 @@
       "ctrl-shift-l": "editor::SelectSmallerSyntaxNode", // Shrink Selection
       "f5": "editor::SortLinesCaseInsensitive",
       "cmd-shift-\\": "workspace::ToggleLeftDock",
-      "cmd-ctrl-g": "editor::SelectAllMatches"
-    }
+      "cmd-ctrl-g": "editor::SelectAllMatches",
+    },
   },
   {
     "context": "Workspace",
     "bindings": {
-      "cmd-r": null
-    }
-  }
+      "cmd-r": null,
+    },
+  },
+  {
+    "context": "Workspace",
+    "bindings": {
+      "cmd-w": null,
+    },
+  },
+  {
+    "context": "Pane",
+    "bindings": {
+      "cmd-w": [
+        "pane::CloseActiveItem",
+        {
+          "close_pinned": false,
+        },
+      ],
+    },
+  },
 ]

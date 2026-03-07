@@ -7,26 +7,26 @@
 // custom settings, run the `open default settings` command
 // from the command palette or from `Zed` application menu.
 {
-  "icon_theme": "Colored Zed Icons Theme Light",
+  "icon_theme": "Warm Charmed Icons",
   "theme": "One Light",
   "agent": {
     "default_model": {
       "provider": "copilot_chat",
-      "model": "gpt-4o"
+      "model": "gpt-4o",
     },
   },
   "collaboration_panel": {
-    "button": false
+    "button": false,
   },
   "notification_panel": {
-    "button": false
+    "button": false,
   },
   "chat_panel": {
-    "button": "never"
+    "button": "never",
   },
   "telemetry": {
     "diagnostics": false,
-    "metrics": false
+    "metrics": false,
   },
   "ui_font_size": 16,
   "buffer_font_size": 16,
@@ -36,11 +36,13 @@
     "font_family": "JetBrainsMono Nerd Font Propo",
     "font_size": 16,
     "cursor_shape": "block",
-    "font_weight": 500
+    "font_weight": 500,
   },
   "base_keymap": "SublimeText",
   "show_whitespaces": "all",
+  "scroll_beyond_last_line": "off",
   "file_scan_exclusions": [
+    "coverage",
     "**/.git",
     "target/**",
     "**/node_modules/**",
@@ -52,7 +54,7 @@
     "**/.classpath",
     "**/.settings",
     "**/dist/**",
-    "**/build/**"
+    "**/build/**",
   ],
   "experimental.theme_overrides": {
     "terminal.ansi.black": "#222222",
@@ -83,14 +85,19 @@
     "terminal.bright_foreground": "#222222",
     "players": [
       {
-        "cursor": "#1798e0"
-      }
-    ]
+        "cursor": "#1798e0",
+      },
+    ],
   },
   "jupyter": {
     "kernel_selections": {
       "typescript": "deno",
-      "javascript": "deno"
-    }
-  }
+      "javascript": "deno",
+    },
+  },
+  "wrap_guides": [80],
+  "languages": {
+    "Markdown": { "wrap_guides": [] },
+    "Rust": { "wrap_guides": [100] },
+  },
 }
