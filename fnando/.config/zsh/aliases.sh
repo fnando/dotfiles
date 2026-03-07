@@ -8,3 +8,10 @@ alias clippy="cargo clippy -- -Dwarnings -Dclippy::all -Dclippy::pedantic"
 alias reload="source ~/.zshrc"
 alias pcat="bat"
 alias simple-prompt="zsh -f -c 'export PS1=$'\''\n$ '\''; exec zsh -f'"
+alias claude-work="CLAUDE_CONFIG_DIR=~/.config/claude-work claude"
+
+cargo-build-watch() {
+  while true; do
+    find . -not \( -path "*/.git/*" -o -path "*/target/*" -o -path "*/node_modules/*" \) | entr sh -c "clear && cargo build && hud -t 'Done' -m 'Task has finished' --symbol-name 'checkmark.circle'"
+  done
+}
