@@ -1,10 +1,9 @@
----
 git_protocol: ssh
 prompt: enabled
 pager:
 aliases:
-  co: pr checkout
-  create: repo create
-  clone: repo clone
-  view: "!git view"
+    co: pr checkout
+    create: repo create
+    clone: repo clone
+    view: "!git view"
 version: "1"
