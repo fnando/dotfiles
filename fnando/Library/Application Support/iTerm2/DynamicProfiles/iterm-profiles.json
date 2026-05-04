@@ -2,8 +2,8 @@
   "Profiles" : [
     {
       "Use Separate Colors for Light and Dark Mode" : true,
-      "Name" : "fnando",
       "Rewritable" : true,
+      "Name" : "fnando",
       "Guid" : "43BDAE23-2A8F-4AD8-8260-4AC4887232FB",
       "Window Type" : 0
     }
