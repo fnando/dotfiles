@@ -1,7 +1,8 @@
 # PR Feedback Analyzer
 
-Fetches all comments and review feedback from a pull request, evaluates each
-piece of feedback on its merit, and produces a prioritized action plan.
+Fetches all comments and **unresolved review feedback** from a pull request,
+evaluates each piece of feedback on its merit, and produces a prioritized action
+plan.
 
 You MUST follow the steps below **in order**. Do not skip, combine, or
 anticipate steps. Each step that requires user input must STOP and wait.
