@@ -38,7 +38,7 @@ today.
 ## Step 2 — Fetch PRs via GitHub search API
 
 Use the **GitHub Search API** (no auth token needed for public orgs, but if the
-user has one connected, prefer it):
+user has one connected, prefer it). Also, prefer using `gh` if available.
 
 ```
 GET https://api.github.com/search/issues?q=is:pr+org:stellar+author:@me+created:{DATE_FROM}..{DATE_TO}&per_page=100
@@ -60,12 +60,11 @@ or `web_fetch` against the API URL above.
 
 ## Step 3 — Fetch GitHub Issues
 
-Use the **GitHub Search API** to find issues the user created or were assigned
-to during the week. Run both queries and deduplicate by issue number:
+Use the **GitHub Search API** to find issues the user created during the week.
+Run both queries and deduplicate by issue number:
 
 ```
 GET https://api.github.com/search/issues?q=is:issue+org:stellar+author:@me+created:{DATE_FROM}..{DATE_TO}&per_page=100
-GET https://api.github.com/search/issues?q=is:issue+org:stellar+assignee:@me+updated:{DATE_FROM}..{DATE_TO}&per_page=100
 ```
 
 **Extract from each issue:**
@@ -127,7 +126,7 @@ Rules:
 Then write the summary to a temp file using `bash_tool`:
 
 ```bash
-FILE=$(mktemp /tmp/work-summary-XXXXXX.md)
+FILE=$(mktemp /tmp/work-summary-{DATE_FROM}-{DATE_TO}.md)
 cat > "$FILE" << 'EOF'
 <summary content here>
 EOF
@@ -137,7 +136,7 @@ echo "$FILE"
 After writing the file, print the file path to the user like:
 
 ```
-Summary saved to: /tmp/work-summary-a1b2c3.md
+Summary saved to: /tmp/work-summary-2026-05-04-2026-05-08.md
 ```
 
 ---
@@ -145,7 +144,7 @@ Summary saved to: /tmp/work-summary-a1b2c3.md
 ## Example output
 
 ```
-Summary saved to: /tmp/work-summary-a1b2c3.md
+Summary saved to: /tmp/work-summary-2026-05-04-2026-05-08.md
 
 ## Pull Requests
 

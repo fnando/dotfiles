@@ -129,6 +129,8 @@ Wait for the user's response. Do not call `gh pr create` until they confirm.
   preview. Repeat until confirmed.
 - If they say **no**, stop and let them know they can ask again when ready.
 
+**DO NOT** add linebreaks on paragraphs, so Markdown can render properly.
+
 ---
 
 ## Step 7 — Create the PR
