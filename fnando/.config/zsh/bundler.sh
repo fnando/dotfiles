@@ -1,4 +1,5 @@
 export BUNDLE_JOBS=${BUNDLE_JOBS:-3}
+export BUNDLE_COOLDOWN=7
 
 alias be="bundle exec"
 alias bu="bundle update"
