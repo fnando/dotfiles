@@ -2,7 +2,7 @@ export BUNDLE_JOBS=${BUNDLE_JOBS:-3}
 export BUNDLE_COOLDOWN=7
 
 alias be="bundle exec"
-alias bu="bundle update"
+alias bu="bundle update --all"
 alias bi="bundle install"
 alias bs="bundle show"
 alias bv="bundle install --path vendor"
