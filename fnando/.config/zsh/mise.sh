@@ -1,11 +1,9 @@
 # https://mise.jdx.dev/
 eval "$(mise activate zsh --shims)"
 
-zsh_completions_dir=$XDG_CONFIG_HOME/zsh-completions
-mise_completions=$zsh_completions_dir/mise
+mise_completions=~/.cache/zsh/mise.zsh
 
-if [[ ! -d "$mise_completions" ]]; then
-  mkdir -p $zsh_completions_dir
+if [[ ! -f "$mise_completions" ]]; then
   mise completion zsh > $mise_completions
 fi
 
