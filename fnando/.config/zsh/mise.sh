@@ -4,6 +4,7 @@ eval "$(mise activate zsh --shims)"
 mise_completions=~/.cache/zsh/mise.zsh
 
 if [[ ! -f "$mise_completions" ]]; then
+  mkdir -p ~/.cache/zsh
   mise completion zsh > $mise_completions
 fi
 
