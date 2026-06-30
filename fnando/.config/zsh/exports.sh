@@ -36,6 +36,9 @@ export PATH="/usr/local/bin:/usr/bin:/usr/sbin:/bin:/sbin:/opt/X11/bin"
 _prepend-path "$HOMEBREW_PREFIX/bin"
 _prepend-path "$HOMEBREW_PREFIX/sbin"
 
+export CARGO_HOME="$HOME/.local/share/cargo"
+export RUSTUP_HOME="$HOME/.local/share/rustup"
+_prepend-path "$CARGO_HOME/bin"
 export CDHISTORY="/tmp/cd-$USER"
 export CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY=1
 export CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1
@@ -74,3 +77,9 @@ export WORDCHARS='*?[]~$^()}<>'
 export YARN_CACHE_FOLDER=/tmp/yarn-cache
 export YARN_ENABLE_TELEMETRY=0
 export ZSH_COMPDUMP=$XDG_CONFIG_HOME/zsh-compdump
+
+export COLIMA_HOME="$HOME/.local/share/colima"
+export LIMA_HOME=$HOME/.local/share/colima-lima
+
+export LDFLAGS="-L/opt/homebrew/opt/readline/lib"
+export CPPFLAGS="-I/opt/homebrew/opt/readline/include"

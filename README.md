@@ -39,8 +39,8 @@ On macOS you may want to disable the line that sets the `PATH` on
 ### Install Dotfiles
 
 1. Clone https://github.com/fnando/dotfiles somewhere, like `~/.dotfiles`.
-2. Go to `~/.dotfiles` then run `./install`.
-3. Now run `stow fnando -t $HOME` to symlink all config files.
+2. Now run `stow fnando -t $HOME` to symlink all config files.
+3. Go to `~/.dotfiles` then run `./install`.
 4. Restart your terminal.
 
 How it works: most of the configuration is managed by

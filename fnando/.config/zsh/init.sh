@@ -40,7 +40,6 @@ export GEM_INSTALL="$GEM_HOME"
 _prepend-path "$GEM_HOME/bin"
 
 # Ensure these dirs are always first in the PATH
-_prepend-path "$HOME/.cargo/bin"
 _prepend-path "$HOME/.bin"
 _prepend-path "$HOME/.local/bin"
 _prepend-path "$HOME/.local/share/mise/shims"

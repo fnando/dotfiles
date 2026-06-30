@@ -24,7 +24,8 @@ if [[ ! -x $(which stow) ]]; then
 fi
 
 # Source init file
-source $HOME/.config/zsh/exports.sh
+source fnando/.config/zsh/utils.sh
+source fnando/.config/zsh/exports.sh
 
 # Clone vundle.
 if [[ ! -d "$HOME/.vim/bundle/vundle" ]]; then
@@ -34,6 +35,9 @@ if [[ ! -d "$HOME/.vim/bundle/vundle" ]]; then
 fi
 
 # Set up SSH.
+mkdir -p ~/.ssh
+mkdir -p ~/.ssh/controlmaster
+touch ~/.ssh/config
 chmod 700 ~/.ssh
 chmod 600 ~/.ssh/config
 mkdir -p ~/.ssh/controlmaster

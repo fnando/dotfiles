@@ -3,3 +3,11 @@ fnando/.config/zsh/user.sh
 fnando/.config/tpm/plugins/
 fnando/.config/tmux/plugins/
 fnando/.bin/mailhog
+fnando/.ssh/known_hosts
+fnando/.ssh/known_hosts.old
+fnando/Library/Application\ Support/iTerm2/SavedState/
+fnando/Library/Application\ Support/iTerm2/chatdb*
+fnando/Library/Application\ Support/iTerm2/iTermServer*
+*.lock
+version.txt
+*.pub

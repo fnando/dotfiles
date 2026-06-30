@@ -5,7 +5,7 @@ op_env=$XDG_CONFIG_HOME/op-env
 
 if [[ ! -f $op_env ]]; then
   op run -- true
-  op-env > $op_env
+  op-env export > $op_env
   chmod 600 $op_env
 fi
 
