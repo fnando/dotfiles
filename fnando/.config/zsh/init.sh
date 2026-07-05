@@ -1,6 +1,10 @@
 export DOTFILES_LOADED="true"
 export SHELL_NAME="zsh"
 export XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
+export XDG_DATA_HOME=${XDG_DATA_HOME:-$HOME/.local/share}
+export XDG_CACHE_HOME=${XDG_CACHE_HOME:-$HOME/.local/cache}
+export XDG_STATE_HOME=${XDG_CACHE_HOME:-$HOME/.local/state}
+export XDG_BIN_HOME=${XDG_BIN_HOME:-$HOME/.local/bin}
 
 typeset -U path PATH
 fpath=($XDG_CONFIG_HOME/zsh-completions $fpath)
@@ -40,8 +44,9 @@ export GEM_INSTALL="$GEM_HOME"
 _prepend-path "$GEM_HOME/bin"
 
 # Ensure these dirs are always first in the PATH
+_prepend-path "$CARGO_HOME/bin"
 _prepend-path "$HOME/.bin"
-_prepend-path "$HOME/.local/bin"
-_prepend-path "$HOME/.local/share/mise/shims"
+_prepend-path "$XDG_BIN_HOME"
+_prepend-path "$XDG_CONFIG_HOME/mise/shims"
 _prepend-path "./bin"
 _prepend-path "./node_modules/.bin"

@@ -38,7 +38,6 @@ _prepend-path "$HOMEBREW_PREFIX/sbin"
 
 export CARGO_HOME="$HOME/.local/share/cargo"
 export RUSTUP_HOME="$HOME/.local/share/rustup"
-_prepend-path "$CARGO_HOME/bin"
 export CDHISTORY="/tmp/cd-$USER"
 export CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY=1
 export CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1
