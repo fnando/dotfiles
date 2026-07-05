@@ -4,8 +4,38 @@ require "fileutils"
 require "optparse"
 require "shellwords"
 require "json"
+require "digest/sha1"
 
-def run(*args, description:, log_file: nil)
+class Store
+  class << self
+    attr_accessor :current_step
+    attr_accessor :retry_run
+  end
+
+  def self.step_path
+    "/tmp/#{Digest::SHA1.hexdigest(File.expand_path(__FILE__))}.step"
+  end
+
+  def self.load_step
+    if File.exist?(step_path)
+      self.current_step = File.read(step_path).to_i
+    else
+      self.current_step = 0
+    end
+  end
+
+  def self.save_step(step)
+    File.write(step_path, step.to_s)
+    self.current_step = step
+  end
+end
+
+def run(*args, step:, description:, log_file: nil)
+  if step < Store.current_step && Store.retry_run
+    puts "=> #{description}... skipped."
+    return
+  end
+
   args = args.map { Shellwords.escape(_1) }
 
   if log_file
@@ -23,6 +53,7 @@ def run(*args, description:, log_file: nil)
   puts(" done.")
 
   if $?.exitstatus != 0
+    Store.save_step(step)
     puts("Command failed: #{cmd}")
     puts("See log file: #{log_file}") if log_file
     exit(1)
@@ -55,6 +86,7 @@ cli = OptionParser.new do |opts|
   end
 
   opts.on("-r", "--retry", "Do not update version when re-running build script") do |v|
+    Store.retry_run = true
     version = current_version
     build_version -= 1
   end
@@ -73,6 +105,12 @@ end
 unless File.directory?("../macos-apps")
   puts "ERROR: ../macos-apps doesn't exist"
   puts "Run `gh clone fnando/macos-apps ../macos-apps` to clone it."
+end
+
+unless system("which -s create-dmg")
+  puts "ERROR: create-dmg is not installed"
+  puts "Run `npm install --global create-dmg` to install it."
+  exit(1)
 end
 
 unless app_name
@@ -115,76 +153,105 @@ File.open(project_file_path, "w") do |io|
   io << project_file
 end
 
-FileUtils.rm_rf("build")
+FileUtils.rm_rf("build") unless Store.retry_run
+File.unlink(Store.step_path) rescue nil unless Store.retry_run
+Store.load_step
+
 run(
   *%W[xcodebuild -scheme #{scheme} -configuration Release clean archive -archivePath build/#{app_name}.xcarchive],
   description: "Build archive",
-  log_file: "log/1_archive.log"
+  log_file: "log/1_archive.log",
+  step: 1
 )
 
 run(
   *%W[xcodebuild -exportArchive -archivePath build/#{app_name}.xcarchive -exportPath build/export -exportOptionsPlist ExportOptions.plist],
   description: "Export app",
-  log_file: "log/2_export_app.log"
+  log_file: "log/2_export_app.log",
+  step: 2
 )
 
 run(
-  *%W[ditto -c -k --sequesterRsrc --keepParent build/export/#{app_name}.app build/export/#{app_name}.zip],
-  description: "Create zip for notarization",
-  log_file: "log/3_notarization_zip.log"
+  *%W[create-dmg --overwrite build/export/#{app_name}.app build/export],
+  description: "Create DMG",
+  log_file: "log/3_create_dmg.log",
+  step: 3
+)
+
+dmg_path = "build/export/#{app_name}-#{version}.dmg"
+FileUtils.mv("build/export/#{app_name} #{version}.dmg", dmg_path)
+
+run(
+  *%W[xcrun notarytool submit #{dmg_path} --keychain-profile notarytool-password --wait],
+  description: "Submit DMG for notarization",
+  log_file: "log/4_notarize_dmg.log",
+  step: 4
 )
 
 run(
-  *%W[xcrun notarytool submit build/export/#{app_name}.zip --keychain-profile notarytool-password --wait],
-  description: "Submit app for notarization",
-  log_file: "log/4_notarization.log"
-)
-
-run(
-  *%W[xcrun stapler staple build/export/#{app_name}.app],
-  description: "Staple notarization ticket to app",
-  log_file: "log/5_staple.log"
-)
-
-FileUtils.rm("build/export/#{app_name}.zip")
-
-run(
-  *%W[ditto -c -k --sequesterRsrc --keepParent build/export/#{app_name}.app build/export/#{app_name}-#{version}.zip],
-  description: "Create final distribution zip",
-  log_file: "log/6_create_final_zip.log"
+  *%W[xcrun stapler staple #{dmg_path}],
+  description: "Staple notarization ticket to DMG",
+  log_file: "log/5_staple_dmg.log",
+  step: 5
 )
 
 run(
   *%W[../Sparkle/.build/artifacts/sparkle/Sparkle/bin/generate_appcast --download-url-prefix https://github.com/fnando/macos-apps/releases/download/#{app_name}-v#{version}/ -o build/export/appcast.xml build/export],
   description: "Generate appcast",
-  log_file: "log/7_generate_appcast.log"
+  log_file: "log/6_generate_appcast.log",
+  step: 6
 )
 
 run(
   *%W[cp build/export/appcast.xml ../macos-apps/appcast/#{app_name}.xml],
   description: "Copy appcast to macos-apps repo",
-  log_file: "log/8_copy_appcast.log"
+  log_file: "log/7_copy_appcast.log",
+  step: 7
 )
 
 run(
   *%W[codesign -dvvv build/export/#{app_name}.app],
   description: "Check detailed code signature",
-  log_file: "log/9_verify_signature_details.log"
+  log_file: "log/8_verify_signature_details.log",
+  step: 8
 )
 
 run(
   *%W[codesign --verify --deep --strict --verbose=2 build/export/#{app_name}.app],
-  description: "Verify code signature (deep)",
-  log_file: "log/10_verify_signature_deep.log"
+  description: "Verify app's code signature (deep)",
+  log_file: "log/9_verify_signature_deep.log",
+  step: 9
 )
 
 run(
   *%W[spctl -a -vvv -t exec build/export/#{app_name}.app],
-  description: "Check Gatekeeper assessment",
-  log_file: "log/11_verify_gatekeeper.log"
+  description: "Check app's Gatekeeper assessment",
+  log_file: "log/10_verify_gatekeeper.log",
+  step: 10
+)
+
+run(
+  *%W[codesign -dvvv #{dmg_path}],
+  description: "Check DMG code signature",
+  log_file: "log/11_verify_dmg_signature_details.log",
+  step: 11
+)
+
+run(
+  *%W[codesign --verify --verbose=2 #{dmg_path}],
+  description: "Verify DMG code signature",
+  log_file: "log/12_verify_dmg_signature.log",
+  step: 12
+)
+
+run(
+  *%W[spctl -a -vvv -t open --context context:primary-signature #{dmg_path}],
+  description: "Check DMG Gatekeeper assessment",
+  log_file: "log/13_verify_dmg_gatekeeper.log",
+  step: 13
 )
 
 puts "\n✅ Build complete! App is signed, notarized, and ready for distribution."
 puts "   Version: #{version}"
 puts "   Build: #{build_version}"
-puts "   Location: build/export/#{app_name}-#{version}.zip"
+puts "   Location: #{dmg_path}"
