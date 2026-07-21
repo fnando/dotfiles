@@ -76,8 +76,8 @@ format = '[$symbol ($output )]($style) '
 style = "blue"
 
 [custom.dotshell]
-when = 'test -n "$DOTENV_FILES"'
-command = "echo -n dotenv"
+when = 'test -n "$DOTSHELL_FILES"'
+command = "echo -n dotshell"
 symbol = "\uf013"
 format = '[$symbol ($output )]($style) '
 style = "yellow"
