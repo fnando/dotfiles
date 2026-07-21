@@ -7,12 +7,48 @@
 // custom settings, run the `open default settings` command
 // from the command palette or from `Zed` application menu.
 {
+  "cli_default_open_behavior": "new_window",
+  "search": {
+    "button": false
+  },
+  "debugger": {
+    "button": false
+  },
+  "outline_panel": {
+    "button": false
+  },
+  "git_panel": {
+    "button": false
+  },
+  "project_panel": {
+    "button": false
+  },
   "icon_theme": "Warm Charmed Icons",
-  "theme": "One Light",
+  "theme": {
+    "mode": "system",
+    "light": "One Light",
+    "dark": "One Dark"
+  },
   "agent": {
+    "favorite_models": [
+      {
+        "provider": "copilot_chat",
+        "model": "claude-sonnet-4.6",
+        "enable_thinking": true,
+        "effort": "high"
+      },
+      {
+        "provider": "copilot_chat",
+        "model": "claude-opus-4.6",
+        "enable_thinking": true,
+        "effort": "high"
+      }
+    ],
     "default_model": {
+      "effort": "high",
+      "enable_thinking": true,
       "provider": "copilot_chat",
-      "model": "gpt-4o",
+      "model": "claude-sonnet-4.6",
     },
   },
   "collaboration_panel": {
@@ -33,6 +69,11 @@
   "ui_font_family": "SF Pro Text",
   "buffer_font_family": "JetBrains Mono",
   "terminal": {
+    "scrollbar": {
+      "show": "system"
+    },
+    "button": false,
+    "flexible": true,
     "font_family": "JetBrainsMono Nerd Font Propo",
     "font_size": 16,
     "cursor_shape": "block",

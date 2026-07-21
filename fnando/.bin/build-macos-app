@@ -93,18 +93,17 @@ cli = OptionParser.new do |opts|
 end
 cli.parse!
 
-unless File.directory?("../Sparkle")
-  puts "ERROR: ../Sparkle doesn't exist"
-  puts "Run `gh clone sparkle-project/Sparkle ../Sparkle` to clone it."
-
-  unless File.executable?("../Sparkle/.build/artifacts/sparkle/Sparkle/bin/generate_appcast")
-    puts "Then run `cd ../Sparkle && make build` to create `generate_appcast`."
-  end
+if `which generate_appcast`.empty?
+  puts "ERROR: `generate_appcast` is not installed"
+  puts "Go to https://github.com/sparkle-project/Sparkle/releases/latest to download the latest version"
+  puts "Use `xattr -d com.apple.quarantine generate_appcast` to remove quarantine attribute"
+  exit(1)
 end
 
 unless File.directory?("../macos-apps")
   puts "ERROR: ../macos-apps doesn't exist"
   puts "Run `gh clone fnando/macos-apps ../macos-apps` to clone it."
+  exit(1)
 end
 
 unless system("which -s create-dmg")
@@ -196,7 +195,7 @@ run(
 )
 
 run(
-  *%W[../Sparkle/.build/artifacts/sparkle/Sparkle/bin/generate_appcast --download-url-prefix https://github.com/fnando/macos-apps/releases/download/#{app_name}-v#{version}/ -o build/export/appcast.xml build/export],
+  *%W[generate_appcast --download-url-prefix https://github.com/fnando/macos-apps/releases/download/#{app_name}-v#{version}/ -o build/export/appcast.xml build/export],
   description: "Generate appcast",
   log_file: "log/6_generate_appcast.log",
   step: 6

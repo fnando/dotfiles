@@ -1,0 +1,57 @@
+#!/usr/bin/env ruby
+
+gem "listen"
+require "optparse"
+require "listen"
+
+PRESETS = {
+  "rust" => {
+    patterns: [".toml", "Cargo.lock", ".json", ".rs"],
+    ignore: ["target/"]
+  }
+}
+
+options = {patterns: [], dir: ".", ignore: []}
+
+cli = OptionParser.new do |o|
+  o.on("-d", "--dir=DIR", "The directory to watch") do |dir|
+    options[:dir] = dir
+  end
+
+  o.on("-p", "--preset=PRESET", "Which preset to use") do |preset|
+    preset = PRESETS.fetch(preset) { die("Preset #{preset.inspect} is invalid") }
+
+    options[:patterns] += preset[:patterns]
+    options[:ignore] += preset[:ignore]
+  end
+
+  o.on("-i", "--ignore=IGNORE", "Which file/dir to ignore (repeatable)") do |entry|
+
+  end
+
+  o.on("-e", "--ext=EXTENSION", "Which extension to match (repeatable)") do |ext|
+    options[:patterns] << ".#{ext}"
+  end
+end
+
+cli.parse!
+
+only = options[:patterns].each_with_object([]) do |pattern, buffer|
+  ext = File.extname(pattern)
+  ext = pattern if ext == ""
+  buffer << Regexp.escape(ext)
+end
+
+ignore = options[:ignore].each_with_object([]) do |pattern, buffer|
+  buffer << Regexp.escape(pattern)
+end
+
+only = Regexp.new("(#{only.join("|")})$", "i")
+ignore = Regexp.new(ignore.join("|"), "i")
+
+listener = Listen.to(File.expand_path(options[:dir]), only:, ignore:) do |*changes|
+  system(*ARGV)
+end
+
+listener.start
+sleep

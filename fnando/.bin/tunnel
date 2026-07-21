@@ -71,7 +71,7 @@ trap("INT") do
 end
 
 reload_cmd = "service caddy restart"
-verbose = options[:verbose] ? Logger::DEBUG : nil
+verbose = options[:verbose] ? Logger::DEBUG : false
 logger = Logger.new(verbose ? $stdout : StringIO.new)
 options => {local_port:, remote_port:}
 

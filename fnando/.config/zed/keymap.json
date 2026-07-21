@@ -39,4 +39,46 @@
       ],
     },
   },
+  {
+    "context": "Editor",
+    "bindings": {
+      "alt-d": "editor::GoToDeclaration"
+    }
+  },
+  {
+    "context": "Editor",
+    "unbind": {
+      "ctrl-f12": "editor::GoToDeclaration"
+    }
+  },
+  {
+    "context": "Editor",
+    "bindings": {
+      "ctrl-alt-d": "editor::GoToDeclarationSplit"
+    }
+  },
+  {
+    "context": "Editor",
+    "unbind": {
+      "ctrl-alt-f12": "editor::GoToDeclarationSplit"
+    }
+  },
+  {
+    "context": "Workspace",
+    "bindings": {
+      "cmd-|": "workspace::ToggleRightDock"
+    }
+  },
+  {
+    "context": "Workspace",
+    "unbind": {
+      "alt-cmd-b": "workspace::ToggleRightDock"
+    }
+  },
+  {
+    "context": "Editor",
+    "unbind": {
+      "cmd-|": "editor::MoveToEnclosingBracket"
+    }
+  }
 ]

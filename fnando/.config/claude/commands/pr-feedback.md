@@ -54,7 +54,7 @@ Group every piece of feedback into one of these categories:
 | 💡 **Suggestion / Nice-to-have** | Optional improvement, not blocking                                      |
 | ✅ **Positive / Praise**         | Compliment or approval — no action needed                               |
 
-For each comment, output:
+For each **unresolved** comment, output:
 
 - Reviewer name
 - Category (from table above)
@@ -142,6 +142,28 @@ For each must-fix and should-fix item (in priority order):
 1. Switch to the correct branch
 2. Make the code change
 3. Note which reviewer comment it addresses
-4. After all changes, use the `/commit` skill to commit with a clear message
+4. Commit each change with `/commit` skill individually
 
 Do NOT address items the user marked as deferred or dropped.
+
+## Step 7: Push changes (optional)
+
+**STOP. Do not push code automatically.**
+
+Ask the user:
+
+1. Should I push the changes.
+
+Wait for explicit confirmation before proceeding to Step 8.
+
+## Step 8: Reply to all comments (optional)
+
+**STOP. Do not post any comments automatically.**
+
+For each comment:
+
+1. Draft a concise-friendly reply
+2. Preview the message
+3. Ask the user if the comment looks good; if confirmed:
+  a) Post the comment
+  b) Resolve the comment
