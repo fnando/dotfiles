@@ -11,7 +11,8 @@ $nodejs\
 $golang\
 $rust\
 $python\
-${custom.stellar_cli}
+${custom.stellar_cli}\
+${custom.dotshell}
 $status\\$ """
 
 [status]
@@ -73,3 +74,10 @@ command = "stellar --version | head -n1 | cut -f2 -d' '"
 symbol = "\ueb44"
 format = '[$symbol ($output )]($style) '
 style = "blue"
+
+[custom.dotshell]
+when = 'test -n "$DOTENV_FILES"'
+command = "echo -n dotenv"
+symbol = "\uf013"
+format = '[$symbol ($output )]($style) '
+style = "yellow"
