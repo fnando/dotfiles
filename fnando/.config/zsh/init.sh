@@ -35,8 +35,6 @@ source $zsh_dir/aliases.sh
 source $zsh_dir/fzf.sh
 source $zsh_dir/zinit.sh
 
-_source-file-if-exists $after_hook
-
 # Ensure there's a ruby dir per version.
 current_ruby=$(mise ls ruby -c --json | jq --raw-output '.[0].version')
 export GEM_HOME="$INSTALL_DIR/ruby/$current_ruby"
@@ -50,3 +48,5 @@ _prepend-path "$XDG_BIN_HOME"
 _prepend-path "$XDG_CONFIG_HOME/mise/shims"
 _prepend-path "./bin"
 _prepend-path "./node_modules/.bin"
+
+_source-file-if-exists $after_hook
