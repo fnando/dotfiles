@@ -80,5 +80,22 @@
     "unbind": {
       "cmd-|": "editor::MoveToEnclosingBracket"
     }
+  },
+  {
+    "unbind": {
+      "cmd-shift-w": "workspace::CloseWindow"
+    }
+  },
+  {
+    "context": "Editor && mode == full",
+    "bindings": {
+      "alt-cmd-w": "editor::ToggleSoftWrap"
+    }
+  },
+  {
+    "context": "Editor && mode == full",
+    "unbind": {
+      "cmd-k z": "editor::ToggleSoftWrap"
+    }
   }
 ]
