@@ -38,6 +38,8 @@ _prepend-path "$HOMEBREW_PREFIX/sbin"
 
 export CARGO_HOME="$HOME/.local/share/cargo"
 export RUSTUP_HOME="$HOME/.local/share/rustup"
+export CONTAINER_APP_ROOT=$HOME/.local/share/container
+export CONTAINER_LOG_ROOT=$HOME/.local/share/container/logs
 export CDHISTORY="/tmp/cd-$USER"
 export CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY=1
 export CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1
