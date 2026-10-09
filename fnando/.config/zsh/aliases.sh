@@ -8,6 +8,10 @@ alias clippy="cargo clippy -- -Dwarnings -Dclippy::all -Dclippy::pedantic"
 alias reload="source ~/.zshrc"
 alias pcat="bat"
 alias simple-prompt="zsh -f -c 'export PS1=$'\''\n$ '\''; exec zsh -f'"
+
+unalias claude 2>/dev/null
+claude() { USING_AGENTS=1 command claude "$@"; }
+
 alias claude-work="CLAUDE_CONFIG_DIR=~/.config/claude-work claude"
 
 cargo-build-watch() {
