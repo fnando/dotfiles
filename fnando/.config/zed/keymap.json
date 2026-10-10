@@ -97,5 +97,17 @@
     "unbind": {
       "cmd-k z": "editor::ToggleSoftWrap"
     }
+  },
+  {
+    "context": "Pane",
+    "bindings": {
+      "cmd-shift-w": "workspace::CloseInactiveTabsAndPanes"
+    }
+  },
+  {
+    "context": "Pane",
+    "unbind": {
+      "ctrl-alt-cmd-w": "workspace::CloseInactiveTabsAndPanes"
+    }
   }
 ]
