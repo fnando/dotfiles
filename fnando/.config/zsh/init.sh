@@ -3,14 +3,13 @@ export SHELL_NAME="zsh"
 export XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
 export XDG_DATA_HOME=${XDG_DATA_HOME:-$HOME/.local/share}
 export XDG_CACHE_HOME=${XDG_CACHE_HOME:-$HOME/.local/cache}
-export XDG_STATE_HOME=${XDG_CACHE_HOME:-$HOME/.local/state}
+export XDG_STATE_HOME=${XDG_STATE_HOME:-$HOME/.local/state}
 export XDG_BIN_HOME=${XDG_BIN_HOME:-$HOME/.local/bin}
 
 typeset -U path PATH
 fpath=($XDG_CONFIG_HOME/zsh-completions $fpath)
 autoload -Uz compinit
 autoload -Uz add-zsh-hook
-compinit -i
 
 zsh_dir=$XDG_CONFIG_HOME/zsh
 
@@ -45,8 +44,17 @@ source $zsh_dir/aliases.sh
 source $zsh_dir/fzf.sh
 source $zsh_dir/zinit.sh
 
+# Run compinit once all fpath entries (local + zinit plugins) are in place.
+# Skip the dump rebuild and security audit if the cache is less than 24h old.
+if [[ -n $ZSH_COMPDUMP(#qN.mh+24) ]]; then
+  compinit -i
+else
+  compinit -C -i
+fi
+zinit cdreplay -q
+
 # Ensure there's a ruby dir per version.
-current_ruby=$(mise ls ruby -c --json | jq --raw-output '.[0].version')
+current_ruby=$(mise current ruby)
 export GEM_HOME="$INSTALL_DIR/ruby/$current_ruby"
 export GEM_INSTALL="$GEM_HOME"
 _prepend-path "$GEM_HOME/bin"

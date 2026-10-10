@@ -1,4 +1,3 @@
-export WORDCHARS=${WORDCHARS//[&=\/;\!#%\{]}
 export INSTALL_DIR=${INSTALL_DIR:-$HOME/.local}
 export NPM_HOME=${NPM_HOME:-$INSTALL_DIR/npm}
 export NODE_PATH=${NODE_PATH:-./node_modules:$HOME/.local/npm/lib/node_modules}
@@ -7,7 +6,6 @@ export LANG="en_US"
 export EDITOR=${EDITOR:-vim}
 export VISUAL=${VISUAL:-vim}
 export GREP_COLOR="4;33"
-export CDPATH=.:$HOME:$HOME/Projects
 export HISTFILE="$HOME/.zsh_history"
 export HISTSIZE=1000000000
 export HISTDUP=erase
@@ -15,18 +13,23 @@ export HISTCONTROL=ignoreboth:erasedups
 export HISTIGNORE="ls:cd:cd -:pwd:exit:date:* --help"
 export SAVEHIST=1000000000
 
-if [[ "$(uname -m)" == "arm64" ]]; then
+_os=$(uname)
+_arch=$(uname -m)
+
+if [[ "$_arch" == "arm64" ]]; then
   export HOMEBREW_PREFIX=/opt/homebrew
 else
   export HOMEBREW_PREFIX=/usr/local
 fi
 
-if [[ "$(uname)" == "Darwin" ]]; then
+if [[ "$_os" == "Darwin" ]]; then
   export CPATH="$HOMEBREW_PREFIX/include:$CPATH"
   export LIBRARY_PATH="$HOMEBREW_PREFIX/lib:$LIBRARY_PATH"
-  export LDFLAGS="-L$HOMEBREW_PREFIX/lib"
-  export CPPFLAGS="-I$HOMEBREW_PREFIX/include"
+  export LDFLAGS="-L$HOMEBREW_PREFIX/lib -L$HOMEBREW_PREFIX/opt/readline/lib"
+  export CPPFLAGS="-I$HOMEBREW_PREFIX/include -I$HOMEBREW_PREFIX/opt/readline/include"
 fi
+
+unset _os _arch
 
 test-env() {
   export HELLO=hello-there
@@ -54,7 +57,7 @@ export DOCKER_TELEMETRY=false
 export FASTLANE_OPT_OUT_USAGE=YES
 export GH_TELEMETRY=false
 export GOTELEMETRY=off
-export GPG_TTY=$(tty)
+export GPG_TTY=$TTY
 export HOMEBREW_BUNDLE_DUMP_NO_VSCODE=1
 export HOMEBREW_BUNDLE_NO_LOCK=1
 export HOMEBREW_CACHE="/tmp/homebrew-cache"
@@ -80,6 +83,3 @@ export ZSH_COMPDUMP=$XDG_CONFIG_HOME/zsh-compdump
 
 export COLIMA_HOME="$HOME/.local/share/colima"
 export LIMA_HOME=$HOME/.local/share/colima-lima
-
-export LDFLAGS="-L/opt/homebrew/opt/readline/lib"
-export CPPFLAGS="-I/opt/homebrew/opt/readline/include"

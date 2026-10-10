@@ -5,12 +5,12 @@ psgrep() {
   fi
 
   output=$(ps aux)
-  header=$(echo $output | head -n1)
-  matches=$(echo -n $output | grep -v grep | grep $1)
+  header=$(print -r -- "$output" | head -n1)
+  matches=$(print -r -- "$output" | grep -v grep | grep "$1")
 
-  if [[ "$matches" != "" ]]; then
-    echo $header
-    echo $matches
+  if [[ -n "$matches" ]]; then
+    print -r -- "$header"
+    print -r -- "$matches"
     return 0
   fi
 

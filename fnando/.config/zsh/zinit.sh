@@ -6,5 +6,3 @@ _source-file-if-exists $HOME/.local/share/zinit/zinit.zsh
 zinit light zdharma-continuum/fast-syntax-highlighting
 zinit light zsh-users/zsh-autosuggestions
 zinit light zsh-users/zsh-completions
-
-zinit cdreplay -q
