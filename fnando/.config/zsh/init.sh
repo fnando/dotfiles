@@ -24,6 +24,16 @@ _source-file-if-exists $before_hook
 source $zsh_dir/exports.sh
 source $zsh_dir/options.sh
 source $zsh_dir/keybindings.sh
+
+# Ensure these dirs are always first in the PATH (before mise.sh so `mise` is
+# discoverable in $XDG_BIN_HOME).
+_prepend-path "$CARGO_HOME/bin"
+_prepend-path "$HOME/.bin"
+_prepend-path "$XDG_BIN_HOME"
+_prepend-path "$XDG_CONFIG_HOME/mise/shims"
+_prepend-path "./bin"
+_prepend-path "./node_modules/.bin"
+
 source $zsh_dir/mise.sh
 source $zsh_dir/cd.sh
 source $zsh_dir/md.sh
@@ -40,13 +50,5 @@ current_ruby=$(mise ls ruby -c --json | jq --raw-output '.[0].version')
 export GEM_HOME="$INSTALL_DIR/ruby/$current_ruby"
 export GEM_INSTALL="$GEM_HOME"
 _prepend-path "$GEM_HOME/bin"
-
-# Ensure these dirs are always first in the PATH
-_prepend-path "$CARGO_HOME/bin"
-_prepend-path "$HOME/.bin"
-_prepend-path "$XDG_BIN_HOME"
-_prepend-path "$XDG_CONFIG_HOME/mise/shims"
-_prepend-path "./bin"
-_prepend-path "./node_modules/.bin"
 
 _source-file-if-exists $after_hook
