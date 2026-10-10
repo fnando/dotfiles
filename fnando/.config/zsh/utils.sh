@@ -1,5 +1,5 @@
 _source-file-if-exists() {
-  source "$1" || true
+  source "$1" 2>/dev/null || true
 }
 
 _noglob-command() {
