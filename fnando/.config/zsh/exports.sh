@@ -65,6 +65,7 @@ export HOMEBREW_CASK_OPTS="--appdir=/Applications --fontdir=~/Library/Fonts"
 export HOMEBREW_NO_ANALYTICS=1
 export HOMEBREW_NO_ENV_HINTS=1
 export LESS="-REX"
+export MISE_LOG_LEVEL=error
 export LESS_TERMCAP_mb=$'\E[04;33m'
 export LESS_TERMCAP_md=$'\E[04;33m'
 export LESS_TERMCAP_me=$'\E[0m'
