@@ -12,6 +12,10 @@ PRESETS = {
   "web" => {
     patterns: [".css", ".html", ".json", ".js", ".ts", ".tsx", ".vue", ".mjs"],
     ignore: ["dist/", "build/"]
+  },
+  "ruby" => {
+    patterns: [".rb", "Gemfile", "Gemfile.lock"],
+    ignore: []
   }
 }
 
@@ -55,12 +59,12 @@ ignore = options[:ignore].each_with_object([]) do |pattern, buffer|
 end
 
 only = Regexp.new("(#{only.join("|")})$", "i")
-ignore = Regexp.new(ignore.join("|"), "i")
+ignore = Regexp.new(ignore.join("|"), "i") unless ignore.empty?
 
 if options[:verbose]
   puts "=> Watching #{options[:dir]} for changes"
   puts "=> Matching #{only.inspect}"
-  puts "=> Ignoring #{ignore.inspect}"
+  puts "=> Ignoring #{ignore.inspect}" unless ignore.empty?
 end
 
 listener = Listen.to(File.expand_path(options[:dir]), only:, ignore:) do |*changes|
