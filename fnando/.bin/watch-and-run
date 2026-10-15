@@ -8,12 +8,20 @@ PRESETS = {
   "rust" => {
     patterns: [".toml", "Cargo.lock", ".json", ".rs"],
     ignore: ["target/"]
+  },
+  "web" => {
+    patterns: [".css", ".html", ".json", ".js", ".ts", ".tsx", ".vue", ".mjs"],
+    ignore: ["dist/", "build/"]
   }
 }
 
-options = {patterns: [], dir: ".", ignore: []}
+options = {patterns: [], dir: ".", ignore: [], verbose: false}
 
 cli = OptionParser.new do |o|
+  o.on("-v", "--verbose", "Print debug info") do
+    options[:verbose] = true
+  end
+
   o.on("-d", "--dir=DIR", "The directory to watch") do |dir|
     options[:dir] = dir
   end
@@ -48,6 +56,12 @@ end
 
 only = Regexp.new("(#{only.join("|")})$", "i")
 ignore = Regexp.new(ignore.join("|"), "i")
+
+if options[:verbose]
+  puts "=> Watching #{options[:dir]} for changes"
+  puts "=> Matching #{only.inspect}"
+  puts "=> Ignoring #{ignore.inspect}"
+end
 
 listener = Listen.to(File.expand_path(options[:dir]), only:, ignore:) do |*changes|
   system(*ARGV)
