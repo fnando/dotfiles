@@ -81,6 +81,7 @@ export WORDCHARS='*?[]~$^()}<>'
 export YARN_CACHE_FOLDER=/tmp/yarn-cache
 export YARN_ENABLE_TELEMETRY=0
 export ZSH_COMPDUMP=$XDG_CONFIG_HOME/zsh-compdump
+export TART_HOME=$XDG_DATA_HOME/tart
 
 export COLIMA_HOME="$HOME/.local/share/colima"
 export LIMA_HOME=$HOME/.local/share/colima-lima

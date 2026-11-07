@@ -1,0 +1,514 @@
+#!/usr/bin/env python3
+"""Normalise a store-made "Essentials" compilation folder for Jellyfin.
+
+    essentials-album [--mbid <artist-mbid> | --mbid-select] [--dir DIR]
+                     [--year YYYY] [--album TITLE] [--name ARTIST]
+                     [--cover FILE] [--dry-run]
+
+The script looks the artist up on MusicBrainz (by --mbid, or by searching
+the files' artist name and asking you to pick from the top matches), then
+for every audio file in the folder (FLAC or MP3):
+
+  * numbers the tracks 1..N in their current order (from the track tag, else
+    the filename), one disc, with totals;
+  * cleans the title through `tidepool titles test --title <title>` (on
+    PATH) and writes the result to the tag and the filename;
+  * renames each file to "N. Title.ext" and renames the matching .lrc lyrics
+    file (matched by the title, before or after cleaning) to the same stem;
+  * sets the album artist (name, sort name, MusicBrainz id), the track artist
+    where it was missing or a store name, the album title ("<Artist>
+    Essentials" unless one is already set), the release type (compilation)
+    and the release date (the current year unless --year);
+  * drops every tag not on the keep list (store leftovers, encoder notes,
+    sort fields the store filled with its own name);
+  * embeds the cover (--cover, default <dir>/cover.jpg) as the front
+    cover of every file, replacing any picture already embedded. Without a
+    cover file, embedded pictures are left as they are.
+
+Nothing is deleted; folder covers are left alone.
+
+Without --mbid, a MusicBrainz artist id already in the files (artist id,
+else album artist id) is used as is. Failing that, a pick from the search
+list is remembered per artist name in ~/.config/essentials-album/artists.json
+and reused silently next time. --mbid-select ignores both and asks again.
+"""
+
+import argparse
+import datetime
+import hashlib
+import json
+import os
+import re
+import shutil
+import subprocess
+import sys
+import tempfile
+import time
+import unicodedata
+import urllib.error
+import urllib.parse
+import urllib.request
+
+try:
+    from mutagen.flac import FLAC, Picture
+    from mutagen.id3 import APIC, ID3, TXXX, Frames
+    from mutagen.mp3 import MP3
+except ImportError:
+    sys.exit("mutagen is required: pip install mutagen")
+
+AUDIO = (".flac", ".mp3")
+USER_AGENT = "essentials-album/1.0 (https://github.com/fnando)"
+CACHE_DIR = os.path.join(tempfile.gettempdir(), "essentials-album", "musicbrainz")
+CACHE_TTL = 7 * 24 * 3600  # seconds; artist records barely change
+SELECTIONS_FILE = os.path.expanduser("~/.config/essentials-album/artists.json")
+
+# Vorbis field names worth keeping (case-insensitive). Anything else goes.
+KEEP = {
+    "TITLE", "ARTIST", "ALBUM", "ALBUMARTIST", "ARTISTS", "ALBUMARTISTS",
+    "ARTISTSORT", "ALBUMARTISTSORT", "TITLESORT",
+    "TRACKNUMBER", "TRACKTOTAL", "DISCNUMBER", "DISCTOTAL",
+    "DATE", "ORIGINALDATE", "ORIGINALYEAR", "GENRE", "LABEL", "CATALOGNUMBER",
+    "COMPOSER", "LYRICIST", "PERFORMER", "ISRC", "BPM", "LYRICS", "UNSYNCEDLYRICS",
+    "RELEASETYPE", "RELEASESTATUS", "COMPILATION",
+}
+KEEP_PREFIXES = ("MUSICBRAINZ_", "REPLAYGAIN_", "ACOUSTID_", "R128_")
+
+# ID3 frames worth keeping, and the TXXX descriptions worth keeping.
+KEEP_FRAMES = {
+    "TIT2", "TPE1", "TALB", "TPE2", "TSOP", "TSO2", "TSOT", "TRCK", "TPOS",
+    "TDRC", "TDOR", "TORY", "TYER", "TCON", "TPUB", "TCOM", "TEXT", "TMCL", "TIPL",
+    "TSRC", "TBPM", "USLT", "APIC", "TCMP",
+}
+KEEP_TXXX = {
+    "ARTISTS", "ALBUMARTISTS", "PERFORMER", "ORIGINALYEAR", "ORIGINALDATE",
+    "MUSICBRAINZ ALBUM TYPE", "MUSICBRAINZ ALBUM STATUS", "RELEASETYPE", "CATALOGNUMBER",
+}
+KEEP_TXXX_PREFIXES = ("MUSICBRAINZ", "REPLAYGAIN", "ACOUSTID")
+
+STORE_NAMES = {"apple music", "itunes", "amazon music", "tidal", "deezer", "spotify"}
+
+
+
+def musicbrainz(path, **params):
+    """One MusicBrainz call, cached in /tmp; waits and retries on the rate limiter's 503."""
+    query = urllib.parse.urlencode({"fmt": "json", **params})
+    url = f"https://musicbrainz.org/ws/2/{path}?{query}"
+    cache_file = os.path.join(CACHE_DIR, hashlib.sha1(url.encode()).hexdigest() + ".json")
+    try:
+        if time.time() - os.path.getmtime(cache_file) < CACHE_TTL:
+            with open(cache_file) as handle:
+                return json.load(handle)
+    except (OSError, ValueError):
+        pass
+    request = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
+    for attempt in range(4):
+        try:
+            with urllib.request.urlopen(request, timeout=20) as response:
+                data = json.load(response)
+            break
+        except urllib.error.HTTPError as error:
+            if error.code != 503 or attempt == 3:
+                raise
+            time.sleep(1.5 * (attempt + 1))
+    os.makedirs(CACHE_DIR, exist_ok=True)
+    with open(cache_file, "w") as handle:
+        json.dump(data, handle)
+    return data
+
+
+def load_selections():
+    """Remembered picks: lower-cased search term -> MusicBrainz id."""
+    try:
+        with open(SELECTIONS_FILE) as handle:
+            return json.load(handle)
+    except (OSError, ValueError):
+        return {}
+
+
+def save_selection(query, mbid):
+    selections = load_selections()
+    selections[query.strip().lower()] = mbid
+    os.makedirs(os.path.dirname(SELECTIONS_FILE), exist_ok=True)
+    with open(SELECTIONS_FILE, "w") as handle:
+        json.dump(selections, handle, indent=2, sort_keys=True)
+        handle.write("\n")
+
+
+def lookup_artist(mbid):
+    """(mbid, name, sort name) for a known MusicBrainz id."""
+    data = musicbrainz(f"artist/{mbid}")
+    return mbid, data["name"], data.get("sort-name") or data["name"]
+
+
+def search_artist(query, limit=5):
+    """Search MusicBrainz for the artist and let the user pick from the top matches."""
+    if not query.strip():
+        sys.exit("no artist name in the files to search for; pass --mbid or --name")
+    if not sys.stdin.isatty():
+        sys.exit("no --mbid given and no terminal to ask on; pass --mbid")
+    artists = musicbrainz("artist/", query=query, limit=limit).get("artists") or []
+    if not artists:
+        sys.exit(f"MusicBrainz has no artist matching {query!r}; pass --mbid")
+    print(f"MusicBrainz matches for {query!r}:")
+    for index, artist in enumerate(artists, start=1):
+        details = [artist.get("type"), artist.get("country"), (artist.get("life-span") or {}).get("begin", "")[:4]]
+        details = ", ".join(d for d in details if d)
+        note = f"  [{artist['disambiguation']}]" if artist.get("disambiguation") else ""
+        print(f"  {index}. {artist['name']}  ({details})  score {artist.get('score', 0)}{note}")
+        print(f"     {artist['id']}")
+    while True:
+        try:
+            answer = input(f"pick 1-{len(artists)} (Enter = 1, q = quit): ").strip().lower()
+        except EOFError:
+            answer = "q"
+        if answer in ("q", "quit"):
+            sys.exit("cancelled")
+        if answer == "":
+            answer = "1"
+        if answer.isdigit() and 1 <= int(answer) <= len(artists):
+            chosen = artists[int(answer) - 1]
+            return chosen["id"], chosen["name"], chosen.get("sort-name") or chosen["name"]
+        print(f"not a choice: {answer!r}")
+
+
+def normalise(text):
+    text = unicodedata.normalize("NFKD", text).encode("ascii", "ignore").decode().lower()
+    return " ".join(re.findall(r"[a-z0-9]+", text))
+
+
+def find_tidepool():
+    found = shutil.which("tidepool")
+    if not found:
+        sys.exit("tidepool is required on PATH to clean titles")
+    return found
+
+
+def clean_title(tidepool, title):
+    """The title as tidepool cleans it; unchanged if tidepool returns nothing."""
+    result = subprocess.run(
+        [tidepool, "titles", "test", "-q", "--title", title],
+        capture_output=True, text=True, timeout=30, check=False,
+    )
+    if result.returncode != 0:
+        sys.exit(f"tidepool failed on {title!r}: {result.stderr.strip() or result.returncode}")
+    cleaned = result.stdout.strip()
+    return cleaned or title.strip()
+
+
+def safe_filename(text):
+    text = text.replace("/", "-").replace(":", " -").replace("\\", "-")
+    text = re.sub(r"\s+", " ", text).strip().rstrip(".")
+    return text or "Untitled"
+
+
+def same(a, b):
+    """Filename equality across the Unicode forms disks and tags disagree on."""
+    return unicodedata.normalize("NFC", a) == unicodedata.normalize("NFC", b)
+
+
+def read_cover(path):
+    """The cover's bytes and MIME type, or None when there's no such file."""
+    if not path or not os.path.isfile(path):
+        return None
+    with open(path, "rb") as handle:
+        data = handle.read()
+    if data[:3] == b"\xff\xd8\xff":
+        mime = "image/jpeg"
+    elif data[:8] == b"\x89PNG\r\n\x1a\n":
+        mime = "image/png"
+    else:
+        sys.exit(f"cover must be a JPEG or PNG: {path}")
+    return data, mime
+
+
+def embed_cover(track, cover):
+    data, mime = cover
+    if track.flac:
+        picture = Picture()
+        picture.type = 3  # front cover
+        picture.mime = mime
+        picture.desc = "Cover"
+        picture.data = data
+        track.tags.clear_pictures()
+        track.tags.add_picture(picture)
+    else:
+        id3 = track.tags.tags
+        id3.delall("APIC")
+        id3.add(APIC(encoding=3, mime=mime, type=3, desc="Cover", data=data))
+
+
+def is_store(value):
+    return value.strip().lower() in STORE_NAMES
+
+
+class Track:
+    def __init__(self, path):
+        self.path = path
+        self.name = os.path.basename(path)
+        self.ext = os.path.splitext(self.name)[1].lower()
+        self.flac = self.ext == ".flac"
+        self.tags = FLAC(path) if self.flac else MP3(path)
+        if not self.flac and self.tags.tags is None:
+            self.tags.add_tags()
+
+    # Reading, in Vorbis terms, whatever the container is.
+    def get(self, key):
+        if self.flac:
+            values = self.tags.get(key.upper()) or self.tags.get(key.lower()) or []
+            return values[0] if values else None
+        frame = {
+            "TITLE": "TIT2", "ARTIST": "TPE1", "ALBUM": "TALB", "ALBUMARTIST": "TPE2",
+            "TRACKNUMBER": "TRCK", "DISCNUMBER": "TPOS", "DATE": "TDRC",
+        }[key]
+        value = self.tags.tags.get(frame)
+        return str(value.text[0]) if value and value.text else None
+
+    def mbid(self):
+        """A MusicBrainz artist id already in the tags: the track artist's, else the album artist's."""
+        if self.flac:
+            for key in ("MUSICBRAINZ_ARTISTID", "MUSICBRAINZ_ALBUMARTISTID"):
+                value = self.get(key)
+                if value and value.strip():
+                    return value.strip()
+            return None
+        for desc in ("MusicBrainz Artist Id", "MusicBrainz Album Artist Id"):
+            frame = self.tags.tags.get(f"TXXX:{desc}")
+            if frame and frame.text and str(frame.text[0]).strip():
+                return str(frame.text[0]).strip()
+        return None
+
+    def sort_key(self):
+        number = self.get("TRACKNUMBER") or ""
+        disc = self.get("DISCNUMBER") or "1"
+        track = re.match(r"\d+", number)
+        if not track:
+            track = re.match(r"\d+", self.name)
+        return (int(re.match(r"\d+", disc).group()) if re.match(r"\d+", disc) else 1,
+                int(track.group()) if track else 10 ** 6, self.name.lower())
+
+    def title(self):
+        title = self.get("TITLE")
+        if title and title.strip():
+            return title.strip()
+        stem = os.path.splitext(self.name)[0]
+        return re.sub(r"^\d+(?:_\d+)?[.\-_ ]+", "", stem).strip()
+
+
+def apply_flac(track, number, total, artist, sort_name, mbid, album, year, title):
+    tags = track.tags
+    removed = []
+    if title != track.title():
+        for key in list(tags.keys()):
+            if key.upper() == "TITLESORT":
+                del tags[key]
+                removed.append(key)
+    for key in list(tags.keys()):
+        upper = key.upper()
+        values = tags[key]
+        if any(is_store(v) for v in values) and upper not in ("ALBUM",):
+            del tags[key]
+            removed.append(key)
+            continue
+        if upper in KEEP or upper.startswith(KEEP_PREFIXES):
+            continue
+        del tags[key]
+        removed.append(key)
+    current_artist = (tags.get("ARTIST") or [""])[0]
+    if not current_artist.strip():
+        tags["ARTIST"] = [artist]
+    if (tags.get("ARTIST") or [""])[0] == artist:
+        tags["ARTISTSORT"] = [sort_name]
+        tags["ARTISTS"] = [artist]
+        tags["MUSICBRAINZ_ARTISTID"] = [mbid]
+    tags["ALBUMARTIST"] = [artist]
+    tags["ALBUMARTISTSORT"] = [sort_name]
+    tags["ALBUMARTISTS"] = [artist]
+    tags["MUSICBRAINZ_ALBUMARTISTID"] = [mbid]
+    if album:
+        tags["ALBUM"] = [album]
+    tags["TITLE"] = [title]
+    tags["TRACKNUMBER"] = [str(number)]
+    tags["TRACKTOTAL"] = [str(total)]
+    tags["DISCNUMBER"] = ["1"]
+    tags["DISCTOTAL"] = ["1"]
+    tags["DATE"] = [str(year)]
+    tags["RELEASETYPE"] = ["compilation"]
+    tags["COMPILATION"] = ["1"]
+    return removed
+
+
+def apply_mp3(track, number, total, artist, sort_name, mbid, album, year, title):
+    id3 = track.tags.tags
+    removed = []
+    if title != track.title() and "TSOT" in id3:
+        id3.delall("TSOT")
+        removed.append("TSOT")
+    for key in list(id3.keys()):
+        frame = id3[key]
+        frame_id = key.split(":")[0]
+        values = [str(v) for v in getattr(frame, "text", [])]
+        if any(is_store(v) for v in values) and frame_id != "TALB":
+            del id3[key]
+            removed.append(key)
+            continue
+        if frame_id == "TXXX":
+            desc = frame.desc.upper()
+            if desc in KEEP_TXXX or desc.startswith(KEEP_TXXX_PREFIXES):
+                continue
+            del id3[key]
+            removed.append(key)
+        elif frame_id not in KEEP_FRAMES:
+            del id3[key]
+            removed.append(key)
+
+    def text(frame_id, value):
+        id3.add(Frames[frame_id](encoding=3, text=[value]))
+
+    def user(desc, value):
+        id3.delall(f"TXXX:{desc}")
+        id3.add(TXXX(encoding=3, desc=desc, text=[value]))
+
+    current_artist = str(id3["TPE1"].text[0]) if "TPE1" in id3 and id3["TPE1"].text else ""
+    if not current_artist.strip():
+        text("TPE1", artist)
+        current_artist = artist
+    if current_artist == artist:
+        text("TSOP", sort_name)
+        user("ARTISTS", artist)
+        user("MusicBrainz Artist Id", mbid)
+    text("TPE2", artist)
+    text("TSO2", sort_name)
+    user("ALBUMARTISTS", artist)
+    user("MusicBrainz Album Artist Id", mbid)
+    if album:
+        text("TALB", album)
+    text("TIT2", title)
+    text("TRCK", f"{number}/{total}")
+    text("TPOS", "1/1")
+    text("TDRC", str(year))
+    user("MusicBrainz Album Type", "compilation")
+    text("TCMP", "1")
+    return removed
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.add_argument("--mbid", metavar="ID", help="the artist's MusicBrainz id (default: search MusicBrainz for the files' artist and ask)")
+    parser.add_argument("--mbid-select", action="store_true", help="ask again even if the files carry an artist id or a pick for this artist name was remembered")
+    parser.add_argument("--dir", default=".", metavar="DIR", help="the album directory (default: the current one)")
+    parser.add_argument("--year", type=int, default=datetime.date.today().year, metavar="YYYY", help="release year to write (default: this year)")
+    parser.add_argument("--album", metavar="TITLE", help="album title to write (default: keep the files', or '<Artist> Essentials')")
+    parser.add_argument("--name", metavar="ARTIST", help="artist name to write (default: the files' spelling when it matches MusicBrainz's, else MusicBrainz's)")
+    parser.add_argument("--cover", metavar="FILE", help="cover image to embed in every file (default: <dir>/cover.jpg)")
+    parser.add_argument("--dry-run", action="store_true", help="show what would change and write nothing")
+    args = parser.parse_args()
+
+    try:
+        folder = os.path.abspath(args.dir)
+    except FileNotFoundError:
+        sys.exit("the current directory no longer exists; cd somewhere real or pass --dir")
+    if not os.path.isdir(folder):
+        sys.exit(f"not a directory: {folder}")
+    tidepool = find_tidepool()
+
+    names = [n for n in os.listdir(folder) if not n.startswith(".")]
+    tracks = [Track(os.path.join(folder, n)) for n in sorted(names) if n.lower().endswith(AUDIO)]
+    if not tracks:
+        sys.exit("no .flac or .mp3 files here")
+    # Store compilations put their own name in the album artist, so the track
+    # artist is the one worth trusting.
+    existing_artist = (tracks[0].get("ARTIST") or "").strip()
+    remembered = ""
+    query = args.name or existing_artist
+    if args.mbid:
+        mbid, mb_name, sort_name = lookup_artist(args.mbid)
+    elif not args.mbid_select and tracks[0].mbid():
+        mbid, mb_name, sort_name = lookup_artist(tracks[0].mbid())
+        remembered = "  [from the files' tags; --mbid-select to choose again]"
+    elif not args.mbid_select and load_selections().get(query.strip().lower()):
+        mbid, mb_name, sort_name = lookup_artist(load_selections()[query.strip().lower()])
+        remembered = f"  [remembered pick for {query!r}; --mbid-select to choose again]"
+    else:
+        mbid, mb_name, sort_name = search_artist(query)
+        save_selection(query, mbid)
+    # The files' own spelling wins over MusicBrainz's when it's the same name
+    # ("Nothing To Lose" vs "Nothing to Lose"); --name settles it outright.
+    artist = args.name or (existing_artist if existing_artist.lower() == mb_name.lower() else mb_name)
+    if artist != mb_name:
+        sort_name = sort_name if sort_name.lower() != mb_name.lower() else artist
+    print(f"artist: {artist} ({sort_name})  id {mbid}" + (f"  [MusicBrainz spells it {mb_name!r}]" if artist != mb_name else "") + remembered)
+    unsupported = [n for n in names if n.lower().endswith((".m4a", ".aac", ".ogg", ".opus", ".wav"))]
+    if unsupported:
+        print(f"skipping {len(unsupported)} file(s) in a format this script doesn't tag: {unsupported[:3]}")
+    tracks.sort(key=Track.sort_key)
+    total = len(tracks)
+
+    existing_album = tracks[0].get("ALBUM") or ""
+    album = args.album
+    if not album and (not existing_album.strip() or is_store(existing_album)):
+        album = f"{artist} Essentials"
+    print(f"album: {album or existing_album}   year: {args.year}   tracks: {total}")
+    cover_path = args.cover or os.path.join(folder, "cover.jpg")
+    cover = read_cover(cover_path)
+    if cover:
+        print(f"cover: {cover_path} ({len(cover[0]) / 1_000_000:.1f} MB, embedded in every file)")
+    elif args.cover:
+        sys.exit(f"no such cover: {args.cover}")
+    else:
+        print("cover: none found (cover.jpg); embedded pictures left as they are")
+
+    lyrics = {}
+    for name in names:
+        if name.lower().endswith(".lrc"):
+            key = normalise(re.sub(r"^\d+(?:_\d+)?[.\-_ ]+", "", name[:-4]))
+            lyrics.setdefault(key, []).append(name)
+
+    plan = []
+    for index, track in enumerate(tracks, start=1):
+        raw_title = track.title()
+        title = clean_title(tidepool, raw_title)
+        stem = f"{index}. {safe_filename(title)}"
+        new_name = stem + track.ext
+        # Lyrics files carry whichever title the store used, so try the
+        # original spelling first and the cleaned one second.
+        matches = lyrics.get(normalise(raw_title)) or lyrics.get(normalise(title)) or []
+        lrc_old = matches[0] if len(matches) == 1 else None
+        plan.append((index, track, title, new_name, lrc_old, stem + ".lrc"))
+
+    for index, track, title, new_name, lrc_old, lrc_new in plan:
+        print(f"{index}.")
+        print("   input:")
+        print(f"     title: {track.title()}")
+        print(f"     audio: {track.name}")
+        print(f"     lyrics: {lrc_old or 'none'}")
+        print("   output:")
+        print(f"     title: {title}")
+        print(f"     audio: {new_name}")
+        print(f"     lyrics: {lrc_new if lrc_old else 'none'}")
+    unmatched = [n for names_ in lyrics.values() for n in names_ if n not in {p[4] for p in plan}]
+    if unmatched:
+        print(f"lyrics files with no matching track (left alone): {unmatched}")
+
+    if args.dry_run:
+        print("dry run: nothing written")
+        return
+
+    for index, track, title, new_name, lrc_old, lrc_new in plan:
+        apply = apply_flac if track.flac else apply_mp3
+        removed = apply(track, index, total, artist, sort_name, mbid, album, args.year, title)
+        if cover:
+            embed_cover(track, cover)
+        track.tags.save()
+        if removed:
+            print(f"  {new_name}: removed {', '.join(sorted(set(removed)))}")
+    # Renames last, so a failure above leaves the names untouched.
+    for index, track, title, new_name, lrc_old, lrc_new in plan:
+        if not same(track.name, new_name):
+            os.rename(track.path, os.path.join(folder, new_name))
+        if lrc_old and not same(lrc_old, lrc_new):
+            os.rename(os.path.join(folder, lrc_old), os.path.join(folder, lrc_new))
+    print(f"done: {total} track(s) tagged and named; scan the library in Jellyfin next")
+
+
+if __name__ == "__main__":
+    main()

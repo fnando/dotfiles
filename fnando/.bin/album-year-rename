@@ -1,0 +1,30 @@
+#!/usr/bin/env zsh
+
+set -e
+setopt extendedglob
+
+for dir in "$@"
+do
+  [[ -d "$dir" ]] || continue
+  dir="${dir%/}"
+
+  # Skip folders that already end in " (YYYY)"
+  [[ "$dir" == *\ \([0-9][0-9][0-9][0-9]\) ]] && continue
+
+  # First audio file by name, including subfolders like CD1/CD2
+  first=( "$dir"/**/*.(#i)(mp3|m4a|flac|aac|alac|wav|aif|aiff|ogg|opus)(N.on[1]) )
+  [[ -n "$first" ]] || continue
+
+  # Read the date/year tag and keep just the 4-digit year
+  year=$(/opt/homebrew/bin/ffprobe -v quiet \
+           -show_entries format_tags:stream_tags \
+           -of default=nw=1 "$first" \
+         | grep -iE '^TAG:(date|year|tdrc|tyer|originaldate)=' \
+         | grep -oE '[0-9]{4}' | head -n1)
+  [[ -n "$year" ]] || continue
+
+  newdir="$dir ($year)"
+  [[ -e "$newdir" ]] && continue
+  mv -n "$dir" "$newdir"
+  echo "$newdir"
+done

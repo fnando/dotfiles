@@ -1,0 +1,19 @@
+#!/usr/bin/env ruby
+
+require 'sinatra'
+
+set :bind, "0.0.0.0"
+set :host_authorization, {permitted_hosts: []}
+
+$stdout.sync = true
+
+%i[get post put patch delete options head].each do |verb|
+  send(verb, "/*") do
+    request.body.rewind
+    body = request.body.read
+    puts "#{request.request_method} #{request.url}"
+    puts body unless body.empty?
+    puts
+    "ok\n"
+  end
+end
