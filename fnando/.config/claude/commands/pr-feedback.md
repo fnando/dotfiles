@@ -1,3 +1,9 @@
+---
+description:
+  Analyze a pull request's unresolved review feedback, evaluate its merit, and
+  produce a prioritized action plan
+---
+
 # PR Feedback Analyzer
 
 Fetches all comments and **unresolved review feedback** from a pull request,

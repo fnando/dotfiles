@@ -20,3 +20,4 @@ mise.toml
 .aider*
 CLAUDE.md
 /.config
+__pycache__
