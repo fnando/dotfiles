@@ -39,6 +39,8 @@ export PATH="/usr/local/bin:/usr/bin:/usr/sbin:/bin:/sbin:/opt/X11/bin"
 _prepend-path "$HOMEBREW_PREFIX/bin"
 _prepend-path "$HOMEBREW_PREFIX/sbin"
 
+export GOPATH="$HOME/.local/share/go"
+export GOCACHE="$HOME/.local/state/go"
 export CARGO_HOME="$HOME/.local/share/cargo"
 export RUSTUP_HOME="$HOME/.local/share/rustup"
 export CONTAINER_APP_ROOT=$HOME/.local/share/container
