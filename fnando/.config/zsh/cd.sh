@@ -1,4 +1,4 @@
-if [[ -z "$USING_AGENTS" ]]; then
+if [[ -z "$USING_AGENTS" && -o interactive ]]; then
   cd() {
     builtin cd "${@:-$HOME}" && pwd > $CDHISTORY;
   }
