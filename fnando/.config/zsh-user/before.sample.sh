@@ -5,6 +5,12 @@
 # export GIT_COMMITTER_NAME=$GIT_AUTHOR_NAME
 # export GIT_COMMITTER_EMAIL=$GIT_AUTHOR_EMAIL
 
+# if [ -n "$SSH_CONNECTION" ]; then
+#   export STARSHIP_CUSTOM_HOSTNAME="$(hostname -s)"
+# else
+#   export STARSHIP_CUSTOM_HOSTNAME="fnando"
+# fi
+
 # x86_64 (Intel)
 # export GIT_DIFF_HIGHLIGHT="/usr/local/opt/git/share/git-core/contrib/diff-highlight/diff-highlight"
 
