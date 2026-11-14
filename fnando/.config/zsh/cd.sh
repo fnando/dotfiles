@@ -1,6 +1,6 @@
 if [[ -z "$USING_AGENTS" && -o interactive ]]; then
   cd() {
-    builtin cd "${@:-$HOME}" && pwd > $CDHISTORY;
+    builtin cd "${@:-$HOME}" && pwd > $CDHISTORY && chmod 600 $CDHISTORY;
   }
 
   popd() {

@@ -20,6 +20,12 @@ if [[ ! -f $sentinel || "$(<$sentinel)" != "$fingerprint" ]]; then
     git config --global user.signingkey "$author_signingkey"
     git config --global commit.gpgsign true
     git config --global gpg.format ssh
+
+    echo "$(git config user.email) $(git config user.signingkey)" > ~/.ssh/git_allowed_signers
+    chmod 600 ~/.ssh/git_allowed_signers
+
+    git config --global gpg.ssh.allowedSignersFile ~/.ssh/git_allowed_signers
+
     if [[ "$USING_ONE_PASSWORD" = "true" ]]; then
       git config --global --add gpg.ssh.program /Applications/1Password.app/Contents/MacOS/op-ssh-sign
     fi

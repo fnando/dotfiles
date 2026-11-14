@@ -45,7 +45,13 @@ export CARGO_HOME="$HOME/.local/share/cargo"
 export RUSTUP_HOME="$HOME/.local/share/rustup"
 export CONTAINER_APP_ROOT=$HOME/.local/share/container
 export CONTAINER_LOG_ROOT=$HOME/.local/share/container/logs
-export CDHISTORY="/tmp/cd-$USER"
+
+if [[ -z "$SSH_CLIENT" ]]; then
+  export CDHISTORY="$HOME/.local/state/cd-$USER"
+else
+  export CDHISTORY="$HOME/.local/state/cd-$(echo -n $SSH_CLIENT | md5sum | cut -f1 -d'-')"
+fi
+
 export CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY=1
 export CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1
 export CLAUDE_CODE_ENABLE_TELEMETRY=0
